@@ -3,7 +3,7 @@ import numpy as np
 from datetime import datetime
 
 # ================= USUÁRIOS =================
-USUARIOS = {
+USUARIOS = {=m
     "raphael": "1234",
     "aluno1": "1111",
     "aluno2": "2222"
