@@ -5,7 +5,7 @@ from datetime import datetime
 # ================= USUÁRIOS =================
 USUARIOS = {=m
     "raphael": "1234",
-    "aluno1": "1111",
+    "aluno1": "1111",==m
     "aluno2": "2222"
 }
 
