@@ -1,6 +1,5 @@
 import streamlit as st
 import numpy as np
-from datetime import datetime
 
 # ================= CONFIG =================
 st.set_page_config(
@@ -59,15 +58,15 @@ menu = st.sidebar.selectbox(
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.info("Sistema de estudo de análise físico-química de água e resíduos.")
+    st.info("Sistema de análise físico-química de água e resíduos.")
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
 
     st.write("""
-📌 PARÂMETROS DE ESTUDO:
+📌 PARÂMETROS COMPLETOS:
 
-✔ SL - Sólidos Totais  
+✔ SL - Sólidos Totais Gerais  
 ✔ ST - Sólidos Totais  
 ✔ STF - Sólidos Totais Fixos  
 ✔ SST - Sólidos Suspensos Totais  
@@ -116,7 +115,7 @@ elif menu == "Laboratório":
         SST = np.array([sst1, sst2, sst3, sst4])
         SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
-        SL = ST  # Sólidos Totais gerais
+        SL = ST  # Sólidos Totais Gerais
 
         STV = ST - STF
         SSV = SST - SSF
@@ -151,7 +150,7 @@ elif menu == "Laudo Final":
         for k, v in st.session_state["resultados"].items():
             st.write(f"**{k}** → {v:.2f}")
 
-        st.success("📊 Laudo completo gerado para estudo!")
+        st.success("📊 Laudo completo com todos os parâmetros!")
 
     else:
         st.warning("Execute o laboratório primeiro")
