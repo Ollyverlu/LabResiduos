@@ -34,80 +34,42 @@ if not st.session_state["logado"]:
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual de Resíduos IFRJ",
+    page_title="Laboratório Virtual IFRJ",
     layout="wide"
 )
-
-# ================= ESTILO =================
-st.markdown("""
-    <style>
-    .main {
-        background-color: #f4f7ff;
-    }
-
-    h1 {
-        color: #1f4e79;
-        text-align: center;
-    }
-
-    .stButton > button {
-        background-color: #1f4e79;
-        color: white;
-        border-radius: 10px;
-        width: 100%;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
 st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
-st.markdown(f"""
-### 👩‍🏫 Dona do Sistema
-**Luciana Oliveira de Albuquerque**
-
-### 👨‍🎓 Aluno
-**Raphael Oliveira de Albuquerque**
-
-### 🔐 Usuário logado
-**{st.session_state['usuario']}**
+st.markdown("""
+### 👩‍🏫 Luciana Oliveira de Albuquerque  
+### 👨‍🎓 Raphael Oliveira de Albuquerque
 """)
 
 st.success("Sistema ativo 🚀")
 
 # ================= MENU =================
 menu = st.sidebar.selectbox(
-    "📚 Menu do Sistema",
+    "📚 Menu",
     ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
 )
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual")
-    st.info("Sistema de ensino de análises físico-químicas de água e resíduos.")
+    st.info("Sistema de estudo de análises físico-químicas.")
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
 
-    st.header("📚 Conteúdo Teórico")
-
     st.write("""
-✔ ST = Sólidos Totais  
-✔ STF = Sólidos Totais Fixos  
-✔ SST = Sólidos Suspensos Totais  
-✔ SSF = Sólidos Suspensos Fixos  
-✔ STV = ST - STF  
-✔ SSV = SST - SSF  
-✔ SDT = ST - SST  
-✔ SDF = STF - SSF  
-✔ SDV = STV - SSV  
+ST, STF, SST, SSF são parâmetros usados em análises de água e resíduos.
     """)
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
-    st.header("🧪 Inserção de Dados Experimentais")
+    st.header("🧪 Inserção de Dados")
 
     volume = st.number_input("Volume da amostra (mL)", value=500.0)
 
@@ -149,15 +111,15 @@ elif menu == "Laboratório":
         SDV = STV - SSV
 
         resultados = {
-            "ST": (np.mean(ST), np.std(ST)),
-            "STF": (np.mean(STF), np.std(STF)),
-            "SST": (np.mean(SST), np.std(SST)),
-            "SSF": (np.mean(SSF), np.std(SSF)),
-            "STV": (np.mean(STV), np.std(STV)),
-            "SSV": (np.mean(SSV), np.std(SSV)),
-            "SDT": (np.mean(SDT), np.std(SDT)),
-            "SDF": (np.mean(SDF), np.std(SDF)),
-            "SDV": (np.mean(SDV), np.std(SDV)),
+            "ST": np.mean(ST),
+            "STF": np.mean(STF),
+            "SST": np.mean(SST),
+            "SSF": np.mean(SSF),
+            "STV": np.mean(STV),
+            "SSV": np.mean(SSV),
+            "SDT": np.mean(SDT),
+            "SDF": np.mean(SDF),
+            "SDV": np.mean(SDV),
         }
 
         st.session_state["resultados"] = resultados
@@ -166,63 +128,12 @@ elif menu == "Laboratório":
 # ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
 
-    st.header("📄 Laudo Técnico Completo")
+    st.header("📄 Laudo Técnico")
 
     if "resultados" in st.session_state:
 
-        st.write("### 📊 Parâmetro | Nome | Resultado (média ± desvio) | Classificação")
-
         for k, v in st.session_state["resultados"].items():
-
-            media, dp = v
-
-            if k == "ST":
-                nome = "Sólidos Totais"
-            elif k == "STF":
-                nome = "Sólidos Totais Fixos"
-            elif k == "SST":
-                nome = "Sólidos Suspensos Totais"
-            elif k == "SSF":
-                nome = "Sólidos Suspensos Fixos"
-            elif k == "STV":
-                nome = "Sólidos Totais Voláteis"
-            elif k == "SSV":
-                nome = "Sólidos Suspensos Voláteis"
-            elif k == "SDT":
-                nome = "Sólidos Dissolvidos Totais"
-            elif k == "SDF":
-                nome = "Sólidos Dissolvidos Fixos"
-            elif k == "SDV":
-                nome = "Sólidos Dissolvidos Voláteis"
-            else:
-                nome = "Parâmetro"
-
-            if media < 50:
-                classe = "Baixo"
-            elif media < 150:
-                classe = "Médio"
-            else:
-                classe = "Alto"
-
-            st.write(f"**{k}** | {nome} | {media:.2f} ± {dp:.2f} | {classe}")
-
-        st.markdown("---")
-
-        st.markdown("### 🧪 Fórmulas do Sistema")
-
-        st.write("""
-- ST = Sólidos Totais  
-- STF = Sólidos Totais Fixos  
-- SST = Sólidos Suspensos Totais  
-- SSF = Sólidos Suspensos Fixos  
-- STV = ST - STF  
-- SSV = SST - SSF  
-- SDT = ST - SST  
-- SDF = STF - SSF  
-- SDV = STV - SSV  
-        """)
-
-        st.success("📊 Laudo gerado com sucesso!")
+            st.write(f"{k} → {v:.2f}")
 
     else:
-        st.warning("⚠ Execute os cálculos no Laboratório primeiro")
+        st.warning("Execute o laboratório primeiro")
