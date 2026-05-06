@@ -1,12 +1,12 @@
 import streamlit as st
 import numpy as np
 from datetime import datetime
-# ================= LOGIN USUÁRIOS =================
+
+# ================= USUÁRIOS =================
 USUARIOS = {
     "raphael": "1234",
     "aluno1": "1111",
     "aluno2": "2222"
-}
 }
 
 # ================= LOGIN =================
@@ -31,6 +31,7 @@ if not st.session_state["logado"]:
             st.error("Usuário ou senha incorretos")
 
     st.stop()
+
 # ================= CONFIG =================
 st.set_page_config(
     page_title="Laboratório Virtual de Resíduos IFRJ",
@@ -55,10 +56,6 @@ st.markdown("""
         border-radius: 10px;
         width: 100%;
     }
-
-    section[data-testid="stSidebar"] {
-        background-color: #e8eefc;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -66,16 +63,14 @@ st.markdown("""
 st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
-st.markdown("""
-### 👩‍🏫 Responsável
+st.markdown(f"""
+### 👩‍🏫 Dona do Sistema
 **Luciana Oliveira de Albuquerque**
-""")
-### 👨‍🎓 Aluno
-**Raphael Oliveira de Albuquerque**
 
-### 🔐 Usuário logado
-**{st.session_state['usuario']}**
+### 👨‍🎓 Aluno Logado
+**{st.session_state['usuario']} - Raphael Oliveira de Albuquerque**
 """)
+
 st.success("Sistema ativo 🚀")
 
 # ================= MENU =================
@@ -87,16 +82,7 @@ menu = st.sidebar.selectbox(
 # ================= INÍCIO =================
 if menu == "Início":
     st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual")
-
     st.info("Sistema de ensino de análises físico-químicas de água e resíduos.")
-
-    st.markdown("""
-    ### 🎯 Você irá aprender:
-    - Cálculo de ST, STF, SST, SSF  
-    - Média e desvio padrão  
-    - Interpretação de resultados  
-    - Laudos técnicos completos  
-    """)
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
@@ -104,45 +90,39 @@ elif menu == "Aula Teórica":
     st.header("📚 Conteúdo Teórico")
 
     st.write("""
-    O monitoramento de água e resíduos utiliza parâmetros físico-químicos:
-
-    ✔ ST (Sólidos Totais)  
-    ✔ STF (Sólidos Totais Fixos)  
-    ✔ SST (Sólidos Suspensos Totais)  
-    ✔ SSF (Sólidos Suspensos Fixos)  
-    ✔ STV (Sólidos Totais Voláteis)  
-    ✔ SSV (Sólidos Suspensos Voláteis)  
-    ✔ SDT (Sólidos Dissolvidos Totais)  
-    ✔ SDF (Sólidos Dissolvidos Fixos)  
-    ✔ SDV (Sólidos Dissolvidos Voláteis)  
+✔ ST (Sólidos Totais)  
+✔ STF (Sólidos Totais Fixos)  
+✔ SST (Sólidos Suspensos Totais)  
+✔ SSF (Sólidos Suspensos Fixos)  
+✔ STV, SSV, SDT, SDF, SDV  
     """)
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
-    st.header("🧪 Inserção de Dados Experimentais")
+    st.header("🧪 Inserção de Dados")
 
     volume = st.number_input("Volume da amostra (mL)", value=500.0)
 
-    st.subheader("ST (Sólidos Totais)")
+    st.subheader("ST")
     st1 = st.number_input("ST1")
     st2 = st.number_input("ST2")
     st3 = st.number_input("ST3")
     st4 = st.number_input("ST4")
 
-    st.subheader("STF (Sólidos Totais Fixos)")
+    st.subheader("STF")
     f1 = st.number_input("STF1")
     f2 = st.number_input("STF2")
     f3 = st.number_input("STF3")
     f4 = st.number_input("STF4")
 
-    st.subheader("SST (Sólidos Suspensos Totais)")
+    st.subheader("SST")
     sst1 = st.number_input("SST1")
     sst2 = st.number_input("SST2")
     sst3 = st.number_input("SST3")
     sst4 = st.number_input("SST4")
 
-    st.subheader("SSF (Sólidos Suspensos Fixos)")
+    st.subheader("SSF")
     ssf1 = st.number_input("SSF1")
     ssf2 = st.number_input("SSF2")
     ssf3 = st.number_input("SSF3")
@@ -155,7 +135,6 @@ elif menu == "Laboratório":
         SST = np.array([sst1, sst2, sst3, sst4])
         SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
-        # ===== CÁLCULOS =====
         STV = ST - STF
         SSV = SST - SSF
         SDT = ST - SST
@@ -175,7 +154,7 @@ elif menu == "Laboratório":
         }
 
         st.session_state["resultados"] = resultados
-        st.success("✔ Cálculos concluídos com sucesso!")
+        st.success("✔ Cálculos concluídos!")
 
 # ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
