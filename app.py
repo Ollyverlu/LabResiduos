@@ -25,10 +25,10 @@ st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
-### 👩‍🏫 Responsável
+### 👩‍🏫 Criador
 Luciana Oliveira de Albuquerque
 
-### 🎓 Aluno
+### 🎓 Administrador
 Raphael Oliveira de Albuquerque
 """)
 
