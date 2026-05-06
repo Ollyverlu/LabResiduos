@@ -4,11 +4,11 @@ from datetime import datetime
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual IFRJ",
+    page_title="Laboratório Virtual de Resíduos IFRJ",
     layout="wide"
 )
 
-# ================= ESTILO VISUAL =================
+# ================= ESTILO =================
 st.markdown("""
     <style>
     .main {
@@ -25,34 +25,34 @@ st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 st.write("Responsável: Luciana Oliveira de Albuquerque")
 
-st.success("Sistema ativo 🚀")
+st.success("Sistema ativo e pronto para uso 🚀")
 
 # ================= MENU =================
 menu = st.sidebar.selectbox(
     "📚 Menu do Sistema",
-    ["Início", "Aula Teórica", "Laboratório", "Laudo Final", "Compartilhar"]
+    ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
 )
 
 # ================= INÍCIO =================
 if menu == "Início":
     st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual")
 
-    st.info("Sistema completo para ensino de análises físico-químicas de água e resíduos.")
+    st.info("Sistema desenvolvido para ensino de análises físico-químicas de água e resíduos.")
 
     st.markdown("""
-    ### 🎯 Você vai aprender:
-    - Cálculos laboratoriais  
+    ### 🎯 Você irá aprender:
+    - Cálculo de parâmetros laboratoriais  
     - Média e desvio padrão  
     - Interpretação de resultados  
     - Construção de laudos técnicos  
     """)
 
-# ================= AULA =================
+# ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
     st.header("📚 Conteúdo Teórico")
 
     st.write("""
-    O controle de qualidade da água e resíduos envolve análises físico-químicas.
+    O monitoramento de resíduos e água envolve análise físico-química para garantir qualidade ambiental.
 
     Principais parâmetros:
     - ST (Sólidos Totais)
@@ -60,32 +60,52 @@ elif menu == "Aula Teórica":
     - SST (Sólidos Suspensos Totais)
     - SSF (Sólidos Suspensos Fixos)
 
-    Esses dados são fundamentais para avaliação ambiental.
+    Esses dados permitem avaliar a qualidade da água e resíduos industriais.
     """)
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
-    st.header("🧪 Inserção de Dados")
+    st.header("🧪 Inserção de Dados Experimentais")
 
     volume = st.number_input("Volume da amostra (mL)", value=500.0)
 
-    st.subheader("📥 Replicatas (ST / STF / SST / SSF)")
+    st.markdown("### 📥 Replicatas (4 medições)")
 
-    st.write("Insira os valores experimentais")
+    st.write("Cápsula / Filtro - Inserção dos valores")
 
-    ST = [st.number_input(f"ST {i+1}", key=f"st{i}") for i in range(4)]
-    STF = [st.number_input(f"STF {i+1}", key=f"stf{i}") for i in range(4)]
-    SST = [st.number_input(f"SST {i+1}", key=f"sst{i}") for i in range(4)]
-    SSF = [st.number_input(f"SSF {i+1}", key=f"ssf{i}") for i in range(4)]
+    st.subheader("ST (Sólidos Totais)")
+    st1 = st.number_input("ST1", key="st1")
+    st2 = st.number_input("ST2", key="st2")
+    st3 = st.number_input("ST3", key="st3")
+    st4 = st.number_input("ST4", key="st4")
+
+    st.subheader("STF (Sólidos Totais Fixos)")
+    f1 = st.number_input("STF1", key="f1")
+    f2 = st.number_input("STF2", key="f2")
+    f3 = st.number_input("STF3", key="f3")
+    f4 = st.number_input("STF4", key="f4")
+
+    st.subheader("SST (Sólidos Suspensos Totais)")
+    sst1 = st.number_input("SST1", key="s1")
+    sst2 = st.number_input("SST2", key="s2")
+    sst3 = st.number_input("SST3", key="s3")
+    sst4 = st.number_input("SST4", key="s4")
+
+    st.subheader("SSF (Sólidos Suspensos Fixos)")
+    ssf1 = st.number_input("SSF1", key="x1")
+    ssf2 = st.number_input("SSF2", key="x2")
+    ssf3 = st.number_input("SSF3", key="x3")
+    ssf4 = st.number_input("SSF4", key="x4")
 
     if st.button("🧪 GERAR RESULTADOS"):
 
-        ST = np.array(ST)
-        STF = np.array(STF)
-        SST = np.array(SST)
-        SSF = np.array(SSF)
+        ST = np.array([st1, st2, st3, st4])
+        STF = np.array([f1, f2, f3, f4])
+        SST = np.array([sst1, sst2, sst3, sst4])
+        SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
+        # cálculos principais
         STV = ST - STF
         SSV = SST - SSF
         SDT = ST - SST
@@ -108,7 +128,7 @@ elif menu == "Laboratório":
 
         st.success("✔ Cálculos concluídos com sucesso!")
 
-# ================= LAUDO =================
+# ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
 
     st.header("📄 Laudo Técnico Final")
@@ -121,6 +141,7 @@ elif menu == "Laudo Final":
 
             media, dp = v
 
+            # classificação simples técnica
             if media < 50:
                 classe = "Baixo"
             elif media < 150:
@@ -133,25 +154,4 @@ elif menu == "Laudo Final":
         st.success("📊 Laudo gerado com sucesso!")
 
     else:
-        st.warning("⚠ Execute os cálculos primeiro no laboratório")
-
-# ================= COMPARTILHAR =================
-elif menu == "Compartilhar":
-
-    st.header("📲 Compartilhar com Alunos")
-
-    link = "https://SEU-LINK-AQUI.streamlit.app/"
-
-    st.write("Envie este laboratório para seus alunos:")
-
-    st.code(link)
-
-    st.markdown("### 💬 WhatsApp")
-
-    mensagem = f"📚 Laboratório Virtual IFRJ\nAcesse aqui: {link}"
-
-    st.write("Clique e copie a mensagem abaixo:")
-
-    st.code(mensagem)
-
-    st.info("Depois cole no WhatsApp para seus alunos 👩‍🎓")
+        st.warning("⚠ Primeiro gere os cálculos no menu Laboratório")
