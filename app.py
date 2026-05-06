@@ -47,7 +47,7 @@ st.title("🧪 Laboratório Virtual de Resíduos IFRJ")
 
 st.markdown("""
 ### 👩‍🏫 Responsável: Luciana Oliveira de Albuquerque  
-### 👨‍🎓Colaborador Aluno: Raphael Oliveira de Albuquerque
+### 👨‍🎓Colaborador: Raphael Oliveira de Albuquerque
 """)
 
 st.success("Sistema ativo 🚀")
