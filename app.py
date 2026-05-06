@@ -1,132 +1,96 @@
 import streamlit as st
 import numpy as np
+from datetime import datetime
 
-# ================= CONFIG (TEM QUE SER PRIMEIRO) =================
-st.set_page_config(
-    page_title="Laboratório Virtual IFRJ",
-    layout="wide"
-)
+st.set_page_config(page_title="Laudo Técnico IFRJ", layout="wide")
 
-# ================= USUÁRIOS =================
-USUARIOS = {
-    "raphael": "1234",
-    "aluno1": "1111",
-    "aluno2": "2222"
-}
-# ================= LOGIN =================
-if "logado" not in st.session_state:
-    st.session_state["logado"] = False
-    st.session_state["usuario"] = ""
+st.title("🧪 Laudo Técnico de Ensaios Físico-Químicos")
+st.write("Água e Resíduos – Laboratório Virtual IFRJ")
+st.write("Responsável: Luciana Oliveira de Albuquerque")
 
-USUARIOS = {
-    "raphael": "1234",
-    "aluno1": "1111",
-    "aluno2": "2222"
-}
+st.sidebar.header("📊 Entrada de Dados")
 
-if not st.session_state["logado"]:
+n = 4  # replicatas
 
-    st.title("🔐 Login - Laboratório IFRJ")
+volume = st.sidebar.number_input("Volume da amostra (mL)", value=500.0)
 
-    usuario = st.text_input("Usuário").strip().lower()
-    senha = st.text_input("Senha", type="password").strip()
+# listas
+massa_ST = []
+massa_STF = []
+massa_SST = []
+massa_SSF = []
 
-    if st.button("Entrar"):
+st.header("📥 Inserção de Dados")
 
-        if usuario in USUARIOS and USUARIOS[usuario] == senha:
-            st.session_state["logado"] = True
-            st.session_state["usuario"] = usuario
-            st.rerun()
-        else:
-            st.error("Usuário ou senha incorretos")
+for i in range(n):
+    st.subheader(f"Replicata {i+1}")
 
-    st.stop()
+    st.write("Cápsula")
+    st1 = st.number_input(f"ST {i+1}", key=f"st{i}")
+    st2 = st.number_input(f"STF {i+1}", key=f"stf{i}")
 
-# ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual de Resíduos IFRJ")
+    st.write("Filtro")
+    sst = st.number_input(f"SST {i+1}", key=f"sst{i}")
+    ssf = st.number_input(f"SSF {i+1}", key=f"ssf{i}")
 
-st.markdown("""
-### 👩‍🏫 Responsável: Luciana Oliveira de Albuquerque  
-### 👨‍🎓Colaborador: Raphael Oliveira de Albuquerque
-""")
-
-st.success("Sistema ativo 🚀")
-
-# ================= AMOSTRA =================
-st.header("📦 Amostra")
-
-volume = st.number_input("Volume da Amostra (mL)", value=500.0)
-
-# ================= ST =================
-st.subheader("ST - Sólidos Totais")
-st1 = st.number_input("ST1")
-st2 = st.number_input("ST2")
-st3 = st.number_input("ST3")
-st4 = st.number_input("ST4")
-
-# ================= STF =================
-st.subheader("STF - Sólidos Totais Fixos")
-stf1 = st.number_input("STF1")
-stf2 = st.number_input("STF2")
-stf3 = st.number_input("STF3")
-stf4 = st.number_input("STF4")
-
-# ================= SST =================
-st.subheader("SST - Sólidos Suspensos Totais")
-sst1 = st.number_input("SST1")
-sst2 = st.number_input("SST2")
-sst3 = st.number_input("SST3")
-sst4 = st.number_input("SST4")
-
-# ================= SSF =================
-st.subheader("SSF - Sólidos Suspensos Fixos")
-ssf1 = st.number_input("SSF1")
-ssf2 = st.number_input("SSF2")
-ssf3 = st.number_input("SSF3")
-ssf4 = st.number_input("SSF4")
+    massa_ST.append(st1)
+    massa_STF.append(st2)
+    massa_SST.append(sst)
+    massa_SSF.append(ssf)
 
 # ================= CÁLCULOS =================
-if st.button("🧪 Gerar Laudo Completo"):
 
-    SL = np.array([st1, st2, st3, st4])
-    ST = np.array([st1, st2, st3, st4])
-    STF = np.array([stf1, stf2, stf3, stf4])
-    SST = np.array([sst1, sst2, sst3, sst4])
-    SSF = np.array([ssf1, ssf2, ssf3, ssf4])
+def calc(lista):
+    arr = np.array(lista)
+    media = np.mean(arr)
+    desvio = np.std(arr)
+    return media, desvio
 
-    # DERIVADOS
-    STV = ST - STF
-    SSV = SST - SSF
-    SDT = ST - SST
-    SDV = STV - SSV
-    SDF = STF - SSF
+if st.button("🧪 GERAR LAUDO COMPLETO"):
 
-    resultados = {
-        "Volume da Amostra (mL)": volume,
+    ST_med, ST_dp = calc(massa_ST)
+    STF_med, STF_dp = calc(massa_STF)
+    SST_med, SST_dp = calc(massa_SST)
+    SSF_med, SSF_dp = calc(massa_SSF)
 
-        "SL - Sólidos Totais Gerais": np.mean(SL),
-        "ST - Sólidos Totais": np.mean(ST),
-        "STF - Sólidos Totais Fixos": np.mean(STF),
-        "SST - Sólidos Suspensos Totais": np.mean(SST),
-        "SSF - Sólidos Suspensos Fixos": np.mean(SSF),
+    # cálculos derivados
+    STV_med = ST_med - STF_med
+    SSV_med = SST_med - SSF_med
+    SDT_med = ST_med - SST_med
+    SDF_med = STF_med - SSF_med
+    SDV_med = STV_med - SSV_med
 
-        "STV - Sólidos Totais Voláteis": np.mean(STV),
-        "SSV - Sólidos Suspensos Voláteis": np.mean(SSV),
-        "SDT - Sólidos Dissolvidos Totais": np.mean(SDT),
-        "SDV - Sólidos Dissolvidos Voláteis": np.mean(SDV),
-        "SDF - Sólidos Dissolvidos Fixos": np.mean(SDF),
-    }
-
-    st.session_state["resultados"] = resultados
     st.success("✔ Laudo gerado com sucesso!")
 
-# ================= LAUDO FINAL =================
-st.header("📄 Laudo Técnico Final")
+    st.subheader("📊 RESULTADOS – PARÂMETROS")
 
-if "resultados" in st.session_state:
+    tabela = {
+        "ST": (ST_med, ST_dp),
+        "STF": (STF_med, STF_dp),
+        "SST": (SST_med, SST_dp),
+        "SSF": (SSF_med, SSF_dp),
+        "STV": (STV_med, 0),
+        "SSV": (SSV_med, 0),
+        "SDT": (SDT_med, 0),
+        "SDF": (SDF_med, 0),
+        "SDV": (SDV_med, 0),
+    }
 
-    for k, v in st.session_state["resultados"].items():
-        st.write(f"**{k}** → {v:.2f}")
+    st.markdown("### 📄 Laudo Técnico Final")
 
-else:
-    st.info("Execute o laboratório para gerar o laudo")
+    st.write("**Parâmetro | Unidade | Resultado (média ± desvio) | Classificação**")
+
+    for k, v in tabela.items():
+        media, dp = v
+
+        # classificação simples técnica (você pode ajustar depois)
+        if media < 50:
+            classe = "Baixo"
+        elif media < 150:
+            classe = "Médio"
+        else:
+            classe = "Alto"
+
+        st.write(f"{k} | mg/L | {media:.2f} ± {dp:.2f} | {classe}")
+
+    st.info("📌 Relatório técnico gerado conforme padrão de laboratório físico-químico")
