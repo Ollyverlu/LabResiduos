@@ -2,95 +2,156 @@ import streamlit as st
 import numpy as np
 from datetime import datetime
 
-st.set_page_config(page_title="Laudo Técnico IFRJ", layout="wide")
+# ================= CONFIG =================
+st.set_page_config(
+    page_title="Laboratório Virtual de Resíduos IFRJ",
+    layout="wide"
+)
 
-st.title("🧪 Laudo Técnico de Ensaios Físico-Químicos")
-st.write("Água e Resíduos – Laboratório Virtual IFRJ")
+# ================= ESTILO =================
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f4f7ff;
+    }
+    h1 {
+        color: #1f4e79;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# ================= CABEÇALHO =================
+st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
+st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 st.write("Responsável: Luciana Oliveira de Albuquerque")
 
-st.sidebar.header("📊 Entrada de Dados")
+st.success("Sistema ativo e pronto para uso 🚀")
 
-n = 4  # replicatas
+# ================= MENU =================
+menu = st.sidebar.selectbox(
+    "📚 Menu do Sistema",
+    ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
+)
 
-volume = st.sidebar.number_input("Volume da amostra (mL)", value=500.0)
+# ================= INÍCIO =================
+if menu == "Início":
+    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual")
 
-# listas
-massa_ST = []
-massa_STF = []
-massa_SST = []
-massa_SSF = []
+    st.info("Sistema desenvolvido para ensino de análises físico-químicas de água e resíduos.")
 
-st.header("📥 Inserção de Dados")
+    st.markdown("""
+    ### 🎯 Você irá aprender:
+    - Cálculo de parâmetros laboratoriais  
+    - Média e desvio padrão  
+    - Interpretação de resultados  
+    - Construção de laudos técnicos  
+    """)
 
-for i in range(n):
-    st.subheader(f"Replicata {i+1}")
+# ================= AULA TEÓRICA =================
+elif menu == "Aula Teórica":
+    st.header("📚 Conteúdo Teórico")
 
-    st.write("Cápsula")
-    st1 = st.number_input(f"ST {i+1}", key=f"st{i}")
-    st2 = st.number_input(f"STF {i+1}", key=f"stf{i}")
+    st.write("""
+    O monitoramento de resíduos e água envolve análise físico-química para garantir qualidade ambiental.
 
-    st.write("Filtro")
-    sst = st.number_input(f"SST {i+1}", key=f"sst{i}")
-    ssf = st.number_input(f"SSF {i+1}", key=f"ssf{i}")
+    Principais parâmetros:
+    - ST (Sólidos Totais)
+    - STF (Sólidos Totais Fixos)
+    - SST (Sólidos Suspensos Totais)
+    - SSF (Sólidos Suspensos Fixos)
 
-    massa_ST.append(st1)
-    massa_STF.append(st2)
-    massa_SST.append(sst)
-    massa_SSF.append(ssf)
+    Esses dados permitem avaliar a qualidade da água e resíduos industriais.
+    """)
 
-# ================= CÁLCULOS =================
+# ================= LABORATÓRIO =================
+elif menu == "Laboratório":
 
-def calc(lista):
-    arr = np.array(lista)
-    media = np.mean(arr)
-    desvio = np.std(arr)
-    return media, desvio
+    st.header("🧪 Inserção de Dados Experimentais")
 
-if st.button("🧪 GERAR LAUDO COMPLETO"):
+    volume = st.number_input("Volume da amostra (mL)", value=500.0)
 
-    ST_med, ST_dp = calc(massa_ST)
-    STF_med, STF_dp = calc(massa_STF)
-    SST_med, SST_dp = calc(massa_SST)
-    SSF_med, SSF_dp = calc(massa_SSF)
+    st.markdown("### 📥 Replicatas (4 medições)")
 
-    # cálculos derivados
-    STV_med = ST_med - STF_med
-    SSV_med = SST_med - SSF_med
-    SDT_med = ST_med - SST_med
-    SDF_med = STF_med - SSF_med
-    SDV_med = STV_med - SSV_med
+    st.write("Cápsula / Filtro - Inserção dos valores")
 
-    st.success("✔ Laudo gerado com sucesso!")
+    st.subheader("ST (Sólidos Totais)")
+    st1 = st.number_input("ST1", key="st1")
+    st2 = st.number_input("ST2", key="st2")
+    st3 = st.number_input("ST3", key="st3")
+    st4 = st.number_input("ST4", key="st4")
 
-    st.subheader("📊 RESULTADOS – PARÂMETROS")
+    st.subheader("STF (Sólidos Totais Fixos)")
+    f1 = st.number_input("STF1", key="f1")
+    f2 = st.number_input("STF2", key="f2")
+    f3 = st.number_input("STF3", key="f3")
+    f4 = st.number_input("STF4", key="f4")
 
-    tabela = {
-        "ST": (ST_med, ST_dp),
-        "STF": (STF_med, STF_dp),
-        "SST": (SST_med, SST_dp),
-        "SSF": (SSF_med, SSF_dp),
-        "STV": (STV_med, 0),
-        "SSV": (SSV_med, 0),
-        "SDT": (SDT_med, 0),
-        "SDF": (SDF_med, 0),
-        "SDV": (SDV_med, 0),
-    }
+    st.subheader("SST (Sólidos Suspensos Totais)")
+    sst1 = st.number_input("SST1", key="s1")
+    sst2 = st.number_input("SST2", key="s2")
+    sst3 = st.number_input("SST3", key="s3")
+    sst4 = st.number_input("SST4", key="s4")
 
-    st.markdown("### 📄 Laudo Técnico Final")
+    st.subheader("SSF (Sólidos Suspensos Fixos)")
+    ssf1 = st.number_input("SSF1", key="x1")
+    ssf2 = st.number_input("SSF2", key="x2")
+    ssf3 = st.number_input("SSF3", key="x3")
+    ssf4 = st.number_input("SSF4", key="x4")
 
-    st.write("**Parâmetro | Unidade | Resultado (média ± desvio) | Classificação**")
+    if st.button("🧪 GERAR RESULTADOS"):
 
-    for k, v in tabela.items():
-        media, dp = v
+        ST = np.array([st1, st2, st3, st4])
+        STF = np.array([f1, f2, f3, f4])
+        SST = np.array([sst1, sst2, sst3, sst4])
+        SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
-        # classificação simples técnica (você pode ajustar depois)
-        if media < 50:
-            classe = "Baixo"
-        elif media < 150:
-            classe = "Médio"
-        else:
-            classe = "Alto"
+        # cálculos principais
+        STV = ST - STF
+        SSV = SST - SSF
+        SDT = ST - SST
+        SDF = STF - SSF
+        SDV = STV - SSV
 
-        st.write(f"{k} | mg/L | {media:.2f} ± {dp:.2f} | {classe}")
+        resultados = {
+            "ST": (np.mean(ST), np.std(ST)),
+            "STF": (np.mean(STF), np.std(STF)),
+            "SST": (np.mean(SST), np.std(SST)),
+            "SSF": (np.mean(SSF), np.std(SSF)),
+            "STV": (np.mean(STV), 0),
+            "SSV": (np.mean(SSV), 0),
+            "SDT": (np.mean(SDT), 0),
+            "SDF": (np.mean(SDF), 0),
+            "SDV": (np.mean(SDV), 0),
+        }
 
-    st.info("📌 Relatório técnico gerado conforme padrão de laboratório físico-químico")
+        st.session_state["resultados"] = resultados
+
+        st.success("✔ Cálculos concluídos com sucesso!")
+
+# ================= LAUDO FINAL =================
+elif menu == "Laudo Final":
+
+    st.header("📄 Laudo Técnico Final")
+
+    if "resultados" in st.session_state:
+
+        st.write("**Parâmetro | Resultado (média ± desvio) | Classificação**")
+
+        for k, v in st.session_state["resultados"].items():
+
+            media, dp = v
+
+            # classificação simples técnica
+            if media < 50:
+                classe = "Baixo"
+            elif media < 150:
+                classe = "Médio"
+            else:
+                classe = "Alto"
+
+            st.write(f"{k} | {media:.2f} ± {dp:.2f} | {classe}")
+
+        st.success("📊 Laudo gerado com sucesso!")
+
+    else:
+        st.warning("⚠ Primeiro gere os cálculos no menu Laboratório")
