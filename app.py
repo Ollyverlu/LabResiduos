@@ -159,16 +159,41 @@ elif menu == "Laboratório":
 # ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
 
-    st.header("📄 Laudo Técnico Completo")
+    st.header("📄 Laudo Técnico Completo de Ensaios Físico-Químicos")
 
     if "resultados" in st.session_state:
 
-        st.write("### 📊 Parâmetro | Resultado (média ± desvio) | Classificação")
+        st.markdown("### 📊 Parâmetro | Significado | Resultado (média ± desvio) | Classificação")
 
-        for k, v in st.session_state["resultados"].items():
+        dados = st.session_state["resultados"]
+
+        for k, v in dados.items():
 
             media, dp = v
 
+            # significado técnico
+            if k == "ST":
+                nome = "Sólidos Totais"
+            elif k == "STF":
+                nome = "Sólidos Totais Fixos"
+            elif k == "SST":
+                nome = "Sólidos Suspensos Totais"
+            elif k == "SSF":
+                nome = "Sólidos Suspensos Fixos"
+            elif k == "STV":
+                nome = "Sólidos Totais Voláteis"
+            elif k == "SSV":
+                nome = "Sólidos Suspensos Voláteis"
+            elif k == "SDT":
+                nome = "Sólidos Dissolvidos Totais"
+            elif k == "SDF":
+                nome = "Sólidos Dissolvidos Fixos"
+            elif k == "SDV":
+                nome = "Sólidos Dissolvidos Voláteis"
+            else:
+                nome = "Parâmetro"
+
+            # classificação
             if media < 50:
                 classe = "Baixo"
             elif media < 150:
@@ -176,25 +201,25 @@ elif menu == "Laudo Final":
             else:
                 classe = "Alto"
 
-            st.write(f"**{k}** | {media:.2f} ± {dp:.2f} | {classe}")
+            st.write(f"**{k}** | {nome} | {media:.2f} ± {dp:.2f} | {classe}")
 
         st.markdown("---")
 
-        st.markdown("### 🧪 Fórmulas do Sistema")
+        st.markdown("### 🧪 Fórmulas Utilizadas")
 
         st.write("""
-- ST = Sólidos Totais  
-- STF = Sólidos Totais Fixos  
-- SST = Sólidos Suspensos Totais  
-- SSF = Sólidos Suspensos Fixos  
-- STV = ST - STF  
-- SSV = SST - SSF  
-- SDT = ST - SST  
-- SDF = STF - SSF  
-- SDV = STV - SSV  
+- ST = Sólidos Totais (massa total após evaporação)  
+- STF = Sólidos Totais Fixos (fração inorgânica)  
+- SST = Sólidos Suspensos Totais (partículas em suspensão)  
+- SSF = Sólidos Suspensos Fixos (fração mineral em suspensão)  
+- STV = ST - STF (fração orgânica total)  
+- SSV = SST - SSF (fração orgânica suspensa)  
+- SDT = ST - SST (sólidos dissolvidos totais)  
+- SDF = STF - SSF (sólidos dissolvidos fixos)  
+- SDV = STV - SSV (fração volátil dissolvida)  
         """)
 
-        st.success("📊 Laudo gerado com sucesso!")
+        st.success("📊 Laudo técnico completo gerado com sucesso!")
 
     else:
-        st.warning("⚠ Primeiro vá ao Laboratório e gere os cálculos")
+        st.warning("⚠ Primeiro execute os cálculos no Laboratório")
