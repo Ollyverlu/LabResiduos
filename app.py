@@ -1,4 +1,4 @@
-import streamlit as st
+mimport streamlit as st
 
 st.set_page_config(page_title="Laboratório Virtual de Resíduos", layout="wide")
 
