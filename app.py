@@ -1,7 +1,36 @@
 import streamlit as st
 import numpy as np
 from datetime import datetime
+# ================= LOGIN USUÁRIOS =================
+USUARIOS = {
+    "raphael": "1234",
+    "aluno1": "1111",
+    "aluno2": "2222"
+}
+}
 
+# ================= LOGIN =================
+if "logado" not in st.session_state:
+    st.session_state["logado"] = False
+    st.session_state["usuario"] = ""
+
+if not st.session_state["logado"]:
+
+    st.title("🔐 Login - Laboratório IFRJ")
+
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+
+    if st.button("Entrar"):
+
+        if usuario in USUARIOS and USUARIOS[usuario] == senha:
+            st.session_state["logado"] = True
+            st.session_state["usuario"] = usuario
+            st.rerun()
+        else:
+            st.error("Usuário ou senha incorretos")
+
+    st.stop()
 # ================= CONFIG =================
 st.set_page_config(
     page_title="Laboratório Virtual de Resíduos IFRJ",
@@ -41,7 +70,12 @@ st.markdown("""
 ### 👩‍🏫 Responsável
 **Luciana Oliveira de Albuquerque**
 """)
+### 👨‍🎓 Aluno
+**Raphael Oliveira de Albuquerque**
 
+### 🔐 Usuário logado
+**{st.session_state['usuario']}**
+""")
 st.success("Sistema ativo 🚀")
 
 # ================= MENU =================
