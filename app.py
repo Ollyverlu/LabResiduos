@@ -2,85 +2,78 @@ import streamlit as st
 import numpy as np
 from datetime import datetime
 
-# ================= CONFIG =================
+# ================= CONFIG (TEM QUE SER PRIMEIRO NO STREAMLIT) =================
 st.set_page_config(
-    page_title="Laboratório Virtual de Resíduos IFRJ",
+    page_title="Laboratório Virtual IFRJ",
     layout="wide"
 )
 
-# ================= ESTILO =================
-st.markdown("""
-    <style>
-    .main {
-        background-color: #f4f7ff;
-    }
+# ================= USUÁRIOS =================
+USUARIOS = {
+    "raphael": "1234",
+    "aluno1": "1111",
+    "aluno2": "2222"
+}
 
-    h1 {
-        color: #1f4e79;
-        text-align: center;
-    }
+# ================= LOGIN =================
+if "logado" not in st.session_state:
+    st.session_state["logado"] = False
+    st.session_state["usuario"] = ""
 
-    .stButton > button {
-        background-color: #1f4e79;
-        color: white;
-        border-radius: 10px;
-        width: 100%;
-    }
+if not st.session_state["logado"]:
 
-    section[data-testid="stSidebar"] {
-        background-color: #e8eefc;
-    }
-    </style>
-""", unsafe_allow_html=True)
+    st.title("🔐 Login - Laboratório IFRJ")
+
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+
+    if st.button("Entrar"):
+
+        if usuario in USUARIOS and USUARIOS[usuario] == senha:
+            st.session_state["logado"] = True
+            st.session_state["usuario"] = usuario
+            st.rerun()
+        else:
+            st.error("Usuário ou senha incorretos")
+
+    st.stop()
 
 # ================= CABEÇALHO =================
 st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
-st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
 ### 👩‍🏫 Responsável
-**Luciana Oliveira de Albuquerque**
+Luciana Oliveira de Albuquerque  
+
+### 👨‍🎓 Aluno
+Raphael Oliveira de Albuquerque
 """)
 
 st.success("Sistema ativo 🚀")
 
 # ================= MENU =================
 menu = st.sidebar.selectbox(
-    "📚 Menu do Sistema",
+    "📚 Menu",
     ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
 )
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual")
-
-    st.info("Sistema de ensino de análises físico-químicas de água e resíduos.")
-
-    st.markdown("""
-    ### 🎯 Você irá aprender:
-    - Cálculo de ST, STF, SST, SSF  
-    - Média e desvio padrão  
-    - Interpretação de resultados  
-    - Laudos técnicos completos  
-    """)
+    st.info("Sistema de análise físico-química de água e resíduos.")
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
 
-    st.header("📚 Conteúdo Teórico")
-
     st.write("""
-    O monitoramento de água e resíduos utiliza parâmetros físico-químicos:
-
-    ✔ ST (Sólidos Totais)  
-    ✔ STF (Sólidos Totais Fixos)  
-    ✔ SST (Sólidos Suspensos Totais)  
-    ✔ SSF (Sólidos Suspensos Fixos)  
-    ✔ STV (Sólidos Totais Voláteis)  
-    ✔ SSV (Sólidos Suspensos Voláteis)  
-    ✔ SDT (Sólidos Dissolvidos Totais)  
-    ✔ SDF (Sólidos Dissolvidos Fixos)  
-    ✔ SDV (Sólidos Dissolvidos Voláteis)  
+✔ ST (Sólidos Totais)  
+✔ STF (Sólidos Totais Fixos)  
+✔ SST (Sólidos Suspensos Totais)  
+✔ SSF (Sólidos Suspensos Fixos)  
+✔ STV (Sólidos Totais Voláteis)  
+✔ SSV (Sólidos Suspensos Voláteis)  
+✔ SDT (Sólidos Dissolvidos Totais)  
+✔ SDF (Sólidos Dissolvidos Fixos)  
+✔ SDV (Sólidos Dissolvidos Voláteis)  
     """)
 
 # ================= LABORATÓRIO =================
@@ -121,7 +114,6 @@ elif menu == "Laboratório":
         SST = np.array([sst1, sst2, sst3, sst4])
         SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
-        # ===== CÁLCULOS =====
         STV = ST - STF
         SSV = SST - SSF
         SDT = ST - SST
@@ -129,59 +121,33 @@ elif menu == "Laboratório":
         SDV = STV - SSV
 
         resultados = {
-            "ST": (np.mean(ST), np.std(ST)),
-            "STF": (np.mean(STF), np.std(STF)),
-            "SST": (np.mean(SST), np.std(SST)),
-            "SSF": (np.mean(SSF), np.std(SSF)),
-            "STV": (np.mean(STV), np.std(STV)),
-            "SSV": (np.mean(SSV), np.std(SSV)),
-            "SDT": (np.mean(SDT), np.std(SDT)),
-            "SDF": (np.mean(SDF), np.std(SDF)),
-            "SDV": (np.mean(SDV), np.std(SDV)),
+            "ST (Sólidos Totais)": np.mean(ST),
+            "STF (Sólidos Totais Fixos)": np.mean(STF),
+            "SST (Sólidos Suspensos Totais)": np.mean(SST),
+            "SSF (Sólidos Suspensos Fixos)": np.mean(SSF),
+            "STV (Sólidos Totais Voláteis)": np.mean(STV),
+            "SSV (Sólidos Suspensos Voláteis)": np.mean(SSV),
+            "SDT (Sólidos Dissolvidos Totais)": np.mean(SDT),
+            "SDF (Sólidos Dissolvidos Fixos)": np.mean(SDF),
+            "SDV (Sólidos Dissolvidos Voláteis)": np.mean(SDV),
         }
 
         st.session_state["resultados"] = resultados
-        st.success("✔ Cálculos concluídos com sucesso!")
+        st.success("✔ Cálculos concluídos!")
 
 # ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
 
-    st.header("📄 Laudo Técnico Completo")
+    st.header("📄 Laudo Técnico Final")
 
     if "resultados" in st.session_state:
 
-        st.write("### 📊 Parâmetro | Resultado (média ± desvio) | Classificação")
+        st.write("### 📊 Parâmetro | Resultado")
 
         for k, v in st.session_state["resultados"].items():
-
-            media, dp = v
-
-            if media < 50:
-                classe = "Baixo"
-            elif media < 150:
-                classe = "Médio"
-            else:
-                classe = "Alto"
-
-            st.write(f"**{k}** | {media:.2f} ± {dp:.2f} | {classe}")
-
-        st.markdown("---")
-
-        st.markdown("### 🧪 Fórmulas do Sistema")
-
-        st.write("""
-- ST = Sólidos Totais  
-- STF = Sólidos Totais Fixos  
-- SST = Sólidos Suspensos Totais  
-- SSF = Sólidos Suspensos Fixos  
-- STV = ST - STF  
-- SSV = SST - SSF  
-- SDT = ST - SST  
-- SDF = STF - SSF  
-- SDV = STV - SSV  
-        """)
+            st.write(f"{k} → {v:.2f}")
 
         st.success("📊 Laudo gerado com sucesso!")
 
     else:
-        st.warning("⚠ Primeiro vá ao Laboratório e gere os cálculos")
+        st.warning("Execute o laboratório primeiro")
