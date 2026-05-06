@@ -1,6 +1,10 @@
 import streamlit as st
 import numpy as np
 from datetime import datetime
+st.set_page_config(
+    page_title="Laboratório Virtual de Resíduos IFRJ",
+    layout="wide"
+)
 
 # ================= CONFIG =================
 st.set_page_config(
