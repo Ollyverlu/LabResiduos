@@ -13,20 +13,26 @@ USUARIOS = {
     "aluno1": "1111",
     "aluno2": "2222"
 }
-
 # ================= LOGIN =================
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
     st.session_state["usuario"] = ""
 
+USUARIOS = {
+    "raphael": "1234",
+    "aluno1": "1111",
+    "aluno2": "2222"
+}
+
 if not st.session_state["logado"]:
 
     st.title("🔐 Login - Laboratório IFRJ")
 
-    usuario = st.text_input("Usuário")
-    senha = st.text_input("Senha", type="password")
+    usuario = st.text_input("Usuário").strip().lower()
+    senha = st.text_input("Senha", type="password").strip()
 
     if st.button("Entrar"):
+
         if usuario in USUARIOS and USUARIOS[usuario] == senha:
             st.session_state["logado"] = True
             st.session_state["usuario"] = usuario
