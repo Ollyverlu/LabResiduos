@@ -23,9 +23,16 @@ st.markdown("""
 # ================= CABEÇALHO =================
 st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
-st.write("Responsável: Luciana Oliveira de Albuquerque")
 
-st.success("Sistema ativo e pronto para uso 🚀")
+st.markdown("""
+### 👩‍🏫 Responsável
+Luciana Oliveira de Albuquerque
+
+### 🎓 Aluno
+Raphael Oliveira de Albuquerque
+""")
+
+st.success("Sistema ativo 🚀")
 
 # ================= MENU =================
 menu = st.sidebar.selectbox(
