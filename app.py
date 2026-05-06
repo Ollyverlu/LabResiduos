@@ -3,9 +3,9 @@ import numpy as np
 from datetime import datetime
 
 # ================= USUÁRIOS =================
-USUARIOS = {=m
+USUARIOS = {
     "raphael": "1234",
-    "aluno1": "1111",==m
+    "aluno1": "1111",
     "aluno2": "2222"
 }
 
@@ -67,8 +67,11 @@ st.markdown(f"""
 ### 👩‍🏫 Dona do Sistema
 **Luciana Oliveira de Albuquerque**
 
-### 👨‍🎓 Aluno Logado
-**{st.session_state['usuario']} - Raphael Oliveira de Albuquerque**
+### 👨‍🎓 Aluno
+**Raphael Oliveira de Albuquerque**
+
+### 🔐 Usuário logado
+**{st.session_state['usuario']}**
 """)
 
 st.success("Sistema ativo 🚀")
@@ -90,17 +93,21 @@ elif menu == "Aula Teórica":
     st.header("📚 Conteúdo Teórico")
 
     st.write("""
-✔ ST (Sólidos Totais)  
-✔ STF (Sólidos Totais Fixos)  
-✔ SST (Sólidos Suspensos Totais)  
-✔ SSF (Sólidos Suspensos Fixos)  
-✔ STV, SSV, SDT, SDF, SDV  
+✔ ST = Sólidos Totais  
+✔ STF = Sólidos Totais Fixos  
+✔ SST = Sólidos Suspensos Totais  
+✔ SSF = Sólidos Suspensos Fixos  
+✔ STV = ST - STF  
+✔ SSV = SST - SSF  
+✔ SDT = ST - SST  
+✔ SDF = STF - SSF  
+✔ SDV = STV - SSV  
     """)
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
-    st.header("🧪 Inserção de Dados")
+    st.header("🧪 Inserção de Dados Experimentais")
 
     volume = st.number_input("Volume da amostra (mL)", value=500.0)
 
@@ -159,19 +166,16 @@ elif menu == "Laboratório":
 # ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
 
-    st.header("📄 Laudo Técnico Completo de Ensaios Físico-Químicos")
+    st.header("📄 Laudo Técnico Completo")
 
     if "resultados" in st.session_state:
 
-        st.markdown("### 📊 Parâmetro | Significado | Resultado (média ± desvio) | Classificação")
+        st.write("### 📊 Parâmetro | Nome | Resultado (média ± desvio) | Classificação")
 
-        dados = st.session_state["resultados"]
-
-        for k, v in dados.items():
+        for k, v in st.session_state["resultados"].items():
 
             media, dp = v
 
-            # significado técnico
             if k == "ST":
                 nome = "Sólidos Totais"
             elif k == "STF":
@@ -193,7 +197,6 @@ elif menu == "Laudo Final":
             else:
                 nome = "Parâmetro"
 
-            # classificação
             if media < 50:
                 classe = "Baixo"
             elif media < 150:
@@ -205,21 +208,21 @@ elif menu == "Laudo Final":
 
         st.markdown("---")
 
-        st.markdown("### 🧪 Fórmulas Utilizadas")
+        st.markdown("### 🧪 Fórmulas do Sistema")
 
         st.write("""
-- ST = Sólidos Totais (massa total após evaporação)  
-- STF = Sólidos Totais Fixos (fração inorgânica)  
-- SST = Sólidos Suspensos Totais (partículas em suspensão)  
-- SSF = Sólidos Suspensos Fixos (fração mineral em suspensão)  
-- STV = ST - STF (fração orgânica total)  
-- SSV = SST - SSF (fração orgânica suspensa)  
-- SDT = ST - SST (sólidos dissolvidos totais)  
-- SDF = STF - SSF (sólidos dissolvidos fixos)  
-- SDV = STV - SSV (fração volátil dissolvida)  
+- ST = Sólidos Totais  
+- STF = Sólidos Totais Fixos  
+- SST = Sólidos Suspensos Totais  
+- SSF = Sólidos Suspensos Fixos  
+- STV = ST - STF  
+- SSV = SST - SSF  
+- SDT = ST - SST  
+- SDF = STF - SSF  
+- SDV = STV - SSV  
         """)
 
-        st.success("📊 Laudo técnico completo gerado com sucesso!")
+        st.success("📊 Laudo gerado com sucesso!")
 
     else:
-        st.warning("⚠ Primeiro execute os cálculos no Laboratório")
+        st.warning("⚠ Execute os cálculos no Laboratório primeiro")
