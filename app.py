@@ -1,173 +1,159 @@
 import streamlit as st
 import numpy as np
 from datetime import datetime
+import pandas as pd
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+import io
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual de Resíduos IFRJ",
+    page_title="Laboratório Virtual IFRJ",
     layout="wide"
 )
 
-# ================= ESTILO =================
-st.markdown("""
-    <style>
-    .main {
-        background-color: #f4f7ff;
-    }
+# ================= LOGIN SIMPLES =================
+USUARIOS = {
+    "raphael": "1234",
+    "aluno2": "1234"
+}
 
-    h1 {
-        color: #1f4e79;
-        text-align: center;
-    }
+if "logado" not in st.session_state:
+    st.session_state["logado"] = False
+    st.session_state["usuario"] = ""
 
-    .stButton > button {
-        background-color: #1f4e79;
-        color: white;
-        border-radius: 10px;
-        width: 100%;
-    }
+if not st.session_state["logado"]:
 
-    section[data-testid="stSidebar"] {
-        background-color: #e8eefc;
-    }
-    </style>
-""", unsafe_allow_html=True)
+    st.title("🔐 Login - Laboratório IFRJ")
+
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+
+    if st.button("Entrar"):
+
+        if usuario in USUARIOS and USUARIOS[usuario] == senha:
+            st.session_state["logado"] = True
+            st.session_state["usuario"] = usuario
+            st.rerun()
+        else:
+            st.error("Usuário ou senha incorretos")
+
+    st.stop()
 
 # ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
-st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
+st.title("🧪 Laboratório Virtual de Resíduos IFRJ")
 
-# ================= IDENTIFICAÇÃO =================
-st.markdown("""
-### 👩‍🏫 Responsável
-**Luciana Oliveira de Albuquerque**
-
-### 🎓 Aluno
-**Raphael Oliveira de Albuquerque**
+st.markdown(f"""
+👤 Aluno logado: **{st.session_state['usuario']}**  
+👩‍🏫 Professora: Luciana Oliveira de Albuquerque
 """)
 
-st.success("Sistema ativo e pronto para uso 🚀")
+st.success("Sistema ativo 🚀")
 
 # ================= MENU =================
 menu = st.sidebar.selectbox(
-    "📚 Menu do Sistema",
-    ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
+    "📚 Menu",
+    ["Início", "Laboratório", "Gráficos", "Laudo PDF", "Certificado"]
 )
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual")
-
-    st.info("Sistema desenvolvido para ensino de análises físico-químicas de água e resíduos.")
-
-    st.markdown("""
-    ### 🎯 Você irá aprender:
-    - Cálculo de parâmetros laboratoriais  
-    - Média e desvio padrão  
-    - Interpretação de resultados  
-    - Construção de laudos técnicos  
-    """)
-
-# ================= AULA TEÓRICA =================
-elif menu == "Aula Teórica":
-    st.header("📚 Conteúdo Teórico")
-
-    st.write("""
-    O monitoramento de resíduos e água envolve análise físico-química para garantir qualidade ambiental.
-
-    Principais parâmetros:
-    - ST (Sólidos Totais)
-    - STF (Sólidos Totais Fixos)
-    - SST (Sólidos Suspensos Totais)
-    - SSF (Sólidos Suspensos Fixos)
-
-    Esses dados permitem avaliar a qualidade da água e resíduos industriais.
-    """)
+    st.info("Bem-vindo ao laboratório virtual interativo.")
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
-    st.header("🧪 Inserção de Dados Experimentais")
+    st.header("🧪 Inserção de Dados")
 
-    st.markdown("### Volume da amostra")
-    volume = st.number_input("Volume (mL)", value=500.0)
+    st.markdown("### ST / STF / SST / SSF")
 
-    st.markdown("### ST (Sólidos Totais)")
-    st1 = st.number_input("ST1", key="st1")
-    st2 = st.number_input("ST2", key="st2")
-    st3 = st.number_input("ST3", key="st3")
-    st4 = st.number_input("ST4", key="st4")
+    ST = [st.number_input(f"ST{i+1}", key=f"st{i}") for i in range(4)]
+    STF = [st.number_input(f"STF{i+1}", key=f"f{i}") for i in range(4)]
+    SST = [st.number_input(f"SST{i+1}", key=f"s{i}") for i in range(4)]
+    SSF = [st.number_input(f"SSF{i+1}", key=f"x{i}") for i in range(4)]
 
-    st.markdown("### STF (Sólidos Totais Fixos)")
-    f1 = st.number_input("STF1", key="f1")
-    f2 = st.number_input("STF2", key="f2")
-    f3 = st.number_input("STF3", key="f3")
-    f4 = st.number_input("STF4", key="f4")
+    if st.button("Gerar Cálculos"):
 
-    st.markdown("### SST (Sólidos Suspensos Totais)")
-    sst1 = st.number_input("SST1", key="s1")
-    sst2 = st.number_input("SST2", key="s2")
-    sst3 = st.number_input("SST3", key="s3")
-    sst4 = st.number_input("SST4", key="s4")
+        ST = np.array(ST)
+        STF = np.array(STF)
+        SST = np.array(SST)
+        SSF = np.array(SSF)
 
-    st.markdown("### SSF (Sólidos Suspensos Fixos)")
-    ssf1 = st.number_input("SSF1", key="x1")
-    ssf2 = st.number_input("SSF2", key="x2")
-    ssf3 = st.number_input("SSF3", key="x3")
-    ssf4 = st.number_input("SSF4", key="x4")
-
-    if st.button("🧪 GERAR RESULTADOS"):
-
-        ST = np.array([st1, st2, st3, st4])
-        STF = np.array([f1, f2, f3, f4])
-        SST = np.array([sst1, sst2, sst3, sst4])
-        SSF = np.array([ssf1, ssf2, ssf3, ssf4])
-
-        STV = ST - STF
-        SSV = SST - SSF
-        SDT = ST - SST
-        SDF = STF - SSF
-        SDV = STV - SSV
-
-        resultados = {
-            "ST": (np.mean(ST), np.std(ST)),
-            "STF": (np.mean(STF), np.std(STF)),
-            "SST": (np.mean(SST), np.std(SST)),
-            "SSF": (np.mean(SSF), np.std(SSF)),
-            "STV": (np.mean(STV), 0),
-            "SSV": (np.mean(SSV), 0),
-            "SDT": (np.mean(SDT), 0),
-            "SDF": (np.mean(SDF), 0),
-            "SDV": (np.mean(SDV), 0),
+        st.session_state["dados"] = {
+            "ST": ST,
+            "STF": STF,
+            "SST": SST,
+            "SSF": SSF
         }
 
-        st.session_state["resultados"] = resultados
+        st.success("Dados salvos!")
 
-        st.success("✔ Cálculos concluídos com sucesso!")
+# ================= GRÁFICOS =================
+elif menu == "Gráficos":
 
-# ================= LAUDO FINAL =================
-elif menu == "Laudo Final":
+    st.header("📊 Gráficos Automáticos")
 
-    st.header("📄 Laudo Técnico Final")
+    if "dados" in st.session_state:
 
-    if "resultados" in st.session_state:
+        dados = st.session_state["dados"]
 
-        st.write("**Parâmetro | Resultado (média ± desvio) | Classificação**")
+        df = pd.DataFrame({
+            "ST": dados["ST"],
+            "STF": dados["STF"],
+            "SST": dados["SST"],
+            "SSF": dados["SSF"]
+        })
 
-        for k, v in st.session_state["resultados"].items():
-
-            media, dp = v
-
-            if media < 50:
-                classe = "Baixo"
-            elif media < 150:
-                classe = "Médio"
-            else:
-                classe = "Alto"
-
-            st.write(f"{k} | {media:.2f} ± {dp:.2f} | {classe}")
-
-        st.success("📊 Laudo gerado com sucesso!")
+        st.line_chart(df)
 
     else:
-        st.warning("⚠ Primeiro vá ao Laboratório e gere os cálculos")
+        st.warning("Gere os dados primeiro no laboratório.")
+
+# ================= PDF LAUDO =================
+elif menu == "Laudo PDF":
+
+    st.header("📄 Laudo Técnico PDF")
+
+    if "dados" in st.session_state:
+
+        dados = st.session_state["dados"]
+
+        buffer = io.BytesIO()
+        pdf = canvas.Canvas(buffer, pagesize=A4)
+
+        pdf.drawString(50, 800, "IFRJ - Laudo Técnico de Resíduos")
+        pdf.drawString(50, 780, f"Aluno: {st.session_state['usuario']}")
+        pdf.drawString(50, 760, f"Data: {datetime.now()}")
+
+        pdf.drawString(50, 720, f"ST Média: {np.mean(dados['ST']):.2f}")
+        pdf.drawString(50, 700, f"STF Média: {np.mean(dados['STF']):.2f}")
+        pdf.drawString(50, 680, f"SST Média: {np.mean(dados['SST']):.2f}")
+        pdf.drawString(50, 660, f"SSF Média: {np.mean(dados['SSF']):.2f}")
+
+        pdf.save()
+
+        st.download_button(
+            "📥 Baixar PDF",
+            data=buffer.getvalue(),
+            file_name="laudo.pdf",
+            mime="application/pdf"
+        )
+
+    else:
+        st.warning("Sem dados ainda.")
+
+# ================= CERTIFICADO =================
+elif menu == "Certificado":
+
+    st.header("🏆 Certificado de Conclusão")
+
+    st.success(f"""
+    Certificamos que o aluno {st.session_state['usuario']}  
+    concluiu o Laboratório Virtual de Resíduos IFRJ.
+    """)
+
+    st.download_button(
+        "Baixar Certificado",
+        data=f"Certificado do aluno {st.session_state['usuario']}",
+        file_name="certificado.txt"
+    )
