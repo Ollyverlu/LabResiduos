@@ -1,10 +1,6 @@
 import streamlit as st
 import numpy as np
 from datetime import datetime
-st.set_page_config(
-    page_title="Laboratório Virtual de Resíduos IFRJ",
-    layout="wide"
-)
 
 # ================= CONFIG =================
 st.set_page_config(
@@ -18,8 +14,21 @@ st.markdown("""
     .main {
         background-color: #f4f7ff;
     }
+
     h1 {
         color: #1f4e79;
+        text-align: center;
+    }
+
+    .stButton > button {
+        background-color: #1f4e79;
+        color: white;
+        border-radius: 10px;
+        width: 100%;
+    }
+
+    section[data-testid="stSidebar"] {
+        background-color: #e8eefc;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -27,7 +36,15 @@ st.markdown("""
 # ================= CABEÇALHO =================
 st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
-st.write("Responsável: Luciana Oliveira de Albuquerque")
+
+# ================= IDENTIFICAÇÃO =================
+st.markdown("""
+### 👩‍🏫 Responsável
+**Luciana Oliveira de Albuquerque**
+
+### 🎓 Aluno
+**Raphael Oliveira de Albuquerque**
+""")
 
 st.success("Sistema ativo e pronto para uso 🚀")
 
@@ -72,31 +89,28 @@ elif menu == "Laboratório":
 
     st.header("🧪 Inserção de Dados Experimentais")
 
-    volume = st.number_input("Volume da amostra (mL)", value=500.0)
+    st.markdown("### Volume da amostra")
+    volume = st.number_input("Volume (mL)", value=500.0)
 
-    st.markdown("### 📥 Replicatas (4 medições)")
-
-    st.write("Cápsula / Filtro - Inserção dos valores")
-
-    st.subheader("ST (Sólidos Totais)")
+    st.markdown("### ST (Sólidos Totais)")
     st1 = st.number_input("ST1", key="st1")
     st2 = st.number_input("ST2", key="st2")
     st3 = st.number_input("ST3", key="st3")
     st4 = st.number_input("ST4", key="st4")
 
-    st.subheader("STF (Sólidos Totais Fixos)")
+    st.markdown("### STF (Sólidos Totais Fixos)")
     f1 = st.number_input("STF1", key="f1")
     f2 = st.number_input("STF2", key="f2")
     f3 = st.number_input("STF3", key="f3")
     f4 = st.number_input("STF4", key="f4")
 
-    st.subheader("SST (Sólidos Suspensos Totais)")
+    st.markdown("### SST (Sólidos Suspensos Totais)")
     sst1 = st.number_input("SST1", key="s1")
     sst2 = st.number_input("SST2", key="s2")
     sst3 = st.number_input("SST3", key="s3")
     sst4 = st.number_input("SST4", key="s4")
 
-    st.subheader("SSF (Sólidos Suspensos Fixos)")
+    st.markdown("### SSF (Sólidos Suspensos Fixos)")
     ssf1 = st.number_input("SSF1", key="x1")
     ssf2 = st.number_input("SSF2", key="x2")
     ssf3 = st.number_input("SSF3", key="x3")
@@ -109,7 +123,6 @@ elif menu == "Laboratório":
         SST = np.array([sst1, sst2, sst3, sst4])
         SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
-        # cálculos principais
         STV = ST - STF
         SSV = SST - SSF
         SDT = ST - SST
@@ -145,7 +158,6 @@ elif menu == "Laudo Final":
 
             media, dp = v
 
-            # classificação simples técnica
             if media < 50:
                 classe = "Baixo"
             elif media < 150:
@@ -158,4 +170,4 @@ elif menu == "Laudo Final":
         st.success("📊 Laudo gerado com sucesso!")
 
     else:
-        st.warning("⚠ Primeiro gere os cálculos no menu Laboratório")
+        st.warning("⚠ Primeiro vá ao Laboratório e gere os cálculos")
