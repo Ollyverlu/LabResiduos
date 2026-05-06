@@ -1,18 +1,23 @@
 import streamlit as st
 import numpy as np
 
-# ================= CONFIG =================
-st.set_page_config(page_title="Laboratório IFRJ", layout="wide")
+# ================= CONFIG (TEM QUE SER PRIMEIRO) =================
+st.set_page_config(
+    page_title="Laboratório Virtual IFRJ",
+    layout="wide"
+)
 
-# ================= LOGIN =================
+# ================= USUÁRIOS =================
 USUARIOS = {
     "raphael": "1234",
     "aluno1": "1111",
     "aluno2": "2222"
 }
 
+# ================= LOGIN =================
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
+    st.session_state["usuario"] = ""
 
 if not st.session_state["logado"]:
 
@@ -24,6 +29,7 @@ if not st.session_state["logado"]:
     if st.button("Entrar"):
         if usuario in USUARIOS and USUARIOS[usuario] == senha:
             st.session_state["logado"] = True
+            st.session_state["usuario"] = usuario
             st.rerun()
         else:
             st.error("Usuário ou senha incorretos")
@@ -34,16 +40,16 @@ if not st.session_state["logado"]:
 st.title("🧪 Laboratório Virtual de Resíduos IFRJ")
 
 st.markdown("""
-### 👩‍🏫 Luciana Oliveira de Albuquerque  
-### 👨‍🎓 Raphael Oliveira de Albuquerque
+### 👩‍🏫 Responsável: Luciana Oliveira de Albuquerque  
+### 👨‍🎓Colaborador Aluno: Raphael Oliveira de Albuquerque
 """)
 
 st.success("Sistema ativo 🚀")
 
 # ================= AMOSTRA =================
-st.header("🧪 Dados da Amostra")
+st.header("📦 Amostra")
 
-amostra = st.number_input("Volume da Amostra (mL)", value=500.0)
+volume = st.number_input("Volume da Amostra (mL)", value=500.0)
 
 # ================= ST =================
 st.subheader("ST - Sólidos Totais")
@@ -73,26 +79,26 @@ ssf2 = st.number_input("SSF2")
 ssf3 = st.number_input("SSF3")
 ssf4 = st.number_input("SSF4")
 
-# ================= CÁLCULO =================
+# ================= CÁLCULOS =================
 if st.button("🧪 Gerar Laudo Completo"):
 
+    SL = np.array([st1, st2, st3, st4])
     ST = np.array([st1, st2, st3, st4])
     STF = np.array([stf1, stf2, stf3, stf4])
     SST = np.array([sst1, sst2, sst3, sst4])
     SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
-    # ===== DERIVADOS =====
+    # DERIVADOS
     STV = ST - STF
     SSV = SST - SSF
     SDT = ST - SST
     SDV = STV - SSV
     SDF = STF - SSF
 
-    # ================= LAUDO COMPLETO =================
     resultados = {
-        "AMOSTRA (mL)": amostra,
+        "Volume da Amostra (mL)": volume,
 
-        "SL - Sólidos Totais Gerais": np.mean(ST),
+        "SL - Sólidos Totais Gerais": np.mean(SL),
         "ST - Sólidos Totais": np.mean(ST),
         "STF - Sólidos Totais Fixos": np.mean(STF),
         "SST - Sólidos Suspensos Totais": np.mean(SST),
@@ -106,7 +112,7 @@ if st.button("🧪 Gerar Laudo Completo"):
     }
 
     st.session_state["resultados"] = resultados
-    st.success("✔ Laudo completo gerado!")
+    st.success("✔ Laudo gerado com sucesso!")
 
 # ================= LAUDO FINAL =================
 st.header("📄 Laudo Técnico Final")
@@ -117,4 +123,4 @@ if "resultados" in st.session_state:
         st.write(f"**{k}** → {v:.2f}")
 
 else:
-    st.info("Execute o laboratório primeiro")
+    st.info("Execute o laboratório para gerar o laudo")
