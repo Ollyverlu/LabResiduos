@@ -66,9 +66,17 @@ elif menu == "Aula Teórica":
     - STF (Sólidos Totais Fixos)
     - SST (Sólidos Suspensos Totais)
     - SSF (Sólidos Suspensos Fixos)
+    - STV (Sólidos Totais Voláteis)
+    - SSV (Sólidos Suspensos Voláteis)
+    - SDT (Sólidos Dissolvidos Totais)
+    - SDV (Sólidos Dissolvidos Voláteis)
+    - SDF (Sólidos Dissolvidos Fixos)
 
     Esses dados permitem avaliar a qualidade da água e resíduos industriais.
     """)
+
+    st.markdown("## 🧪 Recipientes e Equipamentos Utilizados nos Ensaios")
+    st.image("equipamentos.png", use_container_width=True)
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
