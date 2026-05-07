@@ -48,14 +48,13 @@ if menu == "Início":
 
     st.markdown("""
     ### 🎯 Você irá aprender:
-    - Cálculo de parâmetros laboratoriais  
-    - Média e desvio padrão  
-    - Interpretação de resultados  
-    - Construção de laudos técnicos  
+    - Cálculo de parâmetros laboratoriais
+    - Média e desvio padrão
+    - Interpretação de resultados
+    - Construção de laudos técnicos
     """)
 
 # ================= AULA TEÓRICA =================
-
 elif menu == "Aula Teórica":
     st.header("📚 Conteúdo Teórico")
 
@@ -72,12 +71,15 @@ elif menu == "Aula Teórica":
     - SDT (Sólidos Dissolvidos Totais)
     - SDV (Sólidos Dissolvidos Voláteis)
     - SDF (Sólidos Dissolvidos Fixos)
-
-    Esses dados permitem avaliar a qualidade da água e resíduos industriais.
     """)
 
     st.markdown("## 🧪 Recipientes e Equipamentos Utilizados nos Ensaios")
-    st.image("equipamentos.png", use_container_width=True)
+
+    try:
+        st.image("equipamentos.png", use_container_width=True)
+    except:
+        st.warning("Imagem 'equipamentos.png' não encontrada ou inválida.")
+
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
@@ -86,7 +88,6 @@ elif menu == "Laboratório":
     volume = st.number_input("Volume da amostra (mL)", value=500.000, format="%.3f")
 
     st.markdown("### 📥 Replicatas (4 medições)")
-
     st.write("Cápsula / Filtro - Inserção dos valores")
 
     st.subheader("ST (Sólidos Totais)")
@@ -120,7 +121,6 @@ elif menu == "Laboratório":
         SST = np.array([sst1, sst2, sst3, sst4])
         SSF = np.array([ssf1, ssf2, ssf3, ssf4])
 
-        # cálculos principais
         STV = ST - STF
         SSV = SST - SSF
         SDT = ST - SST
@@ -140,7 +140,6 @@ elif menu == "Laboratório":
         }
 
         st.session_state["resultados"] = resultados
-
         st.success("✔ Cálculos concluídos com sucesso!")
 
 # ================= LAUDO FINAL =================
@@ -156,7 +155,6 @@ elif menu == "Laudo Final":
 
             media, dp = v
 
-            # classificação simples técnica
             if media < 50:
                 classe = "Baixo"
             elif media < 150:
