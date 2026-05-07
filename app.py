@@ -55,6 +55,7 @@ if menu == "Início":
     """)
 
 # ================= AULA TEÓRICA =================
+
 elif menu == "Aula Teórica":
     st.header("📚 Conteúdo Teórico")
 
@@ -77,41 +78,40 @@ elif menu == "Aula Teórica":
 
     st.markdown("## 🧪 Recipientes e Equipamentos Utilizados nos Ensaios")
     st.image("equipamentos.png", use_container_width=True)
-
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
     st.header("🧪 Inserção de Dados Experimentais")
 
-    volume = st.number_input("Volume da amostra (mL)", value=500.0000, format="%.4f")
+    volume = st.number_input("Volume da amostra (mL)", value=500.000, format="%.3f")
 
     st.markdown("### 📥 Replicatas (4 medições)")
 
     st.write("Cápsula / Filtro - Inserção dos valores")
 
     st.subheader("ST (Sólidos Totais)")
-    st1 = st.number_input("ST1", key="st1", format="%.4f")
-    st2 = st.number_input("ST2", key="st2", format="%.4f")
-    st3 = st.number_input("ST3", key="st3", format="%.4f")
-    st4 = st.number_input("ST4", key="st4", format="%.4f")
+    st1 = st.number_input("ST1", key="st1", format="%.3f")
+    st2 = st.number_input("ST2", key="st2", format="%.3f")
+    st3 = st.number_input("ST3", key="st3", format="%.3f")
+    st4 = st.number_input("ST4", key="st4", format="%.3f")
 
     st.subheader("STF (Sólidos Totais Fixos)")
-    f1 = st.number_input("STF1", key="f1", format="%.4f")
-    f2 = st.number_input("STF2", key="f2", format="%.4f")
-    f3 = st.number_input("STF3", key="f3", format="%.4f")
-    f4 = st.number_input("STF4", key="f4", format="%.4f")
+    f1 = st.number_input("STF1", key="f1", format="%.3f")
+    f2 = st.number_input("STF2", key="f2", format="%.3f")
+    f3 = st.number_input("STF3", key="f3", format="%.3f")
+    f4 = st.number_input("STF4", key="f4", format="%.3f")
 
     st.subheader("SST (Sólidos Suspensos Totais)")
-    sst1 = st.number_input("SST1", key="s1", format="%.4f")
-    sst2 = st.number_input("SST2", key="s2", format="%.4f")
-    sst3 = st.number_input("SST3", key="s3", format="%.4f")
-    sst4 = st.number_input("SST4", key="s4", format="%.4f")
+    sst1 = st.number_input("SST1", key="s1", format="%.3f")
+    sst2 = st.number_input("SST2", key="s2", format="%.3f")
+    sst3 = st.number_input("SST3", key="s3", format="%.3f")
+    sst4 = st.number_input("SST4", key="s4", format="%.3f")
 
     st.subheader("SSF (Sólidos Suspensos Fixos)")
-    ssf1 = st.number_input("SSF1", key="x1", format="%.4f")
-    ssf2 = st.number_input("SSF2", key="x2", format="%.4f")
-    ssf3 = st.number_input("SSF3", key="x3", format="%.4f")
-    ssf4 = st.number_input("SSF4", key="x4", format="%.4f")
+    ssf1 = st.number_input("SSF1", key="x1", format="%.3f")
+    ssf2 = st.number_input("SSF2", key="x2", format="%.3f")
+    ssf3 = st.number_input("SSF3", key="x3", format="%.3f")
+    ssf4 = st.number_input("SSF4", key="x4", format="%.3f")
 
     if st.button("🧪 GERAR RESULTADOS"):
 
@@ -156,6 +156,7 @@ elif menu == "Laudo Final":
 
             media, dp = v
 
+            # classificação simples técnica
             if media < 50:
                 classe = "Baixo"
             elif media < 150:
@@ -163,4 +164,4 @@ elif menu == "Laudo Final":
             else:
                 classe = "Alto"
 
-            st.write(f"{k} | {media:.4f} ± {dp:.4f} | {classe}")
+            st.write(f"{k} | {media:.3f} ± {dp:.3f} | {classe}")
