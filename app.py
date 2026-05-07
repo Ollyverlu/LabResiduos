@@ -85,7 +85,7 @@ elif menu == "Laboratório":
 
     st.header("🧪 Inserção de Dados Experimentais")
 
-    volume = st.number_input("Volume da amostra (mL)", value=500.000, format="%.3f")
+    volume = st.number_input("Volume da amostra (mL)", value=500.00, format="%.3f")
 
     st.markdown("### 📥 Replicatas (4 medições)")
     st.write("Cápsula / Filtro - Inserção dos valores")
