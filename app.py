@@ -56,7 +56,7 @@ if menu == "Início":
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
 
-    st.header("📚 Equipamentos Utilizados")
+    st.header("📚Teoria\ Equipamentos Utilizados")
 
     st.markdown("""
 <div class="card">
