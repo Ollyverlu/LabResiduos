@@ -34,7 +34,7 @@ st.title("🧪 Laboratório Virtual CEMMA – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
-### 👩‍🏫 Criador  
+### 👩‍🏫 Criado por  
 Luciana Oliveira de Albuquerque  
 
 ### 🎓 Administrador  
