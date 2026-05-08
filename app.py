@@ -59,12 +59,12 @@ if menu == "Início":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # LOGO GRANDE CENTRALIZADA
+    # LOGO NOVA (ALTERADA PARA logo.png1)
     col1, col2, col3 = st.columns([1, 4, 1])
 
     with col2:
         st.image(
-            "imagens.png",
+            "logo.png1",
             use_container_width=True
         )
 
