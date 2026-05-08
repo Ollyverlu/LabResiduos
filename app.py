@@ -34,10 +34,10 @@ st.title("🧪 Laboratório Virtual CMMA – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
-### 👩‍🏫 Criador
-Luciana Oliveira de Albuquerque
+### 👩‍🏫 Criador  
+Luciana Oliveira de Albuquerque  
 
-### 🎓 Administrador
+### 🎓 Administrador  
 Raphael Oliveira de Albuquerque
 """)
 
@@ -58,109 +58,77 @@ elif menu == "Aula Teórica":
 
     st.header("📚 Aula Teórica – Sólidos Totais")
 
-    st.markdown("### 📌 O que são Sólidos Totais (ST)?")
     st.markdown("""
 <div class="card">
-Sólidos Totais representam todo o material presente na amostra após evaporação da água.
-Incluem matéria orgânica e inorgânica.
+Sólidos Totais representam todo material após evaporação da água.
 </div>
 """, unsafe_allow_html=True)
 
-    st.markdown("### 📌 Sólidos Totais Fixos (STF)")
     st.markdown("""
 <div class="card">
-Parte mineral dos sólidos que permanece após a queima na mufla (550°C).
+Sólidos Fixos = parte mineral (não volatiliza na mufla)
 </div>
 """, unsafe_allow_html=True)
 
-    st.markdown("### 📌 Sólidos Totais Voláteis (STV)")
     st.markdown("""
 <div class="card">
-Parte orgânica que é queimada na mufla.
+Sólidos Voláteis = parte orgânica (queima na mufla)
 </div>
 """, unsafe_allow_html=True)
-
-    st.markdown("### 🔬 Procedimento Experimental")
-    st.markdown("""
-<div class="card">
-1. Pesar a caçarola → m1  
-2. Secar em estufa (105°C) → m2  
-3. Levar à mufla (550°C) → m3  
-</div>
-""", unsafe_allow_html=True)
-
-    st.markdown("### 📊 Fórmulas")
 
     st.latex(r"ST = \frac{(m2 - m1)\times 10^6}{V}")
     st.latex(r"STF = \frac{(m3 - m1)\times 10^6}{V}")
     st.latex(r"STV = ST - STF")
 
-    st.markdown("### 🧠 Exemplo")
-    st.markdown("""
-<div class="card">
-m1 = 50 g  
-m2 = 50.5 g  
-m3 = 50.2 g  
-V = 100 mL  
-
-ST = 5000 mg/L  
-STF = 2000 mg/L  
-STV = 3000 mg/L  
-</div>
-""", unsafe_allow_html=True)
-
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
-    st.header("🧪 Dados Inseridos")
+    st.header("🧪 Inserção de Dados")
 
-    volume = st.number_input(
-        "Alíquota (mL)",
-        min_value=0.0,
-        value=0.0,
-        step=10.0,
-        format="%.2f"
-    )
+    volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
-    st.markdown("### 📥 2 medições")
-    st.write("**Caçarola**")
-
-    st.subheader("Massas Experimentais")
-
-    # Réplica 1
     st.markdown("## 🔹 Réplica 1")
-    m1 = st.number_input("m1", value=0.0000, format="%.4f")
-    m2 = st.number_input("m2", value=0.0000, format="%.4f")
-    m3 = st.number_input("m3", value=0.0000, format="%.4f")
+    m1 = st.number_input("m1", value=0.0, format="%.4f")
+    m2 = st.number_input("m2", value=0.0, format="%.4f")
+    m3 = st.number_input("m3", value=0.0, format="%.4f")
 
-    # Réplica 2
     st.markdown("## 🔹 Réplica 2")
-    m1_2 = st.number_input("m1'", value=0.0000, format="%.4f")
-    m2_2 = st.number_input("m2'", value=0.0000, format="%.4f")
-    m3_2 = st.number_input("m3'", value=0.0000, format="%.4f")
+    m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
+    m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
+    m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
 
     if st.button("🧪 GERAR RESULTADOS"):
 
-        if volume == 0:
-            st.error("Digite a Alíquota.")
+        if volume <= 0:
+            st.error("Volume inválido.")
         else:
-            ST1 = ((m2 - m1) * 1000000) / volume
-            ST2 = ((m2_2 - m1_2) * 1000000) / volume
+            # ================= CONVERSÃO CORRETA =================
+            fator = 1000 / (volume / 1000)  # mg/L correto
 
-            STF1 = ((m3 - m1) * 1000000) / volume
-            STF2 = ((m3_2 - m1_2) * 1000000) / volume
+            # ST
+            ST1 = (m2 - m1) * fator
+            ST2 = (m2_2 - m1_2) * fator
 
+            # STF
+            STF1 = (m3 - m1) * fator
+            STF2 = (m3_2 - m1_2) * fator
+
+            # STV (CORRIGIDO)
             STV1 = ST1 - STF1
             STV2 = ST2 - STF2
 
+            # ================= VALIDAÇÃO FÍSICA =================
+            if STF1 > ST1 or STF2 > ST2:
+                st.warning("⚠ Atenção: STF maior que ST. Verifique os dados experimentais!")
+
             resultados = {
-                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2])),
-                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2])),
-                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2]))
+                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
+                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
+                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
             }
 
             st.session_state["resultado"] = resultados
-            st.success("✔ Cálculos concluídos!")
+            st.success("✔ Cálculos concluídos com sucesso!")
 
 # ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
@@ -169,9 +137,12 @@ elif menu == "Laudo Final":
 
     if "resultado" in st.session_state:
 
-        for nome, valores in st.session_state["resultado"].items():
-            media, dp = valores
-            st.write(f"**{nome} = {media:.0f} ± {dp:.0f} mg/L**")
+        for nome, (media, dp) in st.session_state["resultado"].items():
+            st.markdown(f"""
+            <div class="card">
+            <b>{nome}</b> = {media:.2f} ± {dp:.2f} mg/L
+            </div>
+            """, unsafe_allow_html=True)
 
     else:
-        st.warning("⚠ Gere os resultados primeiro.")
+        st.warning("⚠ Gere os resultados primeiro no laboratório.")
