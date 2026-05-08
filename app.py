@@ -131,16 +131,31 @@ elif menu == "Laboratório":
             st.success("✔ Cálculos concluídos com sucesso!")
 
 # ================= LAUDO FINAL =================
+
 elif menu == "Laudo Final":
 
     st.header("📄 Laudo Técnico Final")
 
     if "resultado" in st.session_state:
 
-        for nome, (media, dp) in st.session_state["resultado"].items():
+        st.markdown("""
+        ### 📊 Resultados Físico-Químicos
+        """)
+
+        nomes_corretos = {
+            "ST": "Sólidos Totais (ST)",
+            "STF": "Sólidos Totais Fixos (STF)",
+            "STV": "Sólidos Totais Voláteis (STV)"
+        }
+
+        for chave, (media, dp) in st.session_state["resultado"].items():
+
+            nome_formatado = nomes_corretos.get(chave, chave)
+
             st.markdown(f"""
             <div class="card">
-            <b>{nome}</b> = {media:.2f} ± {dp:.2f} mg/L
+            <b>{nome_formatado}</b><br>
+            {media:.2f} ± {dp:.2f} mg/L
             </div>
             """, unsafe_allow_html=True)
 
