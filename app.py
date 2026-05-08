@@ -4,7 +4,7 @@ from datetime import datetime
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual de Resíduos IFRJ",
+    page_title="Laboratorio Vitual CMMA IFRJ",
     layout="wide"
 )
 
