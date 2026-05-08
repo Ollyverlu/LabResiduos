@@ -51,7 +51,7 @@ menu = st.sidebar.selectbox(
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CMMA")
+    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CEMMA")
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
