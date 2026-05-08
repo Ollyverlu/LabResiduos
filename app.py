@@ -3,7 +3,7 @@ import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual CMMA – IFRJ",
+    page_title="Laboratório Virtual CAMMA – IFRJ",
     layout="wide"
 )
 
