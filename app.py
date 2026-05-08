@@ -57,20 +57,20 @@ elif menu == "Laboratório":
 
     st.header("🧪 Dados Inseridos")
 
-   volume = st.number_input(
-    "Alíquota (mL)",
-    min_value=0.00,
-    value=0.00,
-    step=10.00,
-    format="%.2f"
-)
+    volume = st.number_input(
+        "Alíquota (mL)",
+        min_value=0.0,
+        value=0.0,
+        step=10.0,
+        format="%.2f"
+    )
 
     st.markdown("### 📥 2 medições")
     st.write("**Caçarola**")
 
     st.subheader("Massas Experimentais")
 
-    # ========= RÉPLICA 1 =========
+    # ===== Réplica 1 =====
     st.markdown("## 🔹 Réplica 1")
 
     m1 = st.number_input(
@@ -94,7 +94,7 @@ elif menu == "Laboratório":
         key="m3"
     )
 
-    # ========= RÉPLICA 2 =========
+    # ===== Réplica 2 =====
     st.markdown("## 🔹 Réplica 2")
 
     m1_2 = st.number_input(
@@ -121,7 +121,7 @@ elif menu == "Laboratório":
     if st.button("🧪 GERAR RESULTADOS"):
 
         if volume == 0:
-            st.error("Digite a alíquota (mL).")
+            st.error("Digite a Alíquota (mL).")
         else:
             # ===== CÁLCULOS =====
             ST1 = ((m2 - m1) * 1000000) / volume
