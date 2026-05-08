@@ -68,42 +68,8 @@ if menu == "Início":
             use_container_width=True
         )
 
-# ================= AULA TEÓRICA =================
-elif menu == "Aula Teórica":
+# ================= EQUIPAMENTOS =================
 
-    st.header("📚 Teoria\Equipamentos Utilizados")
-
-    st.markdown("""
-<div class="card">
-Sólidos Totais representam todo material após evaporação da água.
-</div>
-""", unsafe_allow_html=True)
-
-    st.markdown("""
-<div class="card">
-Sólidos Fixos = parte mineral (não volatiliza na mufla)
-</div>
-""", unsafe_allow_html=True)
-
-    st.markdown("""
-<div class="card">
-Sólidos Voláteis = parte orgânica (queima na mufla)
-</div>
-""", unsafe_allow_html=True)
-
-    st.latex(r"ST = \frac{(m2 - m1)\times 10^6}{V}")
-    st.latex(r"STF = \frac{(m3 - m1)\times 10^6}{V}")
-    st.latex(r"STV = ST - STF")
-
-    st.markdown("### 🧠 Exemplo")
-    st.markdown("""
-<div class="card">
-m1 = 50 g  
-m2 = 50.5 g  
-m3 = 50.2 g  
-V = 100 mL  
-</div>
-""", unsafe_allow_html=True)
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
