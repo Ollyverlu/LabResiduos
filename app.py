@@ -160,7 +160,7 @@ elif menu == "Laudo Final":
             dp = valores[1]
 
             st.write(
-                f"**{nome} = {media:.4f} ± {dp:.4f} mg/L**"
+                f"**{nome} = {media:.0f} ± {dp:.0f} mg/L**"
             )
 
     else:
