@@ -3,7 +3,7 @@ import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual CEMMA – IFRJ",
+    page_title="Laboratório Virtual CMMA – IFRJ",
     layout="wide"
 )
 
@@ -30,7 +30,7 @@ h1,h2,h3{
 """, unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual CEMMA – IFRJ")
+st.title("🧪 Laboratório Virtual CMMA – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
@@ -57,11 +57,10 @@ if menu == "Início":
         unsafe_allow_html=True
     )
 
-    # espaçamento visual
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # IMAGEM GRANDE CENTRALIZADA
-    col1, col2, col3 = st.columns([1, 3, 1])
+    # LOGO GRANDE CENTRALIZADA
+    col1, col2, col3 = st.columns([1, 4, 1])
 
     with col2:
         st.image(
@@ -72,7 +71,7 @@ if menu == "Início":
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
 
-    st.header("📚Teoria\ Equipamentos Utilizados")
+    st.header("📚 Aula Teórica – Sólidos Totais")
 
     st.markdown("""
 <div class="card">
@@ -105,27 +104,6 @@ m3 = 50.2 g
 V = 100 mL  
 </div>
 """, unsafe_allow_html=True)
-
-    # ================= EQUIPAMENTOS =================
-    st.markdown("## 🔬 Equipamentos de Laboratório")
-
-    st.markdown("### 🔥 Forno Mufla")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/3/3f/Muffle_furnace.jpg", use_container_width=True)
-
-    st.markdown("### 🌡️ Estufa Laboratorial")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/5/5f/Drying_oven_lab.jpg", use_container_width=True)
-
-    st.markdown("### ⚖️ Balança de Precisão")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/2/2b/Analytical_balance.jpg", use_container_width=True)
-
-    st.markdown("### 💧 Dessecador")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/1/1e/Desiccator_laboratory.jpg", use_container_width=True)
-
-    st.markdown("### 🧪 Cadinho de Porcelana")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/6/6b/Crucible_porcelain.jpg", use_container_width=True)
-
-    st.markdown("### 🥣 Caçarola")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/9/9d/Weighing_dish_lab.jpg", use_container_width=True)
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
