@@ -1,27 +1,14 @@
 import streamlit as st
 import numpy as np
-from datetime import datetime
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual de Resíduos IFRJ",
+    page_title="Laboratório Virtual CMMA IFRJ",
     layout="wide"
 )
 
-# ================= ESTILO =================
-st.markdown("""
-    <style>
-    .main {
-        background-color: #f4f7ff;
-    }
-    h1 {
-        color: #1f4e79;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 # ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual de Resíduos – IFRJ")
+st.title("🧪 Laboratório Virtual CMMA – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
@@ -37,129 +24,77 @@ st.success("Sistema ativo 🚀")
 # ================= MENU =================
 menu = st.sidebar.selectbox(
     "📚 Menu do Sistema",
-    ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
+    ["Início", "Laboratório", "Laudo Final"]
 )
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual")
-
-    st.info("Sistema desenvolvido para ensino de análises físico-químicas de água e resíduos.")
-
-    st.markdown("""
-    ### 🎯 Você irá aprender:
-    - Cálculo de parâmetros laboratoriais
-    - Média e desvio padrão
-    - Interpretação de resultados
-    - Construção de laudos técnicos
-    """)
-
-# ================= AULA TEÓRICA =================
-elif menu == "Aula Teórica":
-    st.header("📚 Conteúdo Teórico")
-
-    st.write("""
-    O monitoramento de resíduos e água envolve análise físico-química para garantir qualidade ambiental.
-
-    Principais parâmetros:
-    - ST (Sólidos Totais)
-    - STF (Sólidos Totais Fixos)
-    - SST (Sólidos Suspensos Totais)
-    - SSF (Sólidos Suspensos Fixos)
-    - STV (Sólidos Totais Voláteis)
-    - SSV (Sólidos Suspensos Voláteis)
-    - SDT (Sólidos Dissolvidos Totais)
-    - SDV (Sólidos Dissolvidos Voláteis)
-    - SDF (Sólidos Dissolvidos Fixos)
-    """)
-
-    st.markdown("## 🧪 Recipientes e Equipamentos Utilizados nos Ensaios")
-
-    try:
-        st.image("equipamentos.png", use_container_width=True)
-    except:
-        st.warning("Imagem 'equipamentos.png' não encontrada ou inválida.")
+    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CMMA")
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
-    st.header("🧪 Inserção de Dados Experimentais")
+    st.header("🧪 Dados Inseridos")
 
-    volume = st.number_input("Volume da amostra (mL)", value=500.0)
+    volume = st.number_input("Alíquota (mL)", value=500.0)
 
-    st.markdown("### 📥 Replicatas (4 medições)")
-    st.write("Cápsula / Filtro - Inserção dos valores")
+    st.markdown("### 📥 2 medições")
+    st.write("Casarola")
 
-    st.subheader("ST (Sólidos Totais)")
-    st1 = st.number_input("ST1", key="st1")
-    st2 = st.number_input("ST2", key="st2")
-    st3 = st.number_input("ST3", key="st3")
-    st4 = st.number_input("ST4", key="st4")
+    st.subheader("Massas Experimentais")
 
-    st.subheader("STF (Sólidos Totais Fixos)")
-    f1 = st.number_input("STF1", key="f1")
-    f2 = st.number_input("STF2", key="f2")
-    f3 = st.number_input("STF3", key="f3")
-    f4 = st.number_input("STF4", key="f4")
+    # ===== REPLICA 1 =====
+    st.markdown("### 🔹 1ª medição")
 
-    st.subheader("SST (Sólidos Suspensos Totais)")
-    sst1 = st.number_input("SST1", key="s1")
-    sst2 = st.number_input("SST2", key="s2")
-    sst3 = st.number_input("SST3", key="s3")
-    sst4 = st.number_input("SST4", key="s4")
+    m1 = st.number_input("m1 (massa da caçarola)", key="m1")
+    m2 = st.number_input("m2 (caçarola + ST)", key="m2")
+    m3 = st.number_input("m3 (caçarola + STF)", key="m3")
 
-    st.subheader("SSF (Sólidos Suspensos Fixos)")
-    ssf1 = st.number_input("SSF1", key="x1")
-    ssf2 = st.number_input("SSF2", key="x2")
-    ssf3 = st.number_input("SSF3", key="x3")
-    ssf4 = st.number_input("SSF4", key="x4")
+    # ===== REPLICA 2 =====
+    st.markdown("### 🔹 2ª medição")
+
+    m1_l = st.number_input("m1'", key="m1l")
+    m2_l = st.number_input("m2'", key="m2l")
+    m3_l = st.number_input("m3'", key="m3l")
 
     if st.button("🧪 GERAR RESULTADOS"):
 
-        ST = np.array([st1, st2, st3, st4])
-        STF = np.array([f1, f2, f3, f4])
-        SST = np.array([sst1, sst2, sst3, sst4])
-        SSF = np.array([ssf1, ssf2, ssf3, ssf4])
+        # ================= FÓRMULAS (IGUAL DA FOLHA) =================
 
-        STV = ST - STF
-        SSV = SST - SSF
-        SDT = ST - SST
-        SDF = STF - SSF
-        SDV = STV - SSV
+        # ST
+        ST1 = (m2 - m1) * 1e6 / volume
+        ST2 = (m2_l - m1_l) * 1e6 / volume
+        ST = (ST1 + ST2) / 2
+
+        # STF
+        STF1 = (m3 - m1) * 1e6 / volume
+        STF2 = (m3_l - m1_l) * 1e6 / volume
+        STF = (STF1 + STF2) / 2
+
+        # STV
+        STV1 = ST1 - STF1
+        STV2 = ST2 - STF2
+        STV = (STV1 + STV2) / 2
 
         resultados = {
-            "ST": (np.mean(ST), np.std(ST)),
-            "STF": (np.mean(STF), np.std(STF)),
-            "SST": (np.mean(SST), np.std(SST)),
-            "SSF": (np.mean(SSF), np.std(SSF)),
-            "STV": (np.mean(STV), 0),
-            "SSV": (np.mean(SSV), 0),
-            "SDT": (np.mean(SDT), 0),
-            "SDF": (np.mean(SDF), 0),
-            "SDV": (np.mean(SDV), 0),
+            "ST": ST,
+            "STF": STF,
+            "STV": STV
         }
 
         st.session_state["resultados"] = resultados
-        st.success("✔ Cálculos concluídos com sucesso!")
 
-# ================= LAUDO FINAL =================
+        st.success("✔ Cálculos concluídos!")
+
+# ================= LAUDO =================
 elif menu == "Laudo Final":
 
-    st.header("📄 Laudo Técnico Final")
+    st.header("📄 Laudo Final")
 
     if "resultados" in st.session_state:
 
-        st.write("**Parâmetro | Resultado (média ± desvio) | Classificação**")
-
         for k, v in st.session_state["resultados"].items():
+            st.write(f"{k} = {v:.2f} mg/L")
 
-            media, dp = v
-
-            if media < 50:
-                classe = "Baixo"
-            elif media < 150:
-                classe = "Médio"
-            else:
-                classe = "Alto"
-
-            st.write(f"{k} | {media:.2f} ± {dp:.2f} | {classe}")
+    else:
+        st.warning("⚠ Gere os dados primeiro")
