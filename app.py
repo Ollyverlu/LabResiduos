@@ -59,7 +59,7 @@ if menu == "Início":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # LOGO NOVA (ALTERADA PARA logo.png1)
+    # LOGO NOVA (ALTERADA PARA logo.png)
     col1, col2, col3 = st.columns([1, 4, 1])
 
     with col2:
