@@ -64,7 +64,7 @@ if menu == "Início":
 
     with col2:
         st.image(
-            "logo.png1",
+            "logo.png",
             use_container_width=True
         )
 
