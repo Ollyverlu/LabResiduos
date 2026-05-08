@@ -51,7 +51,17 @@ menu = st.sidebar.selectbox(
 
 # ================= INÍCIO =================
 if menu == "Início":
+
     st.markdown("## 👩‍🔬 Bem-vindo (a) ao Laboratório Virtual CEMMA")
+
+    # espaço vazio (efeito visual)
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    # LOGO
+    st.image(
+        "logo.png",  # ou link do GitHub
+        width=300
+    )
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
