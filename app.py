@@ -3,7 +3,7 @@ import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual CMMA – IFRJ",
+    page_title="Laboratório Virtual CEMMA – IFRJ",
     layout="wide"
 )
 
@@ -30,7 +30,7 @@ h1,h2,h3{
 """, unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual CMMA – IFRJ")
+st.title("🧪 Laboratório Virtual CEMMA – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
@@ -51,12 +51,12 @@ menu = st.sidebar.selectbox(
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CEMMA")
+    st.markdown("## 👩‍🔬 Bem-vindo (a) ao Laboratório Virtual CEMMA")
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
 
-    st.header("📚 Aula Teórica – Sólidos Totais")
+    st.header("📚 Equipamentos Utilizados")
 
     st.markdown("""
 <div class="card">
