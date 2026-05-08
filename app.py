@@ -108,7 +108,7 @@ V = 100 mL
     st.markdown("### 🧪 Cadinho de Porcelana")
     st.image("https://upload.wikimedia.org/wikipedia/commons/6/6b/Crucible_porcelain.jpg", use_container_width=True)
 
-    st.markdown("### 🥣 Caçarola / Cápsula de Pesagem")
+    st.markdown("### 🥣 Caçarola")
     st.image("https://upload.wikimedia.org/wikipedia/commons/9/9d/Weighing_dish_lab.jpg", use_container_width=True)
 
 # ================= LABORATÓRIO =================
