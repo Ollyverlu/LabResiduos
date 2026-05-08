@@ -3,7 +3,7 @@ import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual CAMMA – IFRJ",
+    page_title="Laboratório Virtual CEMMA – IFRJ",
     layout="wide"
 )
 
@@ -30,7 +30,7 @@ h1,h2,h3{
 """, unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual CMMA – IFRJ")
+st.title("🧪 Laboratório Virtual CEMMA – IFRJ")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
