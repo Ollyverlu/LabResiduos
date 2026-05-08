@@ -57,11 +57,13 @@ elif menu == "Laboratório":
 
     st.header("🧪 Dados Inseridos")
 
-    volume = st.number_input(
-        "Alíquota (mL)",
-        value=0.05 ,
-        format="%.4f"
-    )
+   volume = st.number_input(
+    "Alíquota (mL)",
+    min_value=0.00,
+    value=0.00,
+    step=10.00,
+    format="%.2f"
+)
 
     st.markdown("### 📥 2 medições")
     st.write("**Caçarola**")
