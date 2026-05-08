@@ -59,7 +59,7 @@ elif menu == "Laboratório":
 
     volume = st.number_input(
         "Alíquota (mL)",
-        value=0.00,
+        value=00.00,
         format="%.4f"
     )
 
