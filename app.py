@@ -3,7 +3,7 @@ import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual CEMMA – IFRJ",
+    page_title="Laboratório Virtual CMMA – IFRJ",
     layout="wide"
 )
 
@@ -51,12 +51,12 @@ menu = st.sidebar.selectbox(
 
 # ================= INÍCIO =================
 if menu == "Início":
-    st.markdown("## 👩‍🔬 Bem-vindo(a) ao Laboratório Virtual CMMA")
+    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CMMA")
 
 # ================= AULA TEÓRICA =================
 elif menu == "Aula Teórica":
 
-    st.header("📚 Equipamento utilizados")
+    st.header("📚 Aula Teórica – Sólidos Totais")
 
     st.markdown("""
 <div class="card">
@@ -80,6 +80,37 @@ Sólidos Voláteis = parte orgânica (queima na mufla)
     st.latex(r"STF = \frac{(m3 - m1)\times 10^6}{V}")
     st.latex(r"STV = ST - STF")
 
+    st.markdown("### 🧠 Exemplo")
+    st.markdown("""
+<div class="card">
+m1 = 50 g  
+m2 = 50.5 g  
+m3 = 50.2 g  
+V = 100 mL  
+</div>
+""", unsafe_allow_html=True)
+
+    # ================= EQUIPAMENTOS =================
+    st.markdown("## 🔬 Equipamentos de Laboratório")
+
+    st.markdown("### 🔥 Forno Mufla")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/3/3f/Muffle_furnace.jpg", use_container_width=True)
+
+    st.markdown("### 🌡️ Estufa Laboratorial")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/5/5f/Drying_oven_lab.jpg", use_container_width=True)
+
+    st.markdown("### ⚖️ Balança de Precisão")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/2/2b/Analytical_balance.jpg", use_container_width=True)
+
+    st.markdown("### 💧 Dessecador")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/1/1e/Desiccator_laboratory.jpg", use_container_width=True)
+
+    st.markdown("### 🧪 Cadinho de Porcelana")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/6/6b/Crucible_porcelain.jpg", use_container_width=True)
+
+    st.markdown("### 🥣 Caçarola / Cápsula de Pesagem")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/9/9d/Weighing_dish_lab.jpg", use_container_width=True)
+
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
@@ -102,24 +133,19 @@ elif menu == "Laboratório":
         if volume <= 0:
             st.error("Volume inválido.")
         else:
-            # ================= CONVERSÃO CORRETA =================
-            fator = 1000 / (volume / 1000)  # mg/L correto
+            fator = 1000 / (volume / 1000)
 
-            # ST
             ST1 = (m2 - m1) * fator
             ST2 = (m2_2 - m1_2) * fator
 
-            # STF
             STF1 = (m3 - m1) * fator
             STF2 = (m3_2 - m1_2) * fator
 
-            # STV (CORRIGIDO)
             STV1 = ST1 - STF1
             STV2 = ST2 - STF2
 
-            # ================= VALIDAÇÃO FÍSICA =================
             if STF1 > ST1 or STF2 > ST2:
-                st.warning("⚠ Atenção: STF maior que ST. Verifique os dados experimentais!")
+                st.warning("⚠ Atenção: STF maior que ST. Verifique os dados!")
 
             resultados = {
                 "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
@@ -128,33 +154,26 @@ elif menu == "Laboratório":
             }
 
             st.session_state["resultado"] = resultados
-            st.success("✔ Cálculos concluídos com sucesso!")
+            st.success("✔ Cálculos concluídos!")
 
 # ================= LAUDO FINAL =================
-
 elif menu == "Laudo Final":
 
     st.header("📄 Laudo Técnico Final")
 
     if "resultado" in st.session_state:
 
-        st.markdown("""
-        ### 📊 Resultados Físico-Químicos
-        """)
-
-        nomes_corretos = {
+        nomes = {
             "ST": "Sólidos Totais (ST)",
-            "STF": "Sólidos Totais Fixos (STF)",
-            "STV": "Sólidos Totais Voláteis (STV)"
+            "STF": "Sólidos Fixos (STF)",
+            "STV": "Sólidos Voláteis (STV)"
         }
 
         for chave, (media, dp) in st.session_state["resultado"].items():
 
-            nome_formatado = nomes_corretos.get(chave, chave)
-
             st.markdown(f"""
             <div class="card">
-            <b>{nome_formatado}</b><br>
+            <b>{nomes[chave]}</b><br>
             {media:.2f} ± {dp:.2f} mg/L
             </div>
             """, unsafe_allow_html=True)
