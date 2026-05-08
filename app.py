@@ -3,9 +3,24 @@ import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual CMMA IFRJ",
+    page_title="Laboratório Virtual CMMA – IFRJ",
     layout="wide"
 )
+
+# ================= ESTILO =================
+st.markdown("""
+<style>
+.main{
+    background-color:#f4f7ff;
+}
+h1,h2,h3{
+    color:#1f4e79;
+}
+.block-container{
+    padding-top:2rem;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
 st.title("🧪 Laboratório Virtual CMMA – IFRJ")
@@ -29,72 +44,128 @@ menu = st.sidebar.selectbox(
 
 # ================= INÍCIO =================
 if menu == "Início":
+
     st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CMMA")
+
+    st.info(
+        "Sistema desenvolvido para cálculos laboratoriais de "
+        "Sólidos Totais e suas frações."
+    )
 
 # ================= LABORATÓRIO =================
 elif menu == "Laboratório":
 
     st.header("🧪 Dados Inseridos")
 
-    volume = st.number_input("Alíquota (mL)", value=500.0)
+    volume = st.number_input(
+        "Alíquota (mL)",
+        value=500.0000,
+        format="%.4f"
+    )
 
     st.markdown("### 📥 2 medições")
-    st.write("Casarola")
+    st.write("**Caçarola**")
 
     st.subheader("Massas Experimentais")
 
-    # ===== REPLICA 1 =====
-    st.markdown("### 🔹 1ª medição")
+    # ===== RÉPLICA 1 =====
+    st.markdown("## 🔹 Réplica 1")
 
-    m1 = st.number_input("m1 (massa da caçarola)", key="m1")
-    m2 = st.number_input("m2 (caçarola + ST)", key="m2")
-    m3 = st.number_input("m3 (caçarola + STF)", key="m3")
+    m1 = st.number_input(
+        "m1 = massa da caçarola (g)",
+        value=0.0000,
+        format="%.4f",
+        key="m1"
+    )
 
-    # ===== REPLICA 2 =====
-    st.markdown("### 🔹 2ª medição")
+    m2 = st.number_input(
+        "m2 = massa da caçarola + ST (g)",
+        value=0.0000,
+        format="%.4f",
+        key="m2"
+    )
 
-    m1_l = st.number_input("m1'", key="m1l")
-    m2_l = st.number_input("m2'", key="m2l")
-    m3_l = st.number_input("m3'", key="m3l")
+    m3 = st.number_input(
+        "m3 = massa da caçarola + STF (g)",
+        value=0.0000,
+        format="%.4f",
+        key="m3"
+    )
+
+    # ===== RÉPLICA 2 =====
+    st.markdown("## 🔹 Réplica 2")
+
+    m1_2 = st.number_input(
+        "m1' = massa da caçarola (g)",
+        value=0.0000,
+        format="%.4f",
+        key="m1_2"
+    )
+
+    m2_2 = st.number_input(
+        "m2' = massa da caçarola + ST (g)",
+        value=0.0000,
+        format="%.4f",
+        key="m2_2"
+    )
+
+    m3_2 = st.number_input(
+        "m3' = massa da caçarola + STF (g)",
+        value=0.0000,
+        format="%.4f",
+        key="m3_2"
+    )
 
     if st.button("🧪 GERAR RESULTADOS"):
 
-        # ================= FÓRMULAS (IGUAL DA FOLHA) =================
+        # ================= CÁLCULOS =================
+        ST1 = ((m2 - m1) * 1_000_000) / volume
+        ST2 = ((m2_2 - m1_2) * 1_000_000) / volume
 
-        # ST
-        ST1 = (m2 - m1) * 1e6 / volume
-        ST2 = (m2_l - m1_l) * 1e6 / volume
-        ST = (ST1 + ST2) / 2
+        STF1 = ((m3 - m1) * 1_000_000) / volume
+        STF2 = ((m3_2 - m1_2) * 1_000_000) / volume
 
-        # STF
-        STF1 = (m3 - m1) * 1e6 / volume
-        STF2 = (m3_l - m1_l) * 1e6 / volume
-        STF = (STF1 + STF2) / 2
-
-        # STV
         STV1 = ST1 - STF1
         STV2 = ST2 - STF2
-        STV = (STV1 + STV2) / 2
+
+        ST_lista = np.array([ST1, ST2])
+        STF_lista = np.array([STF1, STF2])
+        STV_lista = np.array([STV1, STV2])
 
         resultados = {
-            "ST": ST,
-            "STF": STF,
-            "STV": STV
+            "ST": (
+                np.mean(ST_lista),
+                np.std(ST_lista)
+            ),
+            "STF": (
+                np.mean(STF_lista),
+                np.std(STF_lista)
+            ),
+            "STV": (
+                np.mean(STV_lista),
+                np.std(STV_lista)
+            )
         }
 
-        st.session_state["resultados"] = resultados
+        st.session_state["resultados_cmma"] = resultados
+        st.success("✔ Cálculos concluídos com sucesso!")
 
-        st.success("✔ Cálculos concluídos!")
-
-# ================= LAUDO =================
+# ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
 
-    st.header("📄 Laudo Final")
+    st.header("📄 Laudo Técnico Final")
 
-    if "resultados" in st.session_state:
+    if "resultados_cmma" in st.session_state:
 
-        for k, v in st.session_state["resultados"].items():
-            st.write(f"{k} = {v:.2f} mg/L")
+        for parametro, valores in st.session_state["resultados_cmma"].items():
+
+            media = valores[0]
+            dp = valores[1]
+
+            st.write(
+                f"**{parametro} = "
+                f"{media:.4f} ± {dp:.4f} mg/L**"
+            )
 
     else:
-        st.warning("⚠ Gere os dados primeiro")
+        st.warning("⚠ Gere os resultados primeiro.")
