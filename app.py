@@ -48,8 +48,8 @@ if menu == "Início":
     st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CMMA")
 
     st.info(
-        "Sistema desenvolvido para cálculos laboratoriais de "
-        "Sólidos Totais e suas frações."
+        "Sistema desenvolvido para cálculos laboratoriais "
+        "de Sólidos Totais e suas frações."
     )
 
 # ================= LABORATÓRIO =================
@@ -59,7 +59,7 @@ elif menu == "Laboratório":
 
     volume = st.number_input(
         "Alíquota (mL)",
-        value=0.0000
+        value=0.0000,
         format="%.4f"
     )
 
@@ -68,7 +68,7 @@ elif menu == "Laboratório":
 
     st.subheader("Massas Experimentais")
 
-    # ===== RÉPLICA 1 =====
+    # ========= RÉPLICA 1 =========
     st.markdown("## 🔹 Réplica 1")
 
     m1 = st.number_input(
@@ -92,7 +92,7 @@ elif menu == "Laboratório":
         key="m3"
     )
 
-    # ===== RÉPLICA 2 =====
+    # ========= RÉPLICA 2 =========
     st.markdown("## 🔹 Réplica 2")
 
     m1_2 = st.number_input(
@@ -118,53 +118,47 @@ elif menu == "Laboratório":
 
     if st.button("🧪 GERAR RESULTADOS"):
 
-        # ================= CÁLCULOS =================
-        ST1 = ((m2 - m1) * 1_000_000) / volume
-        ST2 = ((m2_2 - m1_2) * 1_000_000) / volume
+        if volume == 0:
+            st.error("Digite a alíquota (mL).")
+        else:
+            # ===== CÁLCULOS =====
+            ST1 = ((m2 - m1) * 1000000) / volume
+            ST2 = ((m2_2 - m1_2) * 1000000) / volume
 
-        STF1 = ((m3 - m1) * 1_000_000) / volume
-        STF2 = ((m3_2 - m1_2) * 1_000_000) / volume
+            STF1 = ((m3 - m1) * 1000000) / volume
+            STF2 = ((m3_2 - m1_2) * 1000000) / volume
 
-        STV1 = ST1 - STF1
-        STV2 = ST2 - STF2
+            STV1 = ST1 - STF1
+            STV2 = ST2 - STF2
 
-        ST_lista = np.array([ST1, ST2])
-        STF_lista = np.array([STF1, STF2])
-        STV_lista = np.array([STV1, STV2])
+            lista_ST = np.array([ST1, ST2])
+            lista_STF = np.array([STF1, STF2])
+            lista_STV = np.array([STV1, STV2])
 
-        resultados = {
-            "ST": (
-                np.mean(ST_lista),
-                np.std(ST_lista)
-            ),
-            "STF": (
-                np.mean(STF_lista),
-                np.std(STF_lista)
-            ),
-            "STV": (
-                np.mean(STV_lista),
-                np.std(STV_lista)
-            )
-        }
+            resultados = {
+                "ST": (np.mean(lista_ST), np.std(lista_ST)),
+                "STF": (np.mean(lista_STF), np.std(lista_STF)),
+                "STV": (np.mean(lista_STV), np.std(lista_STV)),
+            }
 
-        st.session_state["resultados_cmma"] = resultados
-        st.success("✔ Cálculos concluídos com sucesso!")
+            st.session_state["resultado_cmma"] = resultados
+
+            st.success("✔ Cálculos concluídos com sucesso!")
 
 # ================= LAUDO FINAL =================
 elif menu == "Laudo Final":
 
     st.header("📄 Laudo Técnico Final")
 
-    if "resultados_cmma" in st.session_state:
+    if "resultado_cmma" in st.session_state:
 
-        for parametro, valores in st.session_state["resultados_cmma"].items():
+        for nome, valores in st.session_state["resultado_cmma"].items():
 
             media = valores[0]
             dp = valores[1]
 
             st.write(
-                f"**{parametro} = "
-                f"{media:.4f} ± {dp:.4f} mg/L**"
+                f"**{nome} = {media:.4f} ± {dp:.4f} mg/L**"
             )
 
     else:
