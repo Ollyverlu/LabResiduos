@@ -30,7 +30,7 @@ h1,h2,h3{
 """, unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual CEMMA – IFRJ h\Com Professor Renato Ribeiro")
+st.title("🧪 Laboratório Virtual CEMMA – IFRJ  - Com Professor Renato Ribeiro")
 st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
 st.markdown("""
