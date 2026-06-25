@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 
@@ -47,161 +46,104 @@ st.success("Sistema ativo 🚀")
 # ================= MENU =================
 menu = st.sidebar.selectbox(
     "📚 Menu do Sistema",
-    [
-        "🏠 Início",
-
-        "📚 Aula Teórica - Sólidos Totais",
-        "📚 Aula Teórica - Sólidos Suspensos",
-        "📚 Aula Teórica - N-Amoniacal",
-        "📚 Aula Teórica - NTK",
-        "📚 Aula Teórica - DQO",
-
-        "🔬 Laboratório",
-
-        "📊 Resultados"
-    ]
+    ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
 )
 
 # ================= INÍCIO =================
-if menu == "🏠 Início":
+if menu == "Início":
 
     st.markdown(
-        "<h2 style='text-align:center;'>👩‍🔬 Bem-vindo ao Laboratório Virtual CEMMA</h2>",
+        "<h2 style='text-align:center;'>👩‍🔬 Bem-vindo (a) ao Laboratório Virtual CEMMA</h2>",
         unsafe_allow_html=True
     )
 
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # LOGO NOVA (ALTERADA PARA logo.png)
     col1, col2, col3 = st.columns([1, 4, 1])
 
     with col2:
-        st.image("logo.png", use_container_width=True)
-
-
-# ================= AULAS TEÓRICAS =================
-elif menu == "📚 Aula Teórica - Sólidos Totais":
-    st.header("📘 Sólidos Totais (ST)")
-    st.markdown("""
-    Representa toda matéria sólida presente na água.
-    
-    📌 Fórmula:
-    ST = massa total × fator
-    
-    📍 Importância:
-    - Controle de poluição
-    - Monitoramento ambiental
-    """)
-
-elif menu == "📚 Aula Teórica - Sólidos Suspensos":
-    st.header("📘 Sólidos Suspensos (SS)")
-    st.markdown("""
-    Partículas que ficam suspensas na água.
-
-    📍 Importância:
-    - Turbidez
-    - Impacto em ecossistemas aquáticos
-    """)
-
-elif menu == "📚 Aula Teórica - N-Amoniacal":
-    st.header("📘 Nitrogênio Amoniacal")
-    st.markdown("""
-    Forma de nitrogênio presente na água como amônia/amônio.
-
-    📍 Importância:
-    - Toxicidade
-    - Indicador de poluição recente
-    """)
-
-elif menu == "📚 Aula Teórica - NTK":
-    st.header("📘 NTK (Nitrogênio Total Kjeldahl)")
-    st.markdown("""
-    Soma do nitrogênio orgânico + amoniacal.
-
-    📍 Importância:
-    - Avaliação de carga orgânica
-    """)
-
-elif menu == "📚 Aula Teórica - DQO":
-    st.header("📘 DQO - Demanda Química de Oxigênio")
-    st.markdown("""
-    Mede o oxigênio necessário para oxidar matéria orgânica e inorgânica.
-
-    📍 Importância:
-    - Indicador de poluição industrial
-    - Tratamento de efluentes
-    """)
-
+        st.image(
+            "logo.png",
+            use_container_width=True
+        )
 
 # ================= LABORATÓRIO =================
-elif menu == "🔬 Laboratório":
+elif menu == "Laboratório":
 
     st.header("🧪 Inserção de Dados")
 
+    # 🔽 ADIÇÃO SOLICITADA (SÓ O MENU ESTRUTURADO DO LABORATÓRIO)
+    st.markdown("""
+    🔬 Laboratório  
+       ├── Sólidos Totais  
+       ├── Sólidos Suspensos  
+       ├── N-Amoniacal  
+       ├── NTK  
+       └── DQO  
+    """)
+
     volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
-    st.markdown("### 📌 Sólidos Totais")
-
+    st.markdown("## 🔹 Réplica 1")
     m1 = st.number_input("m1", value=0.0, format="%.4f")
     m2 = st.number_input("m2", value=0.0, format="%.4f")
     m3 = st.number_input("m3", value=0.0, format="%.4f")
 
-    st.markdown("### 📌 Sólidos Suspensos")
-    ss = st.number_input("Sólidos Suspensos (mg/L)", value=0.0)
-
-    st.markdown("### 📌 Nitrogênio Amoniacal")
-    na = st.number_input("N-Amoniacal (mg/L)", value=0.0)
-
-    st.markdown("### 📌 NTK")
-    ntk = st.number_input("NTK (mg/L)", value=0.0)
-
-    st.markdown("### 📌 DQO")
-    dqo = st.number_input("DQO (mg/L)", value=0.0)
+    st.markdown("## 🔹 Réplica 2")
+    m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
+    m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
+    m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
 
     if st.button("🧪 GERAR RESULTADOS"):
 
-        fator = 1000 / (volume / 1000)
+        if volume <= 0:
+            st.error("Volume inválido.")
+        else:
+            fator = 1000 / (volume / 1000)
 
-        ST = (m2 - m1) * fator
-        STF = (m3 - m1) * fator
-        STV = ST - STF
+            ST1 = (m2 - m1) * fator
+            ST2 = (m2_2 - m1_2) * fator
 
-        resultados = {
-            "ST": ST,
-            "STF": STF,
-            "STV": STV,
-            "SS": ss,
-            "N-Amoniacal": na,
-            "NTK": ntk,
-            "DQO": dqo
-        }
+            STF1 = (m3 - m1) * fator
+            STF2 = (m3_2 - m1_2) * fator
 
-        st.session_state["resultado"] = resultados
-        st.success("✔ Resultados gerados com sucesso!")
+            STV1 = ST1 - STF1
+            STV2 = ST2 - STF2
 
+            if STF1 > ST1 or STF2 > ST2:
+                st.warning("⚠ Atenção: STF maior que ST. Verifique os dados!")
 
-# ================= RESULTADOS =================
-elif menu == "📊 Resultados":
+            resultados = {
+                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
+                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
+                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
+            }
 
-    st.header("📊 Laudo Final")
+            st.session_state["resultado"] = resultados
+            st.success("✔ Cálculos concluídos!")
+
+# ================= LAUDO FINAL =================
+elif menu == "Laudo Final":
+
+    st.header("📄 Laudo Técnico Final")
 
     if "resultado" in st.session_state:
 
         nomes = {
-            "ST": "Sólidos Totais",
-            "STF": "Sólidos Fixos",
-            "STV": "Sólidos Voláteis",
-            "SS": "Sólidos Suspensos",
-            "N-Amoniacal": "Nitrogênio Amoniacal",
-            "NTK": "Nitrogênio Total Kjeldahl",
-            "DQO": "Demanda Química de Oxigênio"
+            "ST": "Sólidos Totais (ST)",
+            "STF": "Sólidos Fixos (STF)",
+            "STV": "Sólidos Voláteis (STV)"
         }
 
-        for k, v in st.session_state["resultado"].items():
+        for chave, (media, dp) in st.session_state["resultado"].items():
 
             st.markdown(f"""
             <div class="card">
-                <b>{nomes[k]}</b><br>
-                {v:.2f} mg/L
+            <b>{nomes[chave]}</b><br>
+            {media:.2f} ± {dp:.2f} mg/L
             </div>
             """, unsafe_allow_html=True)
 
     else:
-        st.warning("⚠ Nenhum resultado gerado ainda.")
+        st.warning("⚠ Gere os resultados primeiro no laboratório.")
