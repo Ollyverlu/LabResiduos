@@ -1,104 +1,177 @@
 import streamlit as st
 import numpy as np
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-from datetime import datetime
 
-st.set_page_config(page_title="LabResiduos IFRJ", layout="wide")
+# ================= CONFIG =================
+st.set_page_config(
+    page_title="Laboratório Virtual CMMA – IFRJ",
+    layout="wide"
+)
 
-st.title("🧪 Laboratório Virtual de Resíduos – IFRJ Nilópolis")
-st.subheader("Luciana Oliveira de Albuquerque")
+# ================= ESTILO =================
+st.markdown("""
+<style>
+.main{
+    background-color:#f4f7ff;
+}
+h1,h2,h3{
+    color:#1f4e79;
+}
+.block-container{
+    padding-top:2rem;
+}
+.card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+}
+</style>
+""", unsafe_allow_html=True)
 
-st.markdown("## Entrada de Dados")
+# ================= CABEÇALHO =================
+st.title("🧪 Laboratório Virtual CMMA – IFRJ")
+st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
 
-volume = st.number_input("Volume da amostra (mL)", value=500.0)
+st.markdown("""
+### 👩‍🏫 Criador
+Luciana Oliveira de Albuquerque
 
-m_vazia, m_st, m_stf = [], [], []
-f_vazio, f_sst, f_ssf = [], [], []
+### 🎓 Administrador
+Raphael Oliveira de Albuquerque
+""")
 
-st.markdown("### Cápsula")
-for i in range(4):
-    st.write(f"Replicata {i+1}")
-    m_vazia.append(st.number_input(f"Cápsula vazia {i+1}", key=f"v{i}"))
-    m_st.append(st.number_input(f"Cápsula + ST {i+1}", key=f"st{i}"))
-    m_stf.append(st.number_input(f"Cápsula + STF {i+1}", key=f"stf{i}"))
+st.success("Sistema ativo 🚀")
 
-st.markdown("### Filtro")
-for i in range(4):
-    st.write(f"Replicata {i+1}")
-    f_vazio.append(st.number_input(f"Filtro vazio {i+1}", key=f"fv{i}"))
-    f_sst.append(st.number_input(f"Filtro + SST {i+1}", key=f"sst{i}"))
-    f_ssf.append(st.number_input(f"Filtro + SSF {i+1}", key=f"ssf{i}"))
+# ================= MENU =================
+menu = st.sidebar.selectbox(
+    "📚 Menu do Sistema",
+    ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
+)
 
-def gerar_pdf(resultados):
-    nome_arquivo = "laudo_labresiduos.pdf"
-    c = canvas.Canvas(nome_arquivo, pagesize=A4)
-    largura, altura = A4
+# ================= INÍCIO =================
+if menu == "Início":
+    st.markdown("## 👩‍🔬 Bem-vinda ao Laboratório Virtual CMMA")
 
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(50, altura - 50, "IFRJ - Laboratorio Virtual de Residuos")
-    c.setFont("Helvetica", 11)
-    c.drawString(50, altura - 70, "Responsavel: Luciana Oliveira de Albuquerque")
+# ================= AULA TEÓRICA =================
+elif menu == "Aula Teórica":
 
-    c.drawString(50, altura - 100, f"Data: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+    st.header("📚 Aula Teórica – Sólidos Totais")
 
-    y = altura - 140
-    c.setFont("Helvetica", 10)
+    st.markdown("### 📌 O que são Sólidos Totais (ST)?")
+    st.markdown("""
+<div class="card">
+Sólidos Totais representam todo o material presente na amostra após evaporação da água.
+Incluem matéria orgânica e inorgânica.
+</div>
+""", unsafe_allow_html=True)
 
-    for k, v in resultados.items():
-        c.drawString(50, y, f"{k}: {v:.2f} mg/L")
-        y -= 20
+    st.markdown("### 📌 Sólidos Totais Fixos (STF)")
+    st.markdown("""
+<div class="card">
+Parte mineral dos sólidos que permanece após a queima na mufla (550°C).
+</div>
+""", unsafe_allow_html=True)
 
-    c.save()
-    return nome_arquivo
+    st.markdown("### 📌 Sólidos Totais Voláteis (STV)")
+    st.markdown("""
+<div class="card">
+Parte orgânica que é queimada na mufla.
+</div>
+""", unsafe_allow_html=True)
 
-if st.button("CALCULAR E GERAR LAUDO"):
+    st.markdown("### 🔬 Procedimento Experimental")
+    st.markdown("""
+<div class="card">
+1. Pesar a caçarola → m1  
+2. Secar em estufa (105°C) → m2  
+3. Levar à mufla (550°C) → m3  
+</div>
+""", unsafe_allow_html=True)
 
-    ST, STF, SST, SSF = [], [], [], []
+    st.markdown("### 📊 Fórmulas")
 
-    for i in range(4):
-        st_val = ((m_st[i] - m_vazia[i]) * 1000000) / volume
-        stf_val = ((m_stf[i] - m_vazia[i]) * 1000000) / volume
-        sst_val = ((f_sst[i] - f_vazio[i]) * 1000000) / volume
-        ssf_val = ((f_ssf[i] - f_vazio[i]) * 1000000) / volume
+    st.latex(r"ST = \frac{(m2 - m1)\times 10^6}{V}")
+    st.latex(r"STF = \frac{(m3 - m1)\times 10^6}{V}")
+    st.latex(r"STV = ST - STF")
 
-        ST.append(st_val)
-        STF.append(stf_val)
-        SST.append(sst_val)
-        SSF.append(ssf_val)
+    st.markdown("### 🧠 Exemplo")
+    st.markdown("""
+<div class="card">
+m1 = 50 g  
+m2 = 50.5 g  
+m3 = 50.2 g  
+V = 100 mL  
 
-    ST = np.array(ST)
-    STF = np.array(STF)
-    SST = np.array(SST)
-    SSF = np.array(SSF)
+ST = 5000 mg/L  
+STF = 2000 mg/L  
+STV = 3000 mg/L  
+</div>
+""", unsafe_allow_html=True)
 
-    STV = ST - STF
-    SSV = SST - SSF
-    SDT = ST - SST
-    SDF = STF - SSF
-    SDV = STV - SSV
+# ================= LABORATÓRIO =================
+elif menu == "Laboratório":
 
-    resultados = {
-        "ST": np.mean(ST),
-        "STF": np.mean(STF),
-        "STV": np.mean(STV),
-        "SST": np.mean(SST),
-        "SSF": np.mean(SSF),
-        "SSV": np.mean(SSV),
-        "SDT": np.mean(SDT),
-        "SDF": np.mean(SDF),
-        "SDV": np.mean(SDV)
-    }
+    st.header("🧪 Dados Inseridos")
 
-    st.success("Cálculo concluído!")
-
-    for k, v in resultados.items():
-        st.write(f"{k}: {v:.2f} mg/L")
-
-    pdf = gerar_pdf(resultados)
-
-    st.download_button(
-        label="📄 Baixar Laudo em PDF",
-        file_name=pdf,
-        data=open(pdf, "rb").read()
+    volume = st.number_input(
+        "Alíquota (mL)",
+        min_value=0.0,
+        value=0.0,
+        step=10.0,
+        format="%.2f"
     )
+
+    st.markdown("### 📥 2 medições")
+    st.write("**Caçarola**")
+
+    st.subheader("Massas Experimentais")
+
+    # Réplica 1
+    st.markdown("## 🔹 Réplica 1")
+    m1 = st.number_input("m1", value=0.0000, format="%.4f")
+    m2 = st.number_input("m2", value=0.0000, format="%.4f")
+    m3 = st.number_input("m3", value=0.0000, format="%.4f")
+
+    # Réplica 2
+    st.markdown("## 🔹 Réplica 2")
+    m1_2 = st.number_input("m1'", value=0.0000, format="%.4f")
+    m2_2 = st.number_input("m2'", value=0.0000, format="%.4f")
+    m3_2 = st.number_input("m3'", value=0.0000, format="%.4f")
+
+    if st.button("🧪 GERAR RESULTADOS"):
+
+        if volume == 0:
+            st.error("Digite a Alíquota.")
+        else:
+            ST1 = ((m2 - m1) * 1000000) / volume
+            ST2 = ((m2_2 - m1_2) * 1000000) / volume
+
+            STF1 = ((m3 - m1) * 1000000) / volume
+            STF2 = ((m3_2 - m1_2) * 1000000) / volume
+
+            STV1 = ST1 - STF1
+            STV2 = ST2 - STF2
+
+            resultados = {
+                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2])),
+                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2])),
+                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2]))
+            }
+
+            st.session_state["resultado"] = resultados
+            st.success("✔ Cálculos concluídos!")
+
+# ================= LAUDO FINAL =================
+elif menu == "Laudo Final":
+
+    st.header("📄 Laudo Técnico Final")
+
+    if "resultado" in st.session_state:
+
+        for nome, valores in st.session_state["resultado"].items():
+            media, dp = valores
+            st.write(f"**{nome} = {media:.0f} ± {dp:.0f} mg/L**")
+
+    else:
+        st.warning("⚠ Gere os resultados primeiro.")
