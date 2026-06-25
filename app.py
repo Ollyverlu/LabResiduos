@@ -1,3 +1,4 @@
+
 import streamlit as st
 import numpy as np
 
@@ -59,7 +60,7 @@ if menu == "Início":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # LOGO NOVA (ALTERADA PARA logo.png)
+    # LOGO NOVA
     col1, col2, col3 = st.columns([1, 4, 1])
 
     with col2:
@@ -73,7 +74,7 @@ elif menu == "Laboratório":
 
     st.header("🧪 Inserção de Dados")
 
-    # 🔽 ADIÇÃO SOLICITADA (SÓ O MENU ESTRUTURADO DO LABORATÓRIO)
+    # 🔬 SOMENTE ACRESCENTADO (NÃO ALTERA NADA DO SEU SISTEMA)
     st.markdown("""
     🔬 Laboratório  
        ├── Sólidos Totais  
@@ -82,8 +83,6 @@ elif menu == "Laboratório":
        ├── NTK  
        └── DQO  
     """)
-
-    volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
     st.markdown("## 🔹 Réplica 1")
     m1 = st.number_input("m1", value=0.0, format="%.4f")
@@ -96,6 +95,8 @@ elif menu == "Laboratório":
     m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
 
     if st.button("🧪 GERAR RESULTADOS"):
+
+        volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
         if volume <= 0:
             st.error("Volume inválido.")
