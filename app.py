@@ -8,25 +8,70 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO =================
+# ================= ESTILO (VISUAL LABORATÓRIO) =================
 st.markdown("""
 <style>
-.main{
-    background-color:#f4f7ff;
+
+/* Fundo geral estilo laboratório */
+.stApp {
+    background-color: #e8f5e9;
 }
-h1,h2,h3{
-    color:#1f4e79;
+
+/* Título */
+h1 {
+    color: #1b5e20;
+    font-weight: 700;
 }
-.block-container{
-    padding-top:2rem;
+
+h2, h3 {
+    color: #2e7d32;
 }
+
+/* Área principal */
+.block-container {
+    padding-top: 2rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+
+/* Cards estilo laboratório */
 .card {
-    background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 10px;
+    background-color: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    border-left: 6px solid #2e7d32;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 12px;
+    transition: 0.3s;
 }
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #1b5e20;
+}
+
+/* Texto da sidebar */
+[data-testid="stSidebar"] * {
+    color: white;
+}
+
+/* Botões */
+.stButton>button {
+    background-color: #2e7d32;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.stButton>button:hover {
+    background-color: #1b5e20;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -50,7 +95,6 @@ menu = st.sidebar.selectbox(
     [
         "🏠 Início",
         "📖 Aula Teórica",
-        " Laboratório",
         "🧪 Sólidos Totais",
         "🧪 Sólidos Suspensos",
         "🧪 N-Amoniacal",
@@ -60,7 +104,7 @@ menu = st.sidebar.selectbox(
     ]
 )
 
-# ================= 🔬 MENU EXTRA (VISUAL) =================
+# ================= 🔬 MENU EXTRA =================
 st.sidebar.markdown("---")
 st.sidebar.markdown("## 🔬 Estrutura do Laboratório")
 
@@ -89,11 +133,26 @@ if menu == "🏠 Início":
 elif menu == "📖 Aula Teórica":
 
     st.header("📖 Aula Teórica")
-
     st.info("Conteúdo teórico será inserido aqui futuramente.")
 
-# ================= SÓLIDOS TOTAIS (NÃO ALTERADO) =================
+# ================= SÓLIDOS TOTAIS =================
 elif menu == "🧪 Sólidos Totais":
+
+    st.markdown("""
+    ## 🔬 LABORATÓRIO
+
+    Neste ambiente o aluno encontra os principais ensaios físico-químicos do LabResíduos:
+
+    🧪 Sólidos Totais (ST)  
+    🧪 Sólidos Suspensos (SST)  
+    🧪 Nitrogênio Amoniacal (N-Amoniacal)  
+    🧪 NTK (Nitrogênio Kjeldahl Total)  
+    🧪 DQO (Demanda Química de Oxigênio)  
+
+    👉 Selecione o ensaio desejado no menu lateral para iniciar.
+
+    ---
+    """)
 
     st.header("🧪 Inserção de Dados")
 
@@ -141,28 +200,24 @@ elif menu == "🧪 Sólidos Totais":
 elif menu == "🧪 Sólidos Suspensos":
 
     st.header("🧪 Sólidos Suspensos")
-
-    st.info("Módulo em desenvolvimento. Em breve será adicionado o cálculo completo de SST.")
+    st.info("Módulo em desenvolvimento.")
 
 # ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
 
     st.header("🧪 Nitrogênio Amoniacal")
-
     st.info("Módulo em desenvolvimento.")
 
 # ================= NTK =================
 elif menu == "🧪 NTK":
 
     st.header("🧪 Nitrogênio Kjeldahl Total")
-
     st.info("Módulo em desenvolvimento.")
 
 # ================= DQO =================
 elif menu == "🧪 DQO":
 
     st.header("🧪 Demanda Química de Oxigênio")
-
     st.info("Módulo em desenvolvimento.")
 
 # ================= LAUDO FINAL =================
