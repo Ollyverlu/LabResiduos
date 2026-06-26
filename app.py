@@ -50,6 +50,7 @@ menu = st.sidebar.selectbox(
     [
         "🏠 Início",
         "📖 Aula Teórica",
+        " Laboratório",
         "🧪 Sólidos Totais",
         "🧪 Sólidos Suspensos",
         "🧪 N-Amoniacal",
