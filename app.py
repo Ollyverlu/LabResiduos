@@ -32,7 +32,7 @@ h2, h3 {
     margin-top: 10px;
 }
 
-input, textarea {
+input {
     background-color: white !important;
     color: black !important;
 }
@@ -81,31 +81,12 @@ menu = st.sidebar.radio(
     ]
 )
 
-# ================= INÍCIO =================
-if menu == "🏠 Início":
-    st.title("Sistema IFRJ")
-    st.info("Selecione um módulo no menu lateral.")
-
-# ================= SÓLIDOS TOTAIS =================
-elif menu == "🧪 Sólidos Totais":
-    st.title("Sólidos Totais")
-
-    volume = st.number_input("Alíquota (mL)", value=50.0)
-
-    if st.button("CALCULAR"):
-        st.success("Cálculo executado (mantido original).")
-
-# ================= SÓLIDOS SUSPENSOS =================
-elif menu == "🧪 Sólidos Suspensos":
-    st.title("Sólidos Suspensos")
-    st.info("Mesmo modelo dos Sólidos Totais.")
-
 # ================= N-AMONIACAL =================
-elif menu == "🧪 N-Amoniacal":
+if menu == "🧪 N-Amoniacal":
 
     st.title("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
 
-    # ===== PLANILHA ESTILO EXCEL =====
+    # ================= PLANILHA (VISUAL EXCEL) =================
     st.markdown("""
     <div style="background-color:white; padding:15px; border-radius:10px;">
 
@@ -147,17 +128,66 @@ elif menu == "🧪 N-Amoniacal":
     </div>
     """, unsafe_allow_html=True)
 
-# ================= NTK =================
+    st.markdown("---")
+
+    # ================= ENTRADA DE DADOS (CALCULO REAL) =================
+    st.subheader("🧪 CÁLCULO DO N-Amoniacal")
+
+    massa = st.number_input("Massa (g)", value=0.0)
+    volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
+
+    t1 = st.number_input("1ª Titulação (mL)", value=0.0)
+    t2 = st.number_input("2ª Titulação (mL)", value=0.0)
+    t3 = st.number_input("3ª Titulação (mL)", value=0.0)
+
+    if st.button("CALCULAR N-AMONIACAL"):
+
+        media = np.mean([t1, t2, t3])
+        dp = np.std([t1, t2, t3], ddof=1) if len([t1, t2, t3]) > 1 else 0
+
+        if media == 0:
+            st.error("Valores inválidos nas titulações.")
+        else:
+            concentracao = (massa / 381.40) / (volume_balao / 1000)
+            resultado_final = concentracao * (volume_balao / media)
+
+            st.session_state["n_amoniacal"] = {
+                "Concentração": concentracao,
+                "Resultado Final": resultado_final,
+                "Média": media,
+                "Desvio Padrão": dp
+            }
+
+    # ================= RESULTADO =================
+    if "n_amoniacal" in st.session_state:
+
+        st.markdown("### 📄 RESULTADO FINAL")
+
+        for k, v in st.session_state["n_amoniacal"].items():
+            st.markdown(f"""
+            <div class="card">
+            <b>{k}</b><br>
+            {v:.4f}
+            </div>
+            """, unsafe_allow_html=True)
+
+# ================= OUTROS (SEM ALTERAR AINDA) =================
+elif menu == "🧪 Sólidos Totais":
+    st.title("Sólidos Totais")
+    st.info("Módulo original mantido.")
+
+elif menu == "🧪 Sólidos Suspensos":
+    st.title("Sólidos Suspensos")
+    st.info("A ser implementado igual ST.")
+
 elif menu == "🧪 NTK":
     st.title("NTK")
-    st.info("Módulo em desenvolvimento.")
+    st.info("Aguardando modelo Excel.")
 
-# ================= NHX =================
 elif menu == "🧪 NHX":
     st.title("NHX")
-    st.info("Módulo em desenvolvimento.")
+    st.info("Aguardando modelo Excel.")
 
-# ================= DQO =================
 elif menu == "🧪 DQO":
     st.title("DQO")
-    st.info("Módulo em desenvolvimento.")
+    st.info("Aguardando modelo Excel.")
