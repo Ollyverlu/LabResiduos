@@ -1,3 +1,4 @@
+
 import streamlit as st
 import numpy as np
 
@@ -46,10 +47,19 @@ st.success("Sistema ativo 🚀")
 # ================= MENU =================
 menu = st.sidebar.selectbox(
     "📚 Menu do Sistema",
-    ["Início", "Aula Teórica", "Laboratório", "Laudo Final"]
+    [
+        "🏠 Início",
+        "📖 Aula Teórica",
+        "🧪 Sólidos Totais",
+        "🧪 Sólidos Suspensos",
+        "🧪 N-Amoniacal",
+        "🧪 NTK",
+        "🧪 DQO",
+        "📄 Laudo Final"
+    ]
 )
 
-# ================= 🔬 MENU EXTRA (SÓ VISUAL - NÃO ALTERA NADA) =================
+# ================= 🔬 MENU EXTRA (VISUAL) =================
 st.sidebar.markdown("---")
 st.sidebar.markdown("## 🔬 Estrutura do Laboratório")
 
@@ -62,7 +72,7 @@ st.sidebar.markdown("""
 """)
 
 # ================= INÍCIO =================
-if menu == "Início":
+if menu == "🏠 Início":
 
     st.markdown(
         "<h2 style='text-align:center;'>👩‍🔬 Bem-vindo (a) ao Laboratório Virtual CEMMA</h2>",
@@ -74,8 +84,15 @@ if menu == "Início":
     with col2:
         st.image("logo.png", use_container_width=True)
 
-# ================= LABORATÓRIO =================
-elif menu == "Laboratório":
+# ================= AULA TEÓRICA =================
+elif menu == "📖 Aula Teórica":
+
+    st.header("📖 Aula Teórica")
+
+    st.info("Conteúdo teórico será inserido aqui futuramente.")
+
+# ================= SÓLIDOS TOTAIS (NÃO ALTERADO) =================
+elif menu == "🧪 Sólidos Totais":
 
     st.header("🧪 Inserção de Dados")
 
@@ -119,8 +136,36 @@ elif menu == "Laboratório":
             st.session_state["resultado"] = resultados
             st.success("✔ Cálculos concluídos!")
 
+# ================= SÓLIDOS SUSPENSOS =================
+elif menu == "🧪 Sólidos Suspensos":
+
+    st.header("🧪 Sólidos Suspensos")
+
+    st.info("Módulo em desenvolvimento. Em breve será adicionado o cálculo completo de SST.")
+
+# ================= N-AMONIACAL =================
+elif menu == "🧪 N-Amoniacal":
+
+    st.header("🧪 Nitrogênio Amoniacal")
+
+    st.info("Módulo em desenvolvimento.")
+
+# ================= NTK =================
+elif menu == "🧪 NTK":
+
+    st.header("🧪 Nitrogênio Kjeldahl Total")
+
+    st.info("Módulo em desenvolvimento.")
+
+# ================= DQO =================
+elif menu == "🧪 DQO":
+
+    st.header("🧪 Demanda Química de Oxigênio")
+
+    st.info("Módulo em desenvolvimento.")
+
 # ================= LAUDO FINAL =================
-elif menu == "Laudo Final":
+elif menu == "📄 Laudo Final":
 
     st.header("📄 Laudo Técnico Final")
 
