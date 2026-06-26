@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 
 # ================= CONFIG =================
-st.set_page_config(page_title="IFRJ - Laboratório Virtual CEMMA", layout="wide")
+st.set_page_config(page_title="IFRJ - LabResiduos -Laboratorio Virtual", layout="wide")
 
 # ================= CSS =================
 st.markdown("""
@@ -46,7 +46,7 @@ with col2:
     st.markdown("""
 **Criado por:** Luciana Oliveira de Albuquerque  
 **Professor responsável:** Renato Ribeiro  
-**Administrador do sistema:** Raphael Oliveira de Albuquerque  
+**Administrador do sistema:** Aluno:Raphael Oliveira de Albuquerque  
 """)
 
 st.markdown("---")
