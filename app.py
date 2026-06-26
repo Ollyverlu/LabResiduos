@@ -72,7 +72,7 @@ Luciana Oliveira de Albuquerque
 Renato Ribeiro  
 
 ### 🧑‍💻 Administrador  
-Raphael Oliveira de Albuquerque  
+Aluno: Raphael Oliveira de Albuquerque  
 """)
 
 st.markdown("---")
