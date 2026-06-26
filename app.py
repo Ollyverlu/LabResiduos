@@ -8,23 +8,29 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO (VISUAL LABORATÓRIO) =================
+# ================= ESTILO (CORRIGIDO PARA CELULAR + NOTEBOOK) =================
 st.markdown("""
 <style>
 
-/* Fundo geral estilo laboratório */
+/* Fundo geral */
 .stApp {
     background-color: #e8f5e9;
+    color: #1b1b1b;
 }
 
-/* Título */
+/* FORÇA TEXTO PRETO (evita sumir no celular) */
+html, body, [class*="css"]  {
+    color: #1b1b1b !important;
+}
+
+/* Títulos */
 h1 {
-    color: #1b5e20;
+    color: #1b5e20 !important;
     font-weight: 700;
 }
 
 h2, h3 {
-    color: #2e7d32;
+    color: #2e7d32 !important;
 }
 
 /* Área principal */
@@ -34,7 +40,7 @@ h2, h3 {
     padding-right: 2.5rem;
 }
 
-/* Cards estilo laboratório */
+/* Cards */
 .card {
     background-color: #ffffff;
     padding: 18px;
@@ -42,12 +48,6 @@ h2, h3 {
     border-left: 6px solid #2e7d32;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
     margin-bottom: 12px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.01);
-    box-shadow: 0px 6px 18px rgba(0,0,0,0.12);
 }
 
 /* Sidebar */
@@ -57,13 +57,13 @@ h2, h3 {
 
 /* Texto da sidebar */
 [data-testid="stSidebar"] * {
-    color: white;
+    color: white !important;
 }
 
 /* Botões */
 .stButton>button {
     background-color: #2e7d32;
-    color: white;
+    color: white !important;
     border-radius: 8px;
     font-weight: bold;
 }
@@ -95,7 +95,6 @@ menu = st.sidebar.selectbox(
     [
         "🏠 Início",
         "📖 Aula Teórica",
-        "Laboratório",
         "🧪 Sólidos Totais",
         "🧪 Sólidos Suspensos",
         "🧪 N-Amoniacal",
@@ -105,7 +104,7 @@ menu = st.sidebar.selectbox(
     ]
 )
 
-# ================= 🔬 MENU EXTRA =================
+# ================= SIDEBAR INFO =================
 st.sidebar.markdown("---")
 st.sidebar.markdown("## 🔬 Estrutura do Laboratório")
 
@@ -136,7 +135,7 @@ elif menu == "📖 Aula Teórica":
     st.header("📖 Aula Teórica")
     st.info("Conteúdo teórico será inserido aqui futuramente.")
 
-# ================= SÓLIDOS TOTAIS =================
+# ================= LABORATÓRIO SÓLIDOS TOTAIS =================
 elif menu == "🧪 Sólidos Totais":
 
     st.markdown("""
@@ -155,7 +154,7 @@ elif menu == "🧪 Sólidos Totais":
     ---
     """)
 
-    st.header("🧪 Solídos Totais")
+    st.header("🧪 Inserção de Dados")
 
     volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
