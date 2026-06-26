@@ -15,6 +15,7 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
+/* CABEÇALHO */
 .header {
     background-color: #2e7d32;
     padding: 15px;
@@ -34,6 +35,7 @@ st.markdown("""
     color: #f1f8e9 !important;
 }
 
+/* CARDS */
 .card {
     background: white;
     padding: 15px;
@@ -42,6 +44,7 @@ st.markdown("""
     margin-top: 10px;
 }
 
+/* BOTÕES */
 .stButton>button {
     width: 100%;
     height: 60px;
@@ -61,7 +64,7 @@ if "page" not in st.session_state:
 def go(page):
     st.session_state.page = page
 
-# ================= CABEÇALHO =================
+# ================= CABEÇALHO (RESTAURADO COMPLETO) =================
 col1, col2 = st.columns([1, 4])
 
 with col1:
@@ -74,6 +77,17 @@ with col2:
         <h3>Sistema Virtual de Análises Físico-Químicas</h3>
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown("""
+    ### 👩‍🏫 Criado por  
+    Luciana Oliveira de Albuquerque  
+
+    ### 🎓 Professor responsável  
+    Renato Ribeiro  
+
+    ### 🧑‍💻 Administrador do sistema  
+    Raphael Oliveira de Albuquerque  
+    """)
 
 st.markdown("---")
 
@@ -173,7 +187,7 @@ elif st.session_state.page == "ss":
         for k, (m, d) in st.session_state["ss"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
 
-# ================= N-AMONIACAL (EXCEL) =================
+# ================= N-AMONIACAL (EXCEL COMPLETO RESTAURADO) =================
 elif st.session_state.page == "namo":
 
     st.title("🧪 Nitrogênio Amoniacal")
@@ -182,9 +196,9 @@ elif st.session_state.page == "namo":
     massa_molar = 381.40
     volume_balao = st.number_input("Volume do Balão (mL)", value=100.0)
 
-    v1 = st.number_input("Titulação 1 (mL)", value=0.0)
-    v2 = st.number_input("Titulação 2 (mL)", value=0.0)
-    v3 = st.number_input("Titulação 3 (mL)", value=0.0)
+    v1 = st.number_input("1ª Titulação (mL)", value=0.0)
+    v2 = st.number_input("2ª Titulação (mL)", value=0.0)
+    v3 = st.number_input("3ª Titulação (mL)", value=0.0)
 
     if st.button("CALCULAR N-AMONIACAL"):
 
@@ -217,7 +231,7 @@ elif st.session_state.page == "namo":
         for k, v in st.session_state["namo"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
 
-# ================= NTK (EXCEL) =================
+# ================= NTK (EXCEL COMPLETO RESTAURADO) =================
 elif st.session_state.page == "ntk":
 
     st.title("🧪 Nitrogênio Total Kjeldahl (NTK)")
@@ -225,9 +239,9 @@ elif st.session_state.page == "ntk":
     massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
     volume_balao = st.number_input("Volume do Balão (mL)", value=100.0)
 
-    v1 = st.number_input("Titulação 1 (mL)", value=0.0)
-    v2 = st.number_input("Titulação 2 (mL)", value=0.0)
-    v3 = st.number_input("Titulação 3 (mL)", value=0.0)
+    v1 = st.number_input("1ª Titulação (mL)", value=0.0)
+    v2 = st.number_input("2ª Titulação (mL)", value=0.0)
+    v3 = st.number_input("3ª Titulação (mL)", value=0.0)
 
     if st.button("CALCULAR NTK"):
 
