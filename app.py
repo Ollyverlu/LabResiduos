@@ -15,7 +15,6 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
-/* CABEÇALHO */
 .header {
     background-color: #2e7d32;
     padding: 15px;
@@ -35,7 +34,6 @@ st.markdown("""
     color: #f1f8e9 !important;
 }
 
-/* CARDS */
 .card {
     background: white;
     padding: 15px;
@@ -44,7 +42,6 @@ st.markdown("""
     margin-top: 10px;
 }
 
-/* BOTÕES */
 .stButton>button {
     width: 100%;
     height: 60px;
@@ -176,25 +173,25 @@ elif st.session_state.page == "ss":
         for k, (m, d) in st.session_state["ss"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
 
-# ================= N-AMONIACAL (EXCEL COMPLETO) =================
+# ================= N-AMONIACAL (EXCEL) =================
 elif st.session_state.page == "namo":
 
-    st.title("🧪 Nitrogênio Amoniacal (Padronização)")
+    st.title("🧪 Nitrogênio Amoniacal")
 
     massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
     massa_molar = 381.40
     volume_balao = st.number_input("Volume do Balão (mL)", value=100.0)
 
-    v1 = st.number_input("Titulação 1", value=0.0)
-    v2 = st.number_input("Titulação 2", value=0.0)
-    v3 = st.number_input("Titulação 3", value=0.0)
+    v1 = st.number_input("Titulação 1 (mL)", value=0.0)
+    v2 = st.number_input("Titulação 2 (mL)", value=0.0)
+    v3 = st.number_input("Titulação 3 (mL)", value=0.0)
 
-    if st.button("CALCULAR NA"):
+    if st.button("CALCULAR N-AMONIACAL"):
 
-        media = np.mean([v1, v2, v3])
-        dp = np.std([v1, v2, v3], ddof=1)
+        tit = [v1, v2, v3]
 
-        conc_teorica = 0.02
+        media = np.mean(tit)
+        dp = np.std(tit, ddof=1)
 
         mol = massa / massa_molar
         conc_padrao = mol / (volume_balao / 1000)
@@ -203,7 +200,7 @@ elif st.session_state.page == "namo":
 
         rsd = (dp / media) * 100 if media != 0 else 0
 
-        fator = conc_real / conc_teorica if conc_teorica != 0 else 0
+        fator = conc_real / 0.02 if 0.02 != 0 else 0
 
         st.session_state["namo"] = {
             "Concentração Padrão": conc_padrao,
@@ -214,30 +211,30 @@ elif st.session_state.page == "namo":
             "Fator de Correção": fator
         }
 
-        st.success("✔ N-Amoniacal completo!")
+        st.success("✔ N-Amoniacal calculado!")
 
     if "namo" in st.session_state:
         for k, v in st.session_state["namo"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
 
-# ================= NTK (EXCEL COMPLETO) =================
+# ================= NTK (EXCEL) =================
 elif st.session_state.page == "ntk":
 
     st.title("🧪 Nitrogênio Total Kjeldahl (NTK)")
 
-    massa = st.number_input("Massa Tetraborato (g)", value=0.0)
+    massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
     volume_balao = st.number_input("Volume do Balão (mL)", value=100.0)
 
-    v1 = st.number_input("Titulação 1", value=0.0)
-    v2 = st.number_input("Titulação 2", value=0.0)
-    v3 = st.number_input("Titulação 3", value=0.0)
+    v1 = st.number_input("Titulação 1 (mL)", value=0.0)
+    v2 = st.number_input("Titulação 2 (mL)", value=0.0)
+    v3 = st.number_input("Titulação 3 (mL)", value=0.0)
 
     if st.button("CALCULAR NTK"):
 
-        media = np.mean([v1, v2, v3])
-        dp = np.std([v1, v2, v3], ddof=1)
+        tit = [v1, v2, v3]
 
-        conc_teorica = 0.02
+        media = np.mean(tit)
+        dp = np.std(tit, ddof=1)
 
         mol = massa / 381.40
         conc_padrao = mol / (volume_balao / 1000)
@@ -246,7 +243,7 @@ elif st.session_state.page == "ntk":
 
         rsd = (dp / media) * 100 if media != 0 else 0
 
-        fator = conc_real / conc_teorica if conc_teorica != 0 else 0
+        fator = conc_real / 0.02 if 0.02 != 0 else 0
 
         st.session_state["ntk"] = {
             "Concentração Padrão": conc_padrao,
@@ -257,7 +254,7 @@ elif st.session_state.page == "ntk":
             "Fator de Correção": fator
         }
 
-        st.success("✔ NTK completo!")
+        st.success("✔ NTK calculado!")
 
     if "ntk" in st.session_state:
         for k, v in st.session_state["ntk"].items():
