@@ -7,46 +7,73 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO =================
+# ================= ESTILO (CORREÇÃO DE LEITURA) =================
 st.markdown("""
 <style>
 
+/* Fundo geral */
 .stApp {
     background-color: #e8f5e9;
 }
 
-/* Títulos */
+/* TEXTO PADRÃO (CORREÇÃO PRINCIPAL) */
+body, p, span, div, label {
+    color: #1a1a1a !important;
+    font-size: 16px;
+}
+
+/* TÍTULOS MAIS ESCUROS (LEGÍVEIS) */
 h1 {
-    color: #1b5e20 !important;
-    font-weight: 800;
+    color: #0d3d16 !important;
+    font-weight: 900;
 }
 
 h2 {
-    color: #2e7d32 !important;
+    color: #145a24 !important;
+    font-weight: 700;
 }
 
-/* Botões estilo sistema */
+h3 {
+    color: #1b5e20 !important;
+}
+
+/* BOTÕES */
 .stButton>button {
     width: 100%;
     height: 65px;
     font-size: 16px;
     font-weight: bold;
-    background-color: #2e7d32;
-    color: white;
+    background-color: #1b5e20;
+    color: white !important;
     border-radius: 12px;
 }
 
 .stButton>button:hover {
-    background-color: #1b5e20;
+    background-color: #0d3d16;
 }
 
-/* Cards */
+/* CARDS */
 .card {
-    background-color: white;
+    background-color: #ffffff;
     padding: 18px;
     border-radius: 12px;
-    border-left: 6px solid #2e7d32;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    border-left: 6px solid #1b5e20;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
+    color: #1a1a1a !important;
+}
+
+/* INPUTS (LETRAS PRETAS GARANTIDAS) */
+input, textarea {
+    color: #000000 !important;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background-color: #145a24;
+}
+
+[data-testid="stSidebar"] * {
+    color: white !important;
 }
 
 </style>
@@ -61,7 +88,7 @@ def go(page):
 
 # ================= CABEÇALHO =================
 st.title("🧪 LABRESÍDUOS - IFRJ / CEMMA")
-st.subheader("Sistema de Laboratório Virtual Físico-Químico")
+st.subheader("Sistema Virtual de Análises Físico-Químicas")
 
 st.markdown("""
 ### 👩‍🏫 Criado por  
