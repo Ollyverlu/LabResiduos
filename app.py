@@ -82,19 +82,26 @@ def go(page):
     st.session_state.page = page
 
 # ================= CABEÇALHO =================
-st.title("🧪 LABRESÍDUOS - IFRJ / CEMMA")
-st.subheader("Sistema Virtual de Análises Físico-Químicas")
+# ================= CABEÇALHO COM LOGO =================
+col1, col2 = st.columns([1, 4])
 
-st.markdown("""
-### 👩‍🏫 Criado por  
-Luciana Oliveira de Albuquerque  
+with col1:
+    st.image("logo.png", width=120)
 
-### 🎓 Professor responsável  
-Renato Ribeiro  
+with col2:
+    st.title("🧪 LabResiduos - IFRJ / CEMMA")
+    st.subheader("Sistema Virtual de Análises Físico-Químicas")
 
-### 🧑‍💻 Administrador do sistema  
-Raphael Oliveira de Albuquerque  
-""")
+    st.markdown("""
+    ### 👩‍🏫 Criado por  
+    Luciana Oliveira de Albuquerque  
+
+    ### 🎓 Professor responsável  
+    Renato Ribeiro  
+
+    ### 🧑‍💻 Administrador do sistema  
+    ALUNO: Raphael Oliveira de Albuquerque  
+    """)
 
 st.markdown("---")
 
