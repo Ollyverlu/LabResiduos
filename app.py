@@ -81,13 +81,28 @@ menu = st.sidebar.radio(
     ]
 )
 
-# ================= N-AMONIACAL =================
-if menu == "🧪 N-Amoniacal":
+# ================= INÍCIO =================
+if menu == "🏠 Início":
+    st.title("Sistema IFRJ")
+    st.info("Selecione um módulo no menu lateral.")
 
-    # ================= TÍTULO ORIGINAL (RESTAURADO) =================
+# ================= SÓLIDOS TOTAIS =================
+elif menu == "🧪 Sólidos Totais":
+    st.title("Sólidos Totais")
+    st.info("Módulo original mantido.")
+
+# ================= SÓLIDOS SUSPENSOS =================
+elif menu == "🧪 Sólidos Suspensos":
+    st.title("Sólidos Suspensos")
+    st.info("Mesmo modelo do Sólidos Totais.")
+
+# ================= N-AMONIACAL =================
+elif menu == "🧪 N-Amoniacal":
+
+    # ===== TÍTULO ORIGINAL =====
     st.title("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
 
-    # ================= CABEÇALHO CLICÁVEL =================
+    # ===== CAMPOS CLICÁVEIS =====
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
@@ -104,7 +119,7 @@ if menu == "🧪 N-Amoniacal":
 
     st.markdown("---")
 
-    # ================= PLANILHA (EXCEL VISUAL) =================
+    # ===== PLANILHA ESTILO EXCEL =====
     st.markdown("""
     <div style="background-color:white; padding:15px; border-radius:10px;">
 
@@ -133,7 +148,7 @@ if menu == "🧪 N-Amoniacal":
     CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L <br>
     CONCENTRAÇÃO REAL: #DIV/0! eqg/L <br><br>
 
-    <b>REAGENTES UTILIZADOS</b><br>
+    <b>REAGENTES</b><br>
     ÁCIDO SULFÚRICO 0,1 eqg/L<br>
     ÁCIDO SULFÚRICO 0,02 eqg/L<br>
     TETRABORATO DE SÓDIO DECA HIDRATADO<br>
@@ -148,8 +163,8 @@ if menu == "🧪 N-Amoniacal":
 
     st.markdown("---")
 
-    # ================= CÁLCULO =================
-    st.subheader("🧪 CÁLCULO DO N-AMONIACAL")
+    # ===== CÁLCULO =====
+    st.subheader("🧪 CÁLCULO")
 
     massa = st.number_input("Massa (g)", value=0.0)
     volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
@@ -174,6 +189,7 @@ if menu == "🧪 N-Amoniacal":
                 "Desvio Padrão": dp
             }
 
+    # ===== RESULTADO =====
     if "n_amoniacal" in st.session_state:
 
         st.markdown("### 📄 RESULTADO FINAL")
@@ -185,3 +201,16 @@ if menu == "🧪 N-Amoniacal":
             {v:.4f}
             </div>
             """, unsafe_allow_html=True)
+
+# ================= NTK / NHX / DQO =================
+elif menu == "🧪 NTK":
+    st.title("NTK")
+    st.info("Aguardando implementação.")
+
+elif menu == "🧪 NHX":
+    st.title("NHX")
+    st.info("Aguardando implementação.")
+
+elif menu == "🧪 DQO":
+    st.title("DQO")
+    st.info("Aguardando implementação.")
