@@ -12,18 +12,17 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* Fundo geral */
+/* FUNDO GERAL */
 .stApp {
     background-color: #e8f5e9;
+}
+
+/* TEXTO PADRÃO (SEM FORÇAR TUDO) */
+body, p, span, label, div {
     color: #1b1b1b;
 }
 
-/* FORÇA TEXTO PRETO (evita sumir no celular) */
-html, body, [class*="css"]  {
-    color: #1b1b1b !important;
-}
-
-/* Títulos */
+/* TÍTULOS */
 h1 {
     color: #1b5e20 !important;
     font-weight: 700;
@@ -33,14 +32,14 @@ h2, h3 {
     color: #2e7d32 !important;
 }
 
-/* Área principal */
+/* ÁREA PRINCIPAL */
 .block-container {
     padding-top: 2rem;
     padding-left: 2.5rem;
     padding-right: 2.5rem;
 }
 
-/* Cards */
+/* CARDS */
 .card {
     background-color: #ffffff;
     padding: 18px;
@@ -50,17 +49,17 @@ h2, h3 {
     margin-bottom: 12px;
 }
 
-/* Sidebar */
+/* SIDEBAR */
 [data-testid="stSidebar"] {
     background-color: #1b5e20;
 }
 
-/* Texto da sidebar */
+/* TEXTO SIDEBAR */
 [data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* Botões */
+/* BOTÕES */
 .stButton>button {
     background-color: #2e7d32;
     color: white !important;
@@ -72,7 +71,13 @@ h2, h3 {
     background-color: #1b5e20;
 }
 
+/* INPUTS (IMPORTANTE PARA CELULAR) */
+input, textarea {
+    color: #000000 !important;
+}
+
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
