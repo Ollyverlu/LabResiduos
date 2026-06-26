@@ -35,7 +35,7 @@ h2 {
     box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
 }
 
-/* Botões estilo sistema */
+/* Botões */
 .stButton>button {
     width: 100%;
     height: 70px;
@@ -66,7 +66,7 @@ h2 {
 st.title("🧪 LABRESÍDUOS - IFRJ / CEMMA")
 st.subheader("Sistema de Laboratório Virtual Físico-Químico")
 
-# ================= DADOS INSTITUCIONAIS =================
+# ================= INFORMAÇÕES =================
 st.markdown("""
 ### 👩‍🏫 Criado por  
 Luciana Oliveira de Albuquerque  
@@ -74,15 +74,15 @@ Luciana Oliveira de Albuquerque
 ### 🎓 Professor responsável  
 Renato Ribeiro  
 
-### 👨‍🎓 Aluno  
-(Informe o nome do aluno na execução do sistema abaixo)
+### 🧑‍💻 Administrador do sistema  
+Raphael Oliveira de Albuquerque  
 """)
 
-# ================= CAMPO ALUNO =================
+# ================= ALUNO =================
 aluno = st.text_input("🧑‍🎓 Nome do Aluno")
 
 if aluno:
-    st.success(f"Bem-vindo(a), {aluno}! 🚀 Sistema pronto para uso.")
+    st.success(f"Bem-vindo(a), {aluno}! Sistema pronto para uso 🚀")
 
 st.markdown("---")
 
