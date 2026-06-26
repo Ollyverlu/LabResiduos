@@ -81,30 +81,60 @@ if "page" not in st.session_state:
 def go(page):
     st.session_state.page = page
 
-# ================= CABEÇALHO =================
+
 # ================= CABEÇALHO COM LOGO =================
-col1, col2 = st.columns([1, 4])
+# ================= CABEÇALHO PROFISSIONAL =================
 
-with col1:
-    st.image("logo.png", width=120)
+cab1, cab2 = st.columns([1.2, 6])
 
-with col2:
-    st.title("🧪 LabResiduos - IFRJ / CEMMA")
-    st.subheader("Sistema Virtual de Análises Físico-Químicas")
+with cab1:
+    st.image("logo.png", width=140)
+
+with cab2:
 
     st.markdown("""
-    ### 👩‍🏫 Criado por  
-    Luciana Oliveira de Albuquerque  
+    <div style="padding-top:10px">
 
-    ### 🎓 Professor responsável  
-    Renato Ribeiro  
+    <h1 style="margin-bottom:0px;
+               color:#0d3d16;
+               text-align:center;
+               font-size:38px;">
 
-    ### 🧑‍💻 Administrador do sistema  
-    ALUNO: Raphael Oliveira de Albuquerque  
-    """)
+    🧪 LABRESÍDUOS - IFRJ / CEMMA
+
+    </h1>
+
+    <h3 style="margin-top:0px;
+               text-align:center;
+               color:#1b5e20;">
+
+    Sistema Virtual de Análises Físico-Químicas
+
+    </h3>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+<div style="font-size:18px; line-height:1.8">
+
+<b>👩‍🏫 Criado por:</b>
+Luciana Oliveira de Albuquerque
+
+<br>
+
+<b>🎓 Professor responsável:</b>
+Renato Ribeiro
+
+<br>
+
+<b>🧑‍💻 Administrador do sistema:</b>
+Raphael Oliveira de Albuquerque
+
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("---")
-
 # ================= DASHBOARD =================
 if st.session_state.page == "dashboard":
 
