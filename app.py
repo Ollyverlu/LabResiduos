@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO (VERDE MAIS CLARO + LEITURA) =================
+# ================= ESTILO =================
 st.markdown("""
 <style>
 
@@ -18,7 +18,7 @@ st.markdown("""
 
 /* CABEÇALHO */
 .header {
-    background-color: #2e7d32;  /* verde mais claro */
+    background-color: #2e7d32;
     padding: 15px;
     border-radius: 10px;
     color: white;
@@ -41,7 +41,7 @@ st.markdown("""
     color: #f1f8e9 !important;
 }
 
-/* TEXTOS GERAIS */
+/* TEXTOS */
 p, label, span {
     color: #1a1a1a !important;
     font-size: 16px;
@@ -65,7 +65,7 @@ input, textarea {
     border-radius: 12px;
 }
 
-/* CARDS RESULTADO */
+/* CARDS */
 .card {
     background-color: white;
     padding: 18px;
@@ -95,7 +95,7 @@ if "page" not in st.session_state:
 def go(page):
     st.session_state.page = page
 
-# ================= CABEÇALHO PROFISSIONAL =================
+# ================= CABEÇALHO =================
 col1, col2 = st.columns([1, 4])
 
 with col1:
@@ -104,7 +104,7 @@ with col1:
 with col2:
     st.markdown("""
     <div class="header">
-        <h1>🧪 LabResiduarios - IFRJ / CEMMA</h1>
+        <h1>🧪 LABRESÍDUOS - IFRJ / CEMMA</h1>
         <h3>Sistema Virtual de Análises Físico-Químicas</h3>
     </div>
     """, unsafe_allow_html=True)
@@ -117,7 +117,7 @@ with col2:
     Renato Ribeiro  
 
     ### 🧑‍💻 Administrador do sistema  
-    Aluno: Raphael Oliveira de Albuquerque  
+    Raphael Oliveira de Albuquerque  
     """)
 
 st.markdown("---")
@@ -148,8 +148,7 @@ elif st.session_state.page == "inicio":
     st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
 # ================= SÓLIDOS TOTAIS =================
-
-    # =======elif st.session_state.page == "st":
+elif st.session_state.page == "st":
 
     st.title("🧪 Sólidos Totais")
 
@@ -167,7 +166,6 @@ elif st.session_state.page == "inicio":
 
     if st.button("🧪 GERAR RESULTADO"):
 
-        # ✔ validação
         if volume <= 0:
             st.error("❌ Volume inválido. Verifique a alíquota.")
         else:
@@ -190,44 +188,11 @@ elif st.session_state.page == "inicio":
             }
 
             st.session_state["resultado"] = resultados
-            st.success("✔ Cálculos concluídos com sucesso!")
+            st.success("✔ Cálculos concluídos!")
 
-    # ================= LAUDO MELHORADO =================
     if "resultado" in st.session_state:
 
         st.markdown("## 📄 Laudo Técnico Final")
-
-        st.markdown("""
-        <div style="
-            background-color:white;
-            padding:20px;
-            border-radius:12px;
-            border-left:6px solid #2e7d32;
-            box-shadow:0px 3px 10px rgba(0,0,0,0.1);
-        ">
-        """, unsafe_allow_html=True)
-
-        nomes = {
-            "ST": "Sólidos Totais (ST)",
-            "STF": "Sólidos Fixos (STF)",
-            "STV": "Sólidos Voláteis (STV)"
-        }
-
-        for chave, (media, dp) in st.session_state["resultado"].items():
-
-            st.markdown(f"""
-            <b>{nomes[chave]}</b><br>
-            Resultado: {media:.2f} mg/L<br>
-            Desvio padrão: {dp:.2f}<br>
-            <hr>
-            """, unsafe_allow_html=True)
-
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    st.button("⬅ Voltar", on_click=go, args=("dashboard",))========== RESULTADO =================
-    if "resultado" in st.session_state:
-
-        st.markdown("## 📄 Resultado Final")
 
         nomes = {
             "ST": "Sólidos Totais (ST)",
