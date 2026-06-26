@@ -2,12 +2,9 @@ import streamlit as st
 import numpy as np
 
 # ================= CONFIG =================
-st.set_page_config(
-    page_title="IFRJ - Laboratório Virtual CEMMA",
-    layout="wide"
-)
+st.set_page_config(page_title="IFRJ - Laboratório Virtual CEMMA", layout="wide")
 
-# ================= CSS INSTITUCIONAL =================
+# ================= CSS =================
 st.markdown("""
 <style>
 .stApp {
@@ -17,10 +14,6 @@ st.markdown("""
 h1 {
     color: #0f3d1f !important;
     font-weight: 900;
-}
-
-h2, h3 {
-    color: #1b5e20 !important;
 }
 
 .card {
@@ -42,7 +35,7 @@ h2, h3 {
 </style>
 """, unsafe_allow_html=True)
 
-# ================= CABEÇALHO INSTITUCIONAL =================
+# ================= CABEÇALHO =================
 col1, col2 = st.columns([1, 5])
 
 with col1:
@@ -58,7 +51,7 @@ with col2:
 
 st.markdown("---")
 
-# ================= MENU INSTITUCIONAL =================
+# ================= MENU =================
 menu = st.sidebar.radio("📚 Sistema Laboratorial IFRJ", [
     "🏠 Dashboard",
     "🧪 Sólidos Totais",
@@ -69,8 +62,8 @@ menu = st.sidebar.radio("📚 Sistema Laboratorial IFRJ", [
     "🧪 DQO"
 ])
 
-# ================= FUNÇÃO PADRÃO INSTITUCIONAL =================
-def header_laboratorio(titulo):
+# ================= FUNÇÃO CABEÇALHO =================
+def header(titulo):
     st.title(f"DETERMINAÇÃO DE {titulo}")
 
     col1, col2, col3, col4 = st.columns(4)
@@ -88,12 +81,12 @@ def header_laboratorio(titulo):
 
 # ================= DASHBOARD =================
 if menu == "🏠 Dashboard":
-    st.title("Sistema Institucional IFRJ")
-    st.info("Selecione um módulo laboratorial no menu lateral.")
+    st.title("Sistema IFRJ")
+    st.info("Selecione um módulo no menu lateral.")
 
 # ================= SÓLIDOS TOTAIS =================
 elif menu == "🧪 Sólidos Totais":
-    header_laboratorio("SÓLIDOS TOTAIS")
+    header("SÓLIDOS TOTAIS")
 
     v = st.number_input("Volume (mL)", value=50.0)
 
@@ -105,7 +98,8 @@ elif menu == "🧪 Sólidos Totais":
     m2_2 = st.number_input("m2 (rep 2)")
     m3_2 = st.number_input("m3 (rep 2)")
 
-    if st.button("Gerar Resultado ST"):
+    if st.button("Calcular ST"):
+
         fator = 1000 / (v / 1000)
 
         st1 = (m2 - m1) * fator
@@ -117,95 +111,109 @@ elif menu == "🧪 Sólidos Totais":
         stv1 = st1 - stf1
         stv2 = st2 - stf2
 
-        st.markdown("""
+        st.markdown(f"""
         <div class="card">
-        <b>RESULTADO FINAL</b><br><br>
-        ST: %.2f ± %.2f mg/L<br>
-        STF: %.2f ± %.2f mg/L<br>
-        STV: %.2f ± %.2f mg/L
+        <b>ST:</b> {np.mean([st1, st2]):.2f} ± {np.std([st1, st2], ddof=1):.2f}<br>
+        <b>STF:</b> {np.mean([stf1, stf2]):.2f} ± {np.std([stf1, stf2], ddof=1):.2f}<br>
+        <b>STV:</b> {np.mean([stv1, stv2]):.2f} ± {np.std([stv1, stv2], ddof=1):.2f}
         </div>
-        """ % (
-            np.mean([st1, st2]), np.std([st1, st2], ddof=1),
-            np.mean([stf1, stf2]), np.std([stf1, stf2], ddof=1),
-            np.mean([stv1, stv2]), np.std([stv1, stv2], ddof=1)
-        ), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-# ================= SÓLIDOS SUSPENSOS =================
+# ================= SÓLIDOS SUSPENSOS (IGUAL ST) =================
 elif menu == "🧪 Sólidos Suspensos":
-    header_laboratorio("SÓLIDOS SUSPENSOS")
+    header("SÓLIDOS SUSPENSOS")
 
     v = st.number_input("Volume (mL)", value=50.0)
+
     m1 = st.number_input("m1")
     m2 = st.number_input("m2")
+    m3 = st.number_input("m3")
 
-    if st.button("Gerar Resultado SS"):
+    m1_2 = st.number_input("m1 (rep 2)")
+    m2_2 = st.number_input("m2 (rep 2)")
+    m3_2 = st.number_input("m3 (rep 2)")
+
+    if st.button("Calcular SS"):
+
         fator = 1000 / (v / 1000)
-        st.success((m2 - m1) * fator)
+
+        ss1 = (m2 - m1) * fator
+        ss2 = (m2_2 - m1_2) * fator
+
+        ssf1 = (m3 - m1) * fator
+        ssf2 = (m3_2 - m1_2) * fator
+
+        ssv1 = ss1 - ssf1
+        ssv2 = ss2 - ssf2
+
+        st.markdown(f"""
+        <div class="card">
+        <b>SS:</b> {np.mean([ss1, ss2]):.2f} ± {np.std([ss1, ss2], ddof=1):.2f}<br>
+        <b>SSF:</b> {np.mean([ssf1, ssf2]):.2f} ± {np.std([ssf1, ssf2], ddof=1):.2f}<br>
+        <b>SSV:</b> {np.mean([ssv1, ssv2]):.2f} ± {np.std([ssv1, ssv2], ddof=1):.2f}
+        </div>
+        """, unsafe_allow_html=True)
 
 # ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
-    header_laboratorio("NITROGÊNIO AMONIACAL")
+    header("NITROGÊNIO AMONIACAL")
 
     m = st.number_input("Massa")
     v = st.number_input("Volume")
 
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
+    t1 = st.number_input("T1")
+    t2 = st.number_input("T2")
+    t3 = st.number_input("T3")
 
-    if st.button("Gerar Resultado N-Amoniacal"):
+    if st.button("Calcular"):
         media = np.mean([t1, t2, t3])
-
         if media != 0:
-            st.success((m / 381.4) / (v / 1000) * (v / media))
+            st.success((m/381.4)/(v/1000)*(v/media))
 
 # ================= NTK =================
-elif menu == "🧪 NTK":
-    header_laboratorio("NITROGÊNIO TOTAL KJELDAHL")
+elif menu == "NTK":
+    header("NITROGÊNIO TOTAL KJELDAHL")
 
     m = st.number_input("Massa")
     v = st.number_input("Volume")
 
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
+    t1 = st.number_input("T1")
+    t2 = st.number_input("T2")
+    t3 = st.number_input("T3")
 
-    if st.button("Gerar Resultado NTK"):
+    if st.button("Calcular"):
         media = np.mean([t1, t2, t3])
-
         if media != 0:
-            st.success((m / 381.4) / (v / 1000) * (v / media))
+            st.success((m/381.4)/(v/1000)*(v/media))
 
 # ================= NHX =================
-elif menu == "🧪 NHX":
-    header_laboratorio("NITROGÊNIO NHX")
+elif menu == "NHX":
+    header("NITROGÊNIO NHX")
 
     m = st.number_input("Massa")
     v = st.number_input("Volume")
 
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
+    t1 = st.number_input("T1")
+    t2 = st.number_input("T2")
+    t3 = st.number_input("T3")
 
-    if st.button("Gerar Resultado NHX"):
+    if st.button("Calcular"):
         media = np.mean([t1, t2, t3])
-
         if media != 0:
-            st.success((m / 381.4) / (v / 1000) * (v / media))
+            st.success((m/381.4)/(v/1000)*(v/media))
 
 # ================= DQO =================
-elif menu == "🧪 DQO":
-    header_laboratorio("DEMANDA QUÍMICA DE OXIGÊNIO")
+elif menu == "DQO":
+    header("DEMANDA QUÍMICA DE OXIGÊNIO")
 
     m = st.number_input("Massa padrão")
     v = st.number_input("Volume amostra")
 
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
+    t1 = st.number_input("T1")
+    t2 = st.number_input("T2")
+    t3 = st.number_input("T3")
 
-    if st.button("Gerar Resultado DQO"):
+    if st.button("Calcular"):
         media = np.mean([t1, t2, t3])
-
         if media != 0:
             st.success((m * 0.25) / (media + 0.0001))
