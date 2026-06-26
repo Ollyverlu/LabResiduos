@@ -1,3 +1,4 @@
+
 import streamlit as st
 import numpy as np
 
@@ -7,11 +8,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO PROFISSIONAL =================
+# ================= ESTILO =================
 st.markdown("""
 <style>
 
-/* Fundo geral */
 .stApp {
     background-color: #e8f5e9;
 }
@@ -22,23 +22,14 @@ h1 {
     font-weight: 800;
 }
 
-h2 {
+h2, h3 {
     color: #2e7d32 !important;
-}
-
-/* Cards dashboard */
-.card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 14px;
-    border-left: 6px solid #2e7d32;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
 }
 
 /* Botões */
 .stButton>button {
     width: 100%;
-    height: 70px;
+    height: 65px;
     font-size: 16px;
     font-weight: bold;
     background-color: #2e7d32;
@@ -50,23 +41,29 @@ h2 {
     background-color: #1b5e20;
 }
 
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background-color: #1b5e20;
-}
-
-[data-testid="stSidebar"] * {
-    color: white !important;
+/* Cards */
+.card {
+    background-color: white;
+    padding: 18px;
+    border-radius: 12px;
+    border-left: 6px solid #2e7d32;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
 }
 
 </style>
 """, unsafe_allow_html=True)
 
+# ================= ESTADO DE NAVEGAÇÃO =================
+if "page" not in st.session_state:
+    st.session_state.page = "dashboard"
+
+def go(page):
+    st.session_state.page = page
+
 # ================= CABEÇALHO =================
 st.title("🧪 LABRESÍDUOS - IFRJ / CEMMA")
-st.subheader("Sistema de Laboratório Virtual Físico-Químico")
+st.subheader("Sistema Virtual de Análises Físico-Químicas")
 
-# ================= INFORMAÇÕES =================
 st.markdown("""
 ### 👩‍🏫 Criado por  
 Luciana Oliveira de Albuquerque  
@@ -74,55 +71,69 @@ Luciana Oliveira de Albuquerque
 ### 🎓 Professor responsável  
 Renato Ribeiro  
 
-### 🧑‍💻 Administrador do sistema  
-Aluno:Raphael Oliveira de Albuquerque  
+### 🧑‍💻 Administrador  
+Raphael Oliveira de Albuquerque  
 """)
-
-# ================= ALUNO =================
-aluno = st.text_input("🧑‍🎓 Nome do Aluno")
-
-if aluno:
-    st.success(f"Bem-vindo(a), {aluno}! Sistema pronto para uso 🚀")
 
 st.markdown("---")
 
 # ================= DASHBOARD =================
-st.title("📊 Dashboard do Laboratório")
+if st.session_state.page == "dashboard":
 
-col1, col2 = st.columns(2)
+    st.header("📊 Dashboard do Laboratório")
 
-with col1:
-    st.button("🏠 Início")
-    st.button("🧪 Sólidos Totais")
-    st.button("🧪 Sólidos Suspensos")
+    col1, col2 = st.columns(2)
 
-with col2:
-    st.button("🧪 N-Amoniacal")
-    st.button("🧪 NTK")
-    st.button("🧪 DQO")
+    with col1:
+        st.button("🏠 Início", on_click=go, args=("inicio",))
+        st.button("🧪 Sólidos Totais", on_click=go, args=("st",))
+        st.button("🧪 Sólidos Suspensos", on_click=go, args=("ss",))
 
-st.markdown("---")
+    with col2:
+        st.button("🧪 N-Amoniacal", on_click=go, args=("namo",))
+        st.button("🧪 NTK", on_click=go, args=("ntk",))
+        st.button("🧪 DQO", on_click=go, args=("dqo",))
+
+    st.info("Selecione um módulo para iniciar.")
+
+# ================= INÍCIO =================
+elif st.session_state.page == "inicio":
+
+    st.title("🏠 Início do Sistema")
+
+    st.markdown("""
+    Bem-vindo ao **LabResíduos IFRJ**
+
+    Sistema de simulação de análises ambientais:
+
+    - Sólidos Totais  
+    - Sólidos Suspensos  
+    - N-Amoniacal  
+    - NTK  
+    - DQO  
+    """)
+
+    st.button("⬅ Voltar ao Dashboard", on_click=go, args=("dashboard",))
 
 # ================= SÓLIDOS TOTAIS =================
-st.header("🧪 Sólidos Totais")
+elif st.session_state.page == "st":
 
-volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
+    st.title("🧪 Sólidos Totais")
 
-st.markdown("## Réplica 1")
-m1 = st.number_input("m1", value=0.0, format="%.4f")
-m2 = st.number_input("m2", value=0.0, format="%.4f")
-m3 = st.number_input("m3", value=0.0, format="%.4f")
+    volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
-st.markdown("## Réplica 2")
-m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
-m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
-m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
+    st.markdown("### Réplica 1")
+    m1 = st.number_input("m1", value=0.0, format="%.4f")
+    m2 = st.number_input("m2", value=0.0, format="%.4f")
+    m3 = st.number_input("m3", value=0.0, format="%.4f")
 
-if st.button("🧪 GERAR RESULTADOS"):
+    st.markdown("### Réplica 2")
+    m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
+    m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
+    m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
 
-    if volume <= 0:
-        st.error("Volume inválido.")
-    else:
+    if st.button("🧪 GERAR RESULTADO"):
+
         fator = 1000 / (volume / 1000)
 
         ST1 = (m2 - m1) * fator
@@ -143,22 +154,36 @@ if st.button("🧪 GERAR RESULTADOS"):
         st.session_state["resultado"] = resultados
         st.success("✔ Cálculos concluídos!")
 
-# ================= RESULTADOS =================
-if "resultado" in st.session_state:
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
-    st.markdown("## 📄 Resultados do Laudo")
+# ================= SÓLIDOS SUSPENSOS =================
+elif st.session_state.page == "ss":
 
-    nomes = {
-        "ST": "Sólidos Totais (ST)",
-        "STF": "Sólidos Fixos (STF)",
-        "STV": "Sólidos Voláteis (STV)"
-    }
+    st.title("🧪 Sólidos Suspensos")
+    st.info("Módulo em desenvolvimento.")
 
-    for chave, (media, dp) in st.session_state["resultado"].items():
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
-        st.markdown(f"""
-        <div class="card">
-        <b>{nomes[chave]}</b><br>
-        {media:.2f} ± {dp:.2f} mg/L
-        </div>
-        """, unsafe_allow_html=True)
+# ================= N-AMONIACAL =================
+elif st.session_state.page == "namo":
+
+    st.title("🧪 Nitrogênio Amoniacal")
+    st.info("Módulo em desenvolvimento.")
+
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
+
+# ================= NTK =================
+elif st.session_state.page == "ntk":
+
+    st.title("🧪 Nitrogênio Kjeldahl Total")
+    st.info("Módulo em desenvolvimento.")
+
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
+
+# ================= DQO =================
+elif st.session_state.page == "dqo":
+
+    st.title("🧪 Demanda Química de Oxigênio")
+    st.info("Módulo em desenvolvimento.")
+
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
