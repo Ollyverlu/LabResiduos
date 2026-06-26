@@ -24,17 +24,6 @@ st.markdown("""
     text-align: center;
 }
 
-.header h1 {
-    font-size: 30px;
-    color: white !important;
-}
-
-.header h3 {
-    font-size: 18px;
-    color: #dcedc8 !important;
-}
-
-/* CARD RESULTADOS */
 .card {
     background: white;
     padding: 15px;
@@ -43,7 +32,6 @@ st.markdown("""
     margin-top: 10px;
 }
 
-/* BOTÕES */
 .stButton>button {
     width: 100%;
     height: 55px;
@@ -78,7 +66,7 @@ with col2:
 
 st.markdown("---")
 
-# ================= MENU PROFISSIONAL =================
+# ================= MENU =================
 menu = st.sidebar.radio(
     "📊 Menu do Laboratório",
     [
@@ -87,6 +75,7 @@ menu = st.sidebar.radio(
         "🧪 Sólidos Suspensos",
         "🧪 N-Amoniacal",
         "🧪 NTK",
+        "🧪 NHX",
         "🧪 DQO"
     ]
 )
@@ -136,74 +125,37 @@ elif menu == "🧪 Sólidos Totais":
 
 # ================= SÓLIDOS SUSPENSOS =================
 elif menu == "🧪 Sólidos Suspensos":
-
     st.title("Sólidos Suspensos")
+    st.info("Mesmo modelo dos Sólidos Totais.")
 
-    st.info("Mesmo modelo dos Sólidos Totais (estrutura base pronta para expansão).")
-
-# ================= N-AMONIACAL (EXCEL COMPLETO) =================
+# ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
-
-    st.title("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
-
-    st.markdown("### PADRONIZAÇÃO DO H₂SO₄ 0,02N")
-
-    massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
-    massa_molar = 381.40
-    volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
-
-    v1 = st.number_input("1ª titulação (mL)", value=0.0)
-    v2 = st.number_input("2ª titulação (mL)", value=0.0)
-    v3 = st.number_input("3ª titulação (mL)", value=0.0)
-
-    if st.button("CALCULAR"):
-
-        media = np.mean([v1, v2, v3])
-        dp = np.std([v1, v2, v3], ddof=1)
-
-        mol = massa / massa_molar
-        conc_padrao = mol / (volume_balao / 1000)
-
-        conc_real = (conc_padrao * volume_balao) / media if media != 0 else 0
-
-        st.session_state["namo"] = {
-            "Concentração Padrão": conc_padrao,
-            "Concentração Real": conc_real,
-            "Média": media,
-            "DP": dp
-        }
-
-    if "namo" in st.session_state:
-        for k, v in st.session_state["namo"].items():
-            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
+    st.title("N-Amoniacal")
+    st.info("Módulo em desenvolvimento.")
 
 # ================= NTK =================
 elif menu == "🧪 NTK":
 
-    st.title("DETERMINAÇÃO DE NITROGÊNIO TOTAL KJELDAHL")
+    st.title("DETERMINAÇÃO DE NTK")
 
-    st.markdown("### PADRONIZAÇÃO DO H₂SO₄ 0,02N")
+    massa = st.number_input("Massa (g)", value=0.0)
+    volume_balao = st.number_input("Volume balão (mL)", value=100.0)
 
-    massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
-    volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
+    v1 = st.number_input("1ª titulação", value=0.0)
+    v2 = st.number_input("2ª titulação", value=0.0)
+    v3 = st.number_input("3ª titulação", value=0.0)
 
-    v1 = st.number_input("1ª titulação (mL)", value=0.0)
-    v2 = st.number_input("2ª titulação (mL)", value=0.0)
-    v3 = st.number_input("3ª titulação (mL)", value=0.0)
-
-    if st.button("CALCULAR"):
+    if st.button("CALCULAR NTK"):
 
         media = np.mean([v1, v2, v3])
         dp = np.std([v1, v2, v3], ddof=1)
 
-        mol = massa / 381.40
-        conc_padrao = mol / (volume_balao / 1000)
-
-        conc_real = (conc_padrao * volume_balao) / media if media != 0 else 0
+        conc = (massa / 381.40) / (volume_balao / 1000)
+        real = conc * volume_balao / media if media != 0 else 0
 
         st.session_state["ntk"] = {
-            "Concentração Padrão": conc_padrao,
-            "Concentração Real": conc_real,
+            "Concentração": conc,
+            "Real": real,
             "Média": media,
             "DP": dp
         }
@@ -212,7 +164,70 @@ elif menu == "🧪 NTK":
         for k, v in st.session_state["ntk"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
 
-# ================= DQO =================
+# ================= NHX =================
+elif menu == "🧪 NHX":
+
+    st.title("DETERMINAÇÃO DE NHX")
+
+    massa = st.number_input("Massa (g)", value=0.0, key="nhx_massa")
+    volume_balao = st.number_input("Volume balão (mL)", value=100.0, key="nhx_vol")
+
+    v1 = st.number_input("1ª titulação", value=0.0, key="nhx_v1")
+    v2 = st.number_input("2ª titulação", value=0.0, key="nhx_v2")
+    v3 = st.number_input("3ª titulação", value=0.0, key="nhx_v3")
+
+    if st.button("CALCULAR NHX"):
+
+        media = np.mean([v1, v2, v3])
+        dp = np.std([v1, v2, v3], ddof=1)
+
+        conc = (massa / 381.40) / (volume_balao / 1000)
+        real = conc * volume_balao / media if media != 0 else 0
+
+        st.session_state["nhx"] = {
+            "Concentração": conc,
+            "Real": real,
+            "Média": media,
+            "DP": dp
+        }
+
+    if "nhx" in st.session_state:
+        for k, v in st.session_state["nhx"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
+
+# ================= DQO (NOVO - IGUAL EXCEL QUE VOCÊ MANDOU) =================
 elif menu == "🧪 DQO":
-    st.title("DQO")
-    st.info("Em desenvolvimento")
+
+    st.title("DETERMINAÇÃO DE DEMANDA QUÍMICA DE OXIGÊNIO")
+
+    st.markdown("### PADRONIZAÇÃO DO SFA 0,25N")
+
+    massa = st.number_input("Massa (g) K2Cr2O7", value=12.4556)
+    massa_molar = 294.18
+    volume_balao = st.number_input("Volume balão (mL)", value=1000.0)
+
+    aliquota = st.number_input("Volume da alíquota (mL)", value=0.0)
+
+    v1 = st.number_input("1ª titulação (mL)", value=0.0)
+    v2 = st.number_input("2ª titulação (mL)", value=0.0)
+    v3 = st.number_input("3ª titulação (mL)", value=0.0)
+
+    if st.button("CALCULAR DQO"):
+
+        media = np.mean([v1, v2, v3])
+        dp = np.std([v1, v2, v3], ddof=1)
+
+        conc_padrao = (massa / massa_molar) / (volume_balao / 1000)
+
+        real = conc_padrao * volume_balao / media if media != 0 else 0
+
+        st.session_state["dqo"] = {
+            "Concentração padrão": conc_padrao,
+            "Concentração real": real,
+            "Média": media,
+            "DP": dp
+        }
+
+    if "dqo" in st.session_state:
+        for k, v in st.session_state["dqo"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
