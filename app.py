@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 
 # ================= CONFIG =================
-st.set_page_config(page_title=" - LabResiduos -Laboratorio Virtual", layout="wide")
+st.set_page_config(page_title=" - LabResiduos -Laboratorio Virtual - IFRJ", layout="wide")
 
 # ================= CSS =================
 st.markdown("""
