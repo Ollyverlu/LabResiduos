@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO (CORREÇÃO FINAL ESTÁVEL) =================
+# ================= ESTILO (VERDE MAIS CLARO + LEITURA) =================
 st.markdown("""
 <style>
 
@@ -16,21 +16,42 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
-/* ===== CABEÇALHO MAIOR (CORREÇÃO PRINCIPAL) ===== */
-h1 {
-    font-size: 34px !important;
-    color: #0d3d16 !important;
-    font-weight: 900;
+/* CABEÇALHO */
+.header {
+    background-color: #2e7d32;  /* verde mais claro */
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 15px;
+    box-shadow: 0px 3px 10px rgba(0,0,0,0.15);
 }
 
-h2 {
-    font-size: 26px !important;
-    color: #145a24 !important;
+.header h1 {
+    margin: 0;
+    font-size: 34px;
+    text-align: center;
+    color: white !important;
 }
 
-h3, p {
-    font-size: 18px !important;
+.header h3 {
+    margin: 0;
+    font-size: 18px;
+    text-align: center;
+    font-weight: normal;
+    color: #f1f8e9 !important;
+}
+
+/* TEXTOS GERAIS */
+p, label, span {
     color: #1a1a1a !important;
+    font-size: 16px;
+}
+
+/* INPUTS */
+input, textarea {
+    background-color: white !important;
+    color: black !important;
+    font-size: 16px !important;
 }
 
 /* BOTÕES */
@@ -39,24 +60,17 @@ h3, p {
     height: 65px;
     font-size: 16px;
     font-weight: bold;
-    background-color: #1b5e20;
+    background-color: #2e7d32;
     color: white;
     border-radius: 12px;
 }
 
-/* INPUTS (CORREÇÃO DO CELULAR) */
-input, textarea {
-    background-color: white !important;
-    color: black !important;
-    font-size: 16px !important;
-}
-
-/* CARDS RESULTADO (DESTACADO) */
+/* CARDS RESULTADO */
 .card {
     background-color: white;
     padding: 18px;
     border-radius: 12px;
-    border-left: 6px solid #1b5e20;
+    border-left: 6px solid #2e7d32;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
     font-size: 18px;
     color: black !important;
@@ -64,7 +78,7 @@ input, textarea {
 
 /* SIDEBAR */
 [data-testid="stSidebar"] {
-    background-color: #145a24;
+    background-color: #1b5e20;
 }
 
 [data-testid="stSidebar"] * {
@@ -81,37 +95,11 @@ if "page" not in st.session_state:
 def go(page):
     st.session_state.page = page
 
-
-# ================= CABEÇALHO COM LOGO =================
-# ================= CABEÇALHO PROFISSIONAL IFRJ =================
-
-st.markdown("""
-<style>
-.header {
-    background-color: #145a24;
-    padding: 15px;
-    border-radius: 10px;
-    color: white;
-    margin-bottom: 15px;
-}
-.header h1 {
-    margin: 0;
-    font-size: 34px;
-    text-align: center;
-}
-.header h3 {
-    margin: 0;
-    font-size: 18px;
-    text-align: center;
-    font-weight: normal;
-}
-</style>
-""", unsafe_allow_html=True)
-
-col1, col2, col3 = st.columns([1,4,1])
+# ================= CABEÇALHO PROFISSIONAL =================
+col1, col2 = st.columns([1, 4])
 
 with col1:
-    st.image("logo.png", width=110)
+    st.image("logo.png", width=120)
 
 with col2:
     st.markdown("""
@@ -121,18 +109,19 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown("""
-### 👩‍🏫 Criado por  
-Luciana Oliveira de Albuquerque  
+    st.markdown("""
+    ### 👩‍🏫 Criado por  
+    Luciana Oliveira de Albuquerque  
 
-### 🎓 Professor responsável  
-Renato Ribeiro  
+    ### 🎓 Professor responsável  
+    Renato Ribeiro  
 
-### 🧑‍💻 Administrador do sistema  
-Raphael Oliveira de Albuquerque  
-""")
+    ### 🧑‍💻 Administrador do sistema  
+    Raphael Oliveira de Albuquerque  
+    """)
 
 st.markdown("---")
+
 # ================= DASHBOARD =================
 if st.session_state.page == "dashboard":
 
@@ -197,7 +186,7 @@ elif st.session_state.page == "st":
         st.session_state["resultado"] = resultados
         st.success("✔ Cálculos concluídos!")
 
-    # ===== RESULTADO DESTACADO (CORREÇÃO PRINCIPAL) =====
+    # ================= RESULTADO =================
     if "resultado" in st.session_state:
 
         st.markdown("## 📄 Resultado Final")
