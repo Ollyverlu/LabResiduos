@@ -16,7 +16,7 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
-/* TEXTO PADRÃO (SEM QUEBRAR MOBILE) */
+/* TEXTO PADRÃO (SEM FORÇAR TUDO) */
 body, p, span, label, div {
     color: #1b1b1b;
 }
