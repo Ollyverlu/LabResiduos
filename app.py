@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 
 # ================= CONFIG =================
-st.set_page_config(page_title=" - IFRJ LabResiduos -Laboratorio Virtual ", layout="wide")
+st.set_page_config(page_title=" - LabResiduos -Laboratorio Virtual ", layout="wide")
 
 # ================= CSS =================
 st.markdown("""
@@ -42,7 +42,7 @@ with col1:
     st.image("logo.png", width=90)
 
 with col2:
-    st.title("🧪 - LABORATÓRIO VIRTUAL ")
+    st.title("🧪IFRJ - LABORATÓRIO VIRTUAL ")
     st.markdown("""
 **Criado por:** Luciana Oliveira de Albuquerque  
 **Professor responsável:** Renato Ribeiro  
