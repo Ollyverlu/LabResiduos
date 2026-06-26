@@ -42,17 +42,17 @@ with col1:
     st.image("logo.png", width=90)
 
 with col2:
-    st.title("🧪 IFRJ - LabResudiarios ")
+    st.title("🧪 IFRJ - LABORATÓRIO VIRTUAL CEMMA")
     st.markdown("""
 **Criado por:** Luciana Oliveira de Albuquerque  
 **Professor responsável:** Renato Ribeiro  
-**Administrador do sistema:** Aluno:Raphael Oliveira de Albuquerque  
+**Administrador do sistema:** Raphael Oliveira de Albuquerque  
 """)
 
 st.markdown("---")
 
 # ================= MENU =================
-menu = st.sidebar.radio("📚 Sistema Laboratorial ", [
+menu = st.sidebar.radio("📚 Sistema Laboratorial IFRJ", [
     "🏠 Dashboard",
     "🧪 Sólidos Totais",
     "🧪 Sólidos Suspensos",
@@ -62,7 +62,7 @@ menu = st.sidebar.radio("📚 Sistema Laboratorial ", [
     "🧪 DQO"
 ])
 
-# ================= CABEÇALHO PADRÃO =================
+# ================= HEADER =================
 def header(titulo):
     st.title(f"DETERMINAÇÃO DE {titulo}")
 
@@ -118,7 +118,7 @@ elif menu == "🧪 Sólidos Totais":
         </div>
         """, unsafe_allow_html=True)
 
-# ================= SÓLIDOS SUSPENSOS (IGUAL ST) =================
+# ================= SÓLIDOS SUSPENSOS =================
 elif menu == "🧪 Sólidos Suspensos":
     header("SÓLIDOS SUSPENSOS")
 
@@ -152,7 +152,7 @@ elif menu == "🧪 Sólidos Suspensos":
         </div>
         """, unsafe_allow_html=True)
 
-# ================= N-AMONIACAL =================
+# ================= N-AMONIACAL (CORRIGIDO REAL) =================
 elif menu == "🧪 N-Amoniacal":
     header("NITROGÊNIO AMONIACAL")
 
@@ -163,58 +163,63 @@ elif menu == "🧪 N-Amoniacal":
     t2 = st.number_input("Titulação 2")
     t3 = st.number_input("Titulação 3")
 
-    if st.button("Calcular"):
+    if st.button("Calcular N-Amoniacal"):
         media = np.mean([t1, t2, t3])
-        if media != 0:
-            st.success((m / 381.4) / (v / 1000) * (v / media))
 
-# ================= NTK (COMPLETO RESTAURADO) =================
+        if media != 0 and v != 0:
+            resultado = (m / 381.4) / (v / 1000) * (media)
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= NTK (CORRIGIDO REAL) =================
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
 
     m = st.number_input("Massa")
     v = st.number_input("Volume")
 
-    t1 = st.number_input("1ª Titulação")
-    t2 = st.number_input("2ª Titulação")
-    t3 = st.number_input("3ª Titulação")
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
 
     if st.button("Calcular NTK"):
         media = np.mean([t1, t2, t3])
-        if media != 0:
-            resultado = (m / 381.4) / (v / 1000) * (v / media)
-            st.success(resultado)
 
-# ================= NHX (RESTAURADO IGUAL ESTRUTURA COMPLETA) =================
+        if media != 0 and v != 0:
+            resultado = (m / 381.4) / (v / 1000) * (media)
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= NHX (CORRIGIDO REAL) =================
 elif menu == "🧪 NHX":
     header("NITROGÊNIO NHX")
 
     m = st.number_input("Massa")
     v = st.number_input("Volume")
 
-    t1 = st.number_input("1ª Titulação")
-    t2 = st.number_input("2ª Titulação")
-    t3 = st.number_input("3ª Titulação")
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
 
     if st.button("Calcular NHX"):
         media = np.mean([t1, t2, t3])
-        if media != 0:
-            resultado = (m / 381.4) / (v / 1000) * (v / media)
-            st.success(resultado)
 
-# ================= DQO (RESTAURADO COMPLETO) =================
+        if media != 0 and v != 0:
+            resultado = (m / 381.4) / (v / 1000) * (media)
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= DQO (CORRIGIDO REAL) =================
 elif menu == "🧪 DQO":
     header("DEMANDA QUÍMICA DE OXIGÊNIO")
 
     m = st.number_input("Massa padrão")
     v = st.number_input("Volume amostra")
 
-    t1 = st.number_input("1ª Titulação")
-    t2 = st.number_input("2ª Titulação")
-    t3 = st.number_input("3ª Titulação")
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
 
     if st.button("Calcular DQO"):
         media = np.mean([t1, t2, t3])
+
         if media != 0:
-            resultado = (m * 0.25) / (media + 0.0001)
-            st.success(resultado)
+            resultado = (m * 0.25) / media
+            st.success(f"Resultado: {resultado:.4f}")
