@@ -7,34 +7,30 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO (CORREÇÃO DE LEITURA) =================
+# ================= ESTILO (CORREÇÃO FINAL ESTÁVEL) =================
 st.markdown("""
 <style>
 
-/* Fundo geral */
+/* FUNDO */
 .stApp {
     background-color: #e8f5e9;
 }
 
-/* TEXTO PADRÃO (CORREÇÃO PRINCIPAL) */
-body, p, span, div, label {
-    color: #1a1a1a !important;
-    font-size: 16px;
-}
-
-/* TÍTULOS MAIS ESCUROS (LEGÍVEIS) */
+/* ===== CABEÇALHO MAIOR (CORREÇÃO PRINCIPAL) ===== */
 h1 {
+    font-size: 34px !important;
     color: #0d3d16 !important;
     font-weight: 900;
 }
 
 h2 {
+    font-size: 26px !important;
     color: #145a24 !important;
-    font-weight: 700;
 }
 
-h3 {
-    color: #1b5e20 !important;
+h3, p {
+    font-size: 18px !important;
+    color: #1a1a1a !important;
 }
 
 /* BOTÕES */
@@ -44,27 +40,26 @@ h3 {
     font-size: 16px;
     font-weight: bold;
     background-color: #1b5e20;
-    color: white !important;
+    color: white;
     border-radius: 12px;
 }
 
-.stButton>button:hover {
-    background-color: #0d3d16;
+/* INPUTS (CORREÇÃO DO CELULAR) */
+input, textarea {
+    background-color: white !important;
+    color: black !important;
+    font-size: 16px !important;
 }
 
-/* CARDS */
+/* CARDS RESULTADO (DESTACADO) */
 .card {
-    background-color: #ffffff;
+    background-color: white;
     padding: 18px;
     border-radius: 12px;
     border-left: 6px solid #1b5e20;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
-    color: #1a1a1a !important;
-}
-
-/* INPUTS (LETRAS PRETAS GARANTIDAS) */
-input, textarea {
-    color: #000000 !important;
+    font-size: 18px;
+    color: black !important;
 }
 
 /* SIDEBAR */
@@ -101,15 +96,6 @@ Renato Ribeiro
 Raphael Oliveira de Albuquerque  
 """)
 
-# ================= LOGO =================
-col1, col2, col3 = st.columns([1,2,1])
-
-with col2:
-    try:
-        st.image("logo.png", use_container_width=True)
-    except:
-        st.warning("Logo não encontrada (logo.png)")
-
 st.markdown("---")
 
 # ================= DASHBOARD =================
@@ -133,10 +119,9 @@ if st.session_state.page == "dashboard":
 elif st.session_state.page == "inicio":
 
     st.title("🏠 Início do Sistema")
-
     st.info("Bem-vindo ao LabResíduos IFRJ")
 
-    st.button("⬅ Voltar ao Dashboard", on_click=go, args=("dashboard",))
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
 # ================= SÓLIDOS TOTAIS =================
 elif st.session_state.page == "st":
@@ -145,44 +130,61 @@ elif st.session_state.page == "st":
 
     volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
-    st.markdown("## Réplica 1")
+    st.markdown("### Réplica 1")
     m1 = st.number_input("m1", value=0.0, format="%.4f")
     m2 = st.number_input("m2", value=0.0, format="%.4f")
     m3 = st.number_input("m3", value=0.0, format="%.4f")
 
-    st.markdown("## Réplica 2")
+    st.markdown("### Réplica 2")
     m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
     m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
     m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
 
-    if st.button("🧪 GERAR RESULTADOS"):
+    if st.button("🧪 GERAR RESULTADO"):
 
-        if volume <= 0:
-            st.error("Volume inválido.")
-        else:
-            fator = 1000 / (volume / 1000)
+        fator = 1000 / (volume / 1000)
 
-            ST1 = (m2 - m1) * fator
-            ST2 = (m2_2 - m1_2) * fator
+        ST1 = (m2 - m1) * fator
+        ST2 = (m2_2 - m1_2) * fator
 
-            STF1 = (m3 - m1) * fator
-            STF2 = (m3_2 - m1_2) * fator
+        STF1 = (m3 - m1) * fator
+        STF2 = (m3_2 - m1_2) * fator
 
-            STV1 = ST1 - STF1
-            STV2 = ST2 - STF2
+        STV1 = ST1 - STF1
+        STV2 = ST2 - STF2
 
-            resultados = {
-                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
-                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
-                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
-            }
+        resultados = {
+            "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
+            "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
+            "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
+        }
 
-            st.session_state["resultado"] = resultados
-            st.success("✔ Cálculos concluídos!")
+        st.session_state["resultado"] = resultados
+        st.success("✔ Cálculos concluídos!")
+
+    # ===== RESULTADO DESTACADO (CORREÇÃO PRINCIPAL) =====
+    if "resultado" in st.session_state:
+
+        st.markdown("## 📄 Resultado Final")
+
+        nomes = {
+            "ST": "Sólidos Totais (ST)",
+            "STF": "Sólidos Fixos (STF)",
+            "STV": "Sólidos Voláteis (STV)"
+        }
+
+        for chave, (media, dp) in st.session_state["resultado"].items():
+
+            st.markdown(f"""
+            <div class="card">
+            <b>{nomes[chave]}</b><br>
+            {media:.2f} ± {dp:.2f} mg/L
+            </div>
+            """, unsafe_allow_html=True)
 
     st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
-# ================= OUTROS MÓDULOS =================
+# ================= OUTROS =================
 elif st.session_state.page == "ss":
     st.title("🧪 Sólidos Suspensos")
     st.info("Módulo em desenvolvimento.")
