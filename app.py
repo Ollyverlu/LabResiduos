@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO =================
+# ================= ESTILO PROFISSIONAL =================
 st.markdown("""
 <style>
 
@@ -15,13 +15,13 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
-h1 {
-    color: #1b5e20 !important;
-    font-weight: 900;
-}
-
-h2, h3 {
-    color: #2e7d32 !important;
+/* CABEÇALHO */
+.header {
+    background-color: #1b5e20;
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
 }
 
 .card {
@@ -32,17 +32,12 @@ h2, h3 {
     margin-top: 10px;
 }
 
-input {
-    background-color: white !important;
-    color: black !important;
-}
-
 .stButton>button {
+    width: 100%;
+    height: 55px;
     background-color: #2e7d32;
     color: white;
     font-weight: bold;
-    width: 100%;
-    height: 55px;
     border-radius: 10px;
 }
 
@@ -56,12 +51,16 @@ with col1:
     st.image("logo.png", width=100)
 
 with col2:
-    st.title("🧪 LABRESÍDUOS - IFRJ / CEMMA")
-    st.subheader("Sistema Virtual de Análises Físico-Químicas")
+    st.markdown("""
+    <div class="header">
+        <h1>🧪 LABRESÍDUOS - IFRJ / CEMMA</h1>
+        <h3>Sistema Virtual de Análises Físico-Químicas</h3>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown("""
     ### 👩‍🏫 Criado por: Luciana Oliveira de Albuquerque  
-    ### 🎓 Professor responsável: Renato Ribeiro  
+    ### 🎓 Professor: Renato Ribeiro  
     ### 🧑‍💻 Administrador: Raphael Oliveira de Albuquerque  
     """)
 
@@ -69,7 +68,7 @@ st.markdown("---")
 
 # ================= MENU =================
 menu = st.sidebar.radio(
-    "📊 Menu do Sistema",
+    "📊 Menu do Laboratório",
     [
         "🏠 Início",
         "🧪 Sólidos Totais",
@@ -81,107 +80,154 @@ menu = st.sidebar.radio(
     ]
 )
 
+# ================= INÍCIO =================
+if menu == "🏠 Início":
+    st.title("Bem-vindo ao Sistema IFRJ")
+    st.info("Selecione um módulo no menu lateral.")
+
+# ================= SÓLIDOS TOTAIS =================
+elif menu == "🧪 Sólidos Totais":
+
+    st.title("Sólidos Totais")
+
+    volume = st.number_input("Alíquota (mL)", value=50.0)
+
+    m1 = st.number_input("m1", value=0.0)
+    m2 = st.number_input("m2", value=0.0)
+    m3 = st.number_input("m3", value=0.0)
+
+    m1_2 = st.number_input("m1'", value=0.0)
+    m2_2 = st.number_input("m2'", value=0.0)
+    m3_2 = st.number_input("m3'", value=0.0)
+
+    if st.button("GERAR RESULTADO"):
+
+        fator = 1000 / (volume / 1000)
+
+        ST1 = (m2 - m1) * fator
+        ST2 = (m2_2 - m1_2) * fator
+
+        STF1 = (m3 - m1) * fator
+        STF2 = (m3_2 - m1_2) * fator
+
+        STV1 = ST1 - STF1
+        STV2 = ST2 - STF2
+
+        st.session_state["st"] = {
+            "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
+            "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
+            "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
+        }
+
+    if "st" in st.session_state:
+        for k, (m, d) in st.session_state["st"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
+
+# ================= SÓLIDOS SUSPENSOS =================
+elif menu == "🧪 Sólidos Suspensos":
+    st.title("Sólidos Suspensos")
+    st.info("Mesmo modelo dos Sólidos Totais.")
+
 # ================= N-AMONIACAL =================
-if menu == "🧪 N-Amoniacal":
+elif menu == "🧪 N-Amoniacal":
+    st.title("N-Amoniacal")
+    st.info("Módulo em desenvolvimento.")
 
-    # ================= TÍTULO ORIGINAL (RESTAURADO) =================
-    st.title("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
+# ================= NTK =================
+elif menu == "🧪 NTK":
 
-    # ================= CABEÇALHO CLICÁVEL =================
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.text_input("RESPONSÁVEL")
-
-    with col2:
-        st.text_input("PROJETO")
-
-    with col3:
-        st.date_input("DATA DA ANÁLISE")
-
-    with col4:
-        st.time_input("HORA DA ANÁLISE")
-
-    st.markdown("---")
-
-    # ================= PLANILHA (EXCEL VISUAL) =================
-    st.markdown("""
-    <div style="background-color:white; padding:15px; border-radius:10px;">
-
-    <h4>PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H₂SO₄) 0,02 N</h4>
-
-    <b>PADRÃO PRIMÁRIO:</b> TETRABORATO DE SÓDIO DECA HIDRATADO (Na₂B₄O₇·10H₂O)<br><br>
-
-    <b>MASSA PESADA:</b> ______ g <br>
-    <b>MASSA MOLAR:</b> 381,40 g/mol <br>
-    <b>VOLUME DO BALÃO VOLUMÉTRICO:</b> ______ mL <br>
-    <b>CONCENTRAÇÃO:</b> #DIV/0! eqg/L <br>
-    <b>VOLUME DA ALÍQUOTA:</b> 10,00 mL <br><br>
-
-    <b>1ª TITULAÇÃO</b><br>
-    VOLUME DE H₂SO₄ GASTO: ______ mL <br>
-    CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L <br>
-    CONCENTRAÇÃO REAL: #DIV/0! eqg/L <br><br>
-
-    <b>2ª TITULAÇÃO</b><br>
-    VOLUME DE H₂SO₄ GASTO: ______ mL <br>
-    CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L <br>
-    CONCENTRAÇÃO REAL: #DIV/0! eqg/L <br><br>
-
-    <b>3ª TITULAÇÃO</b><br>
-    VOLUME DE H₂SO₄ GASTO: ______ mL <br>
-    CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L <br>
-    CONCENTRAÇÃO REAL: #DIV/0! eqg/L <br><br>
-
-    <b>REAGENTES UTILIZADOS</b><br>
-    ÁCIDO SULFÚRICO 0,1 eqg/L<br>
-    ÁCIDO SULFÚRICO 0,02 eqg/L<br>
-    TETRABORATO DE SÓDIO DECA HIDRATADO<br>
-    ALARANJADO DE METILA<br>
-    TAMPÃO FOSFATO 0,5 mol/L<br>
-    SOLUÇÃO DE AZUL DE METILENO 0,2%<br>
-    SOLUÇÃO DE VERMELHO DE METILA 0,2%<br>
-    SOLUÇÃO INDICADORA DE ÁCIDO BÓRICO<br>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    # ================= CÁLCULO =================
-    st.subheader("🧪 CÁLCULO DO N-AMONIACAL")
+    st.title("DETERMINAÇÃO DE NTK")
 
     massa = st.number_input("Massa (g)", value=0.0)
-    volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
+    volume_balao = st.number_input("Volume balão (mL)", value=100.0)
 
-    t1 = st.number_input("1ª Titulação", value=0.0)
-    t2 = st.number_input("2ª Titulação", value=0.0)
-    t3 = st.number_input("3ª Titulação", value=0.0)
+    v1 = st.number_input("1ª titulação", value=0.0)
+    v2 = st.number_input("2ª titulação", value=0.0)
+    v3 = st.number_input("3ª titulação", value=0.0)
 
-    if st.button("CALCULAR"):
+    if st.button("CALCULAR NTK"):
 
-        media = np.mean([t1, t2, t3])
-        dp = np.std([t1, t2, t3], ddof=1) if len([t1, t2, t3]) > 1 else 0
+        media = np.mean([v1, v2, v3])
+        dp = np.std([v1, v2, v3], ddof=1)
 
-        if media != 0:
-            conc = (massa / 381.40) / (volume_balao / 1000)
-            resultado_final = conc * (volume_balao / media)
+        conc = (massa / 381.40) / (volume_balao / 1000)
+        real = conc * volume_balao / media if media != 0 else 0
 
-            st.session_state["n_amoniacal"] = {
-                "Concentração": conc,
-                "Resultado Final": resultado_final,
-                "Média": media,
-                "Desvio Padrão": dp
-            }
+        st.session_state["ntk"] = {
+            "Concentração": conc,
+            "Real": real,
+            "Média": media,
+            "DP": dp
+        }
 
-    if "n_amoniacal" in st.session_state:
+    if "ntk" in st.session_state:
+        for k, v in st.session_state["ntk"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
 
-        st.markdown("### 📄 RESULTADO FINAL")
+# ================= NHX =================
+elif menu == "🧪 NHX":
 
-        for k, v in st.session_state["n_amoniacal"].items():
-            st.markdown(f"""
-            <div class="card">
-            <b>{k}</b><br>
-            {v:.4f}
-            </div>
-            """, unsafe_allow_html=True)
+    st.title("DETERMINAÇÃO DE NHX")
+
+    massa = st.number_input("Massa (g)", value=0.0, key="nhx_massa")
+    volume_balao = st.number_input("Volume balão (mL)", value=100.0, key="nhx_vol")
+
+    v1 = st.number_input("1ª titulação", value=0.0, key="nhx_v1")
+    v2 = st.number_input("2ª titulação", value=0.0, key="nhx_v2")
+    v3 = st.number_input("3ª titulação", value=0.0, key="nhx_v3")
+
+    if st.button("CALCULAR NHX"):
+
+        media = np.mean([v1, v2, v3])
+        dp = np.std([v1, v2, v3], ddof=1)
+
+        conc = (massa / 381.40) / (volume_balao / 1000)
+        real = conc * volume_balao / media if media != 0 else 0
+
+        st.session_state["nhx"] = {
+            "Concentração": conc,
+            "Real": real,
+            "Média": media,
+            "DP": dp
+        }
+
+    if "nhx" in st.session_state:
+        for k, v in st.session_state["nhx"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
+
+# ================= DQO (NOVO - IGUAL EXCEL QUE VOCÊ MANDOU) =================
+elif menu == "🧪 DQO":
+
+    st.title("DETERMINAÇÃO DE DEMANDA QUÍMICA DE OXIGÊNIO")
+
+    st.markdown("### PADRONIZAÇÃO DO SFA 0,25N")
+
+    massa = st.number_input("Massa (g) K2Cr2O7", value=12.4556)
+    massa_molar = 294.18
+    volume_balao = st.number_input("Volume balão (mL)", value=1000.0)
+
+    aliquota = st.number_input("Volume da alíquota (mL)", value=0.0)
+
+    v1 = st.number_input("1ª titulação (mL)", value=0.0)
+    v2 = st.number_input("2ª titulação (mL)", value=0.0)
+    v3 = st.number_input("3ª titulação (mL)", value=0.0)
+
+    if st.button("CALCULAR DQO"):
+
+        media = np.mean([v1, v2, v3])
+        dp = np.std([v1, v2, v3], ddof=1)
+
+        conc_padrao = (massa / massa_molar) / (volume_balao / 1000)
+
+        real = conc_padrao * volume_balao / media if media != 0 else 0
+
+        st.session_state["dqo"] = {
+            "Concentração padrão": conc_padrao,
+            "Concentração real": real,
+            "Média": media,
+            "DP": dp
+        }
+
+    if "dqo" in st.session_state:
+        for k, v in st.session_state["dqo"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
