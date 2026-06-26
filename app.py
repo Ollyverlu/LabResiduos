@@ -75,7 +75,7 @@ Luciana Oliveira de Albuquerque
 Renato Ribeiro  
 
 ### 🧑‍💻 Administrador do sistema  
-Raphael Oliveira de Albuquerque  
+Aluno:Raphael Oliveira de Albuquerque  
 """)
 
 # ================= ALUNO =================
