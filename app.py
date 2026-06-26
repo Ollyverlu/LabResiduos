@@ -62,20 +62,20 @@ menu = st.sidebar.radio("📚 Sistema Laboratorial IFRJ", [
     "🧪 DQO"
 ])
 
-# ================= HEADER =================
+# ================= HEADER CORRIGIDO (ANTI ERRO STREAMLIT) =================
 def header(titulo):
     st.title(f"DETERMINAÇÃO DE {titulo}")
 
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.text_input("Responsável")
+        st.text_input("Responsável", key=f"resp_{titulo}")
     with col2:
-        st.text_input("Projeto")
+        st.text_input("Projeto", key=f"proj_{titulo}")
     with col3:
-        st.date_input("Data da Análise")
+        st.date_input("Data da Análise", key=f"data_{titulo}")
     with col4:
-        st.time_input("Hora da Análise")
+        st.time_input("Hora da Análise", key=f"hora_{titulo}")
 
     st.markdown("---")
 
@@ -152,7 +152,7 @@ elif menu == "🧪 Sólidos Suspensos":
         </div>
         """, unsafe_allow_html=True)
 
-# ================= N-AMONIACAL (CORRIGIDO REAL) =================
+# ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
     header("NITROGÊNIO AMONIACAL")
 
@@ -165,12 +165,11 @@ elif menu == "🧪 N-Amoniacal":
 
     if st.button("Calcular N-Amoniacal"):
         media = np.mean([t1, t2, t3])
-
-        if media != 0 and v != 0:
-            resultado = (m / 381.4) / (v / 1000) * (media)
+        if media != 0:
+            resultado = (m / 381.4) / (v / 1000) * media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= NTK (CORRIGIDO REAL) =================
+# ================= NTK =================
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
 
@@ -183,12 +182,11 @@ elif menu == "🧪 NTK":
 
     if st.button("Calcular NTK"):
         media = np.mean([t1, t2, t3])
-
-        if media != 0 and v != 0:
-            resultado = (m / 381.4) / (v / 1000) * (media)
+        if media != 0:
+            resultado = (m / 381.4) / (v / 1000) * media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= NHX (CORRIGIDO REAL) =================
+# ================= NHX =================
 elif menu == "🧪 NHX":
     header("NITROGÊNIO NHX")
 
@@ -201,12 +199,11 @@ elif menu == "🧪 NHX":
 
     if st.button("Calcular NHX"):
         media = np.mean([t1, t2, t3])
-
-        if media != 0 and v != 0:
-            resultado = (m / 381.4) / (v / 1000) * (media)
+        if media != 0:
+            resultado = (m / 381.4) / (v / 1000) * media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= DQO (CORRIGIDO REAL) =================
+# ================= DQO =================
 elif menu == "🧪 DQO":
     header("DEMANDA QUÍMICA DE OXIGÊNIO")
 
@@ -219,7 +216,6 @@ elif menu == "🧪 DQO":
 
     if st.button("Calcular DQO"):
         media = np.mean([t1, t2, t3])
-
         if media != 0:
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
