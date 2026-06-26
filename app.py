@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO =================
+# ================= ESTILO PROFISSIONAL =================
 st.markdown("""
 <style>
 
@@ -89,7 +89,7 @@ if menu == "🏠 Início":
 
 # ================= SÓLIDOS TOTAIS =================
 elif menu == "🧪 Sólidos Totais":
-    st.title("Sólidos Totais")
+    st.title("🧪 Sólidos Totais")
 
     volume = st.number_input("Alíquota (mL)", value=50.0)
 
@@ -119,23 +119,22 @@ elif menu == "🧪 Sólidos Totais":
         st.session_state["STV"] = (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
 
     if "ST" in st.session_state:
-
-        st.markdown("### Resultados")
+        st.markdown("### 📄 Resultados")
 
         st.markdown(f"""
         <div class="card">
-        ST: {st.session_state["ST"][0]:.2f} ± {st.session_state["ST"][1]:.2f}
+        <b>ST:</b> {st.session_state["ST"][0]:.2f} ± {st.session_state["ST"][1]:.2f}
         </div>
         """, unsafe_allow_html=True)
 
-    st.button("⬅ Voltar", on_click=lambda: None)
+    st.button("⬅ Voltar")
 
 # ================= SÓLIDOS SUSPENSOS =================
 elif menu == "🧪 Sólidos Suspensos":
-    st.title("Sólidos Suspensos")
-    st.info("Mesma estrutura do Sólidos Totais.")
+    st.title("🧪 Sólidos Suspensos")
+    st.info("Estrutura igual ao Sólidos Totais (em implementação).")
 
-    st.button("⬅ Voltar", on_click=lambda: None)
+    st.button("⬅ Voltar")
 
 # ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
@@ -144,8 +143,10 @@ elif menu == "🧪 N-Amoniacal":
 
     responsavel = st.text_input("Responsável")
     projeto = st.text_input("Projeto")
-    data = st.date_input("Data da análise")
-    hora = st.time_input("Hora da análise")
+    data = st.date_input("Data da Análise")
+    hora = st.time_input("Hora da Análise")
+
+    st.markdown("---")
 
     massa = st.number_input("Massa (g)", value=0.0)
     volume = st.number_input("Volume (mL)", value=100.0)
@@ -165,25 +166,25 @@ elif menu == "🧪 N-Amoniacal":
     if "N_AMONIACAL" in st.session_state:
         st.success(f"Resultado: {st.session_state['N_AMONIACAL']:.4f}")
 
-    st.button("⬅ Voltar", on_click=lambda: None)
+    st.button("⬅ Voltar")
 
 # ================= NTK =================
 elif menu == "🧪 NTK":
-    st.title("NTK")
-    st.info("Módulo mantido para implementação futura.")
+    st.title("🧪 NTK")
+    st.info("Estrutura de planilha IFRJ será aplicada aqui.")
 
-    st.button("⬅ Voltar", on_click=lambda: None)
+    st.button("⬅ Voltar")
 
 # ================= NHX =================
 elif menu == "🧪 NHX":
-    st.title("NHX")
-    st.info("Módulo mantido para implementação futura.")
+    st.title("🧪 NHX")
+    st.info("Estrutura de planilha IFRJ será aplicada aqui.")
 
-    st.button("⬅ Voltar", on_click=lambda: None)
+    st.button("⬅ Voltar")
 
 # ================= DQO =================
 elif menu == "🧪 DQO":
-    st.title("DQO")
-    st.info("Módulo mantido para implementação futura.")
+    st.title("🧪 DQO")
+    st.info("Estrutura de planilha IFRJ será aplicada aqui.")
 
-    st.button("⬅ Voltar", on_click=lambda: None)
+    st.button("⬅ Voltar")
