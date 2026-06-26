@@ -91,18 +91,20 @@ elif menu == "🧪 Sólidos Totais":
     st.title("Sólidos Totais")
     st.info("Módulo original mantido.")
 
+    st.button("⬅ Voltar", on_click=lambda: st.experimental_rerun())
+
 # ================= SÓLIDOS SUSPENSOS =================
 elif menu == "🧪 Sólidos Suspensos":
     st.title("Sólidos Suspensos")
     st.info("Mesmo modelo do Sólidos Totais.")
 
-# ================= N-AMONIACAL =================
+    st.button("⬅ Voltar", on_click=lambda: st.experimental_rerun())
+
+# ================= N-AMONIACAL (COMPLETO) =================
 elif menu == "🧪 N-Amoniacal":
 
-    # ===== TÍTULO ORIGINAL =====
     st.title("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
 
-    # ===== CAMPOS CLICÁVEIS =====
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
@@ -119,98 +121,53 @@ elif menu == "🧪 N-Amoniacal":
 
     st.markdown("---")
 
-    # ===== PLANILHA ESTILO EXCEL =====
     st.markdown("""
-    <div style="background-color:white; padding:15px; border-radius:10px;">
+    <div class="card">
+    <b>PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H2SO4) 0,02 N</b><br><br>
 
-    <h4>PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H₂SO₄) 0,02 N</h4>
-
-    <b>PADRÃO PRIMÁRIO:</b> TETRABORATO DE SÓDIO DECA HIDRATADO (Na₂B₄O₇·10H₂O)<br><br>
-
-    <b>MASSA PESADA:</b> ______ g <br>
-    <b>MASSA MOLAR:</b> 381,40 g/mol <br>
-    <b>VOLUME DO BALÃO VOLUMÉTRICO:</b> ______ mL <br>
-    <b>CONCENTRAÇÃO:</b> #DIV/0! eqg/L <br>
-    <b>VOLUME DA ALÍQUOTA:</b> 10,00 mL <br><br>
-
-    <b>1ª TITULAÇÃO</b><br>
-    VOLUME DE H₂SO₄ GASTO: ______ mL <br>
-    CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L <br>
-    CONCENTRAÇÃO REAL: #DIV/0! eqg/L <br><br>
-
-    <b>2ª TITULAÇÃO</b><br>
-    VOLUME DE H₂SO₄ GASTO: ______ mL <br>
-    CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L <br>
-    CONCENTRAÇÃO REAL: #DIV/0! eqg/L <br><br>
-
-    <b>3ª TITULAÇÃO</b><br>
-    VOLUME DE H₂SO₄ GASTO: ______ mL <br>
-    CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L <br>
-    CONCENTRAÇÃO REAL: #DIV/0! eqg/L <br><br>
-
-    <b>REAGENTES</b><br>
-    ÁCIDO SULFÚRICO 0,1 eqg/L<br>
-    ÁCIDO SULFÚRICO 0,02 eqg/L<br>
-    TETRABORATO DE SÓDIO DECA HIDRATADO<br>
-    ALARANJADO DE METILA<br>
-    TAMPÃO FOSFATO 0,5 mol/L<br>
-    SOLUÇÃO DE AZUL DE METILENO 0,2%<br>
-    SOLUÇÃO DE VERMELHO DE METILA 0,2%<br>
-    SOLUÇÃO INDICADORA DE ÁCIDO BÓRICO<br>
-
+    PADRÃO PRIMÁRIO: TETRABORATO DE SÓDIO DECA HIDRATADO<br>
+    MASSA PESADA: ____ g<br>
+    MASSA MOLAR: 381,40 g/mol<br>
+    VOLUME DO BALÃO: ____ mL<br>
+    CONCENTRAÇÃO: #DIV/0!<br>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("---")
-
-    # ===== CÁLCULO =====
-    st.subheader("🧪 CÁLCULO")
-
     massa = st.number_input("Massa (g)", value=0.0)
-    volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
+    vol = st.number_input("Volume do balão (mL)", value=100.0)
 
     t1 = st.number_input("1ª Titulação", value=0.0)
     t2 = st.number_input("2ª Titulação", value=0.0)
     t3 = st.number_input("3ª Titulação", value=0.0)
 
-    if st.button("CALCULAR"):
+    if st.button("CALCULAR N-AMONIACAL"):
 
         media = np.mean([t1, t2, t3])
-        dp = np.std([t1, t2, t3], ddof=1) if len([t1, t2, t3]) > 1 else 0
 
-        if media != 0:
-            conc = (massa / 381.40) / (volume_balao / 1000)
-            resultado_final = conc * (volume_balao / media)
+        if media > 0:
+            resultado = (massa / 381.4) / (vol / 1000) * (vol / media)
 
-            st.session_state["n_amoniacal"] = {
-                "Concentração": conc,
-                "Resultado Final": resultado_final,
-                "Média": media,
-                "Desvio Padrão": dp
-            }
+            st.session_state["n_amoniacal"] = resultado
 
-    # ===== RESULTADO =====
     if "n_amoniacal" in st.session_state:
+        st.success(f"Resultado: {st.session_state['n_amoniacal']:.4f}")
 
-        st.markdown("### 📄 RESULTADO FINAL")
+    st.button("⬅ Voltar", on_click=lambda: st.experimental_rerun())
 
-        for k, v in st.session_state["n_amoniacal"].items():
-            st.markdown(f"""
-            <div class="card">
-            <b>{k}</b><br>
-            {v:.4f}
-            </div>
-            """, unsafe_allow_html=True)
-
-# ================= NTK / NHX / DQO =================
+# ================= NTK =================
 elif menu == "🧪 NTK":
     st.title("NTK")
-    st.info("Aguardando implementação.")
+    st.info("Módulo preservado para implementação futura.")
+    st.button("⬅ Voltar", on_click=lambda: st.experimental_rerun())
 
+# ================= NHX =================
 elif menu == "🧪 NHX":
     st.title("NHX")
-    st.info("Aguardando implementação.")
+    st.info("Módulo preservado para implementação futura.")
+    st.button("⬅ Voltar", on_click=lambda: st.experimental_rerun())
 
+# ================= DQO =================
 elif menu == "🧪 DQO":
     st.title("DQO")
-    st.info("Aguardando implementação.")
+    st.info("Módulo preservado para implementação futura.")
+    st.button("⬅ Voltar", on_click=lambda: st.experimental_rerun())
