@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 
@@ -8,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO (CORRIGIDO PARA CELULAR + NOTEBOOK) =================
+# ================= ESTILO (VERSÃO SEGURA - MOBILE + DESKTOP) =================
 st.markdown("""
 <style>
 
@@ -17,7 +16,7 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
-/* TEXTO PADRÃO (SEM FORÇAR TUDO) */
+/* TEXTO PADRÃO (SEM QUEBRAR MOBILE) */
 body, p, span, label, div {
     color: #1b1b1b;
 }
@@ -78,7 +77,6 @@ input, textarea {
 
 </style>
 """, unsafe_allow_html=True)
-""", unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
 st.title("🧪 Laboratório Virtual CEMMA – IFRJ  - Com Professor Renato Ribeiro")
@@ -100,7 +98,6 @@ menu = st.sidebar.selectbox(
     [
         "🏠 Início",
         "📖 Aula Teórica",
-        "LABORATÓRIO",
         "🧪 Sólidos Totais",
         "🧪 Sólidos Suspensos",
         "🧪 N-Amoniacal",
@@ -141,7 +138,7 @@ elif menu == "📖 Aula Teórica":
     st.header("📖 Aula Teórica")
     st.info("Conteúdo teórico será inserido aqui futuramente.")
 
-# ================= LABORATÓRIO SÓLIDOS TOTAIS =================
+# ================= SÓLIDOS TOTAIS =================
 elif menu == "🧪 Sólidos Totais":
 
     st.markdown("""
@@ -160,7 +157,7 @@ elif menu == "🧪 Sólidos Totais":
     ---
     """)
 
-    st.header("🧪 Sólidos Totais")
+    st.header("🧪 Inserção de Dados")
 
     volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
