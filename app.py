@@ -100,7 +100,7 @@ with cab2:
                text-align:center;
                font-size:38px;">
 
-    🧪 LABRESÍDUOS - IFRJ / CEMMA
+    🧪 LabResiduarios - IFRJ / CEMMA
 
     </h1>
 
@@ -129,7 +129,7 @@ Renato Ribeiro
 <br>
 
 <b>🧑‍💻 Administrador do sistema:</b>
-Raphael Oliveira de Albuquerque
+ALUNO: Raphael Oliveira de Albuquerque
 
 </div>
 """, unsafe_allow_html=True)
