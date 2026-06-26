@@ -42,17 +42,17 @@ with col1:
     st.image("logo.png", width=90)
 
 with col2:
-    st.title("🧪 IFRJ - LABORATÓRIO VIRTUAL CEMMA")
+    st.title("🧪 IFRJ - LabResudiarios ")
     st.markdown("""
 **Criado por:** Luciana Oliveira de Albuquerque  
 **Professor responsável:** Renato Ribeiro  
-**Administrador do sistema:** Raphael Oliveira de Albuquerque  
+**Administrador do sistema:** Aluno:Raphael Oliveira de Albuquerque  
 """)
 
 st.markdown("---")
 
 # ================= MENU =================
-menu = st.sidebar.radio("📚 Sistema Laboratorial IFRJ", [
+menu = st.sidebar.radio("📚 Sistema Laboratorial ", [
     "🏠 Dashboard",
     "🧪 Sólidos Totais",
     "🧪 Sólidos Suspensos",
