@@ -1,6 +1,5 @@
 import streamlit as st
 import numpy as np
-from datetime import datetime
 
 # ================= CONFIG =================
 st.set_page_config(
@@ -12,43 +11,95 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+/* FUNDO */
 .stApp {
     background-color: #e8f5e9;
 }
 
+/* CABEÇALHO */
 .header {
-    background-color: #1b5e20;
+    background-color: #2e7d32;
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 10px;
     color: white;
+    margin-bottom: 15px;
+    box-shadow: 0px 3px 10px rgba(0,0,0,0.15);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 34px;
     text-align: center;
+    color: white !important;
 }
 
-.card {
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-    border-left: 6px solid #2e7d32;
-    margin-top: 10px;
+.header h3 {
+    margin: 0;
+    font-size: 18px;
+    text-align: center;
+    font-weight: normal;
+    color: #f1f8e9 !important;
 }
 
+/* TEXTOS */
+p, label, span {
+    color: #1a1a1a !important;
+    font-size: 16px;
+}
+
+/* INPUTS */
+input, textarea {
+    background-color: white !important;
+    color: black !important;
+    font-size: 16px !important;
+}
+
+/* BOTÕES */
 .stButton>button {
     width: 100%;
-    height: 55px;
+    height: 65px;
+    font-size: 16px;
+    font-weight: bold;
     background-color: #2e7d32;
     color: white;
-    font-weight: bold;
-    border-radius: 10px;
+    border-radius: 12px;
+}
+
+/* CARDS */
+.card {
+    background-color: white;
+    padding: 18px;
+    border-radius: 12px;
+    border-left: 6px solid #2e7d32;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
+    font-size: 18px;
+    color: black !important;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background-color: #1b5e20;
+}
+
+[data-testid="stSidebar"] * {
+    color: white !important;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
+# ================= NAVEGAÇÃO =================
+if "page" not in st.session_state:
+    st.session_state.page = "dashboard"
+
+def go(page):
+    st.session_state.page = page
+
 # ================= CABEÇALHO =================
-col1, col2 = st.columns([1, 5])
+col1, col2 = st.columns([1, 4])
 
 with col1:
-    st.image("logo.png", width=100)
+    st.image("logo.png", width=120)
 
 with col2:
     st.markdown("""
@@ -59,133 +110,124 @@ with col2:
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    ### 👩‍🏫 Criado por: Luciana Oliveira de Albuquerque  
-    ### 🎓 Professor: Renato Ribeiro  
-    ### 🧑‍💻 Administrador: Raphael Oliveira de Albuquerque  
+    ### 👩‍🏫 Criado por  
+    Luciana Oliveira de Albuquerque  
+
+    ### 🎓 Professor responsável  
+    Renato Ribeiro  
+
+    ### 🧑‍💻 Administrador do sistema  
+    Raphael Oliveira de Albuquerque  
     """)
 
 st.markdown("---")
 
-# ================= MENU =================
-menu = st.sidebar.radio(
-    "📊 Menu do Laboratório",
-    [
-        "🏠 Início",
-        "🧪 Sólidos Totais",
-        "🧪 Sólidos Suspensos",
-        "🧪 N-Amoniacal",
-        "🧪 NTK",
-        "🧪 NHX",
-        "🧪 DQO"
-    ]
-)
+# ================= DASHBOARD =================
+if st.session_state.page == "dashboard":
 
-# ================= BARRA EXCEL (NOVO PADRÃO) =================
-def cabecalho_excel():
-    col1, col2, col3, col4 = st.columns(4)
+    st.title("📊 Dashboard do Laboratório")
+
+    col1, col2 = st.columns(2)
 
     with col1:
-        st.text_input("RESPONSÁVEL")
+        st.button("🏠 Início", on_click=go, args=("inicio",))
+        st.button("🧪 Sólidos Totais", on_click=go, args=("st",))
+        st.button("🧪 Sólidos Suspensos", on_click=go, args=("ss",))
 
     with col2:
-        st.text_input("PROJETO")
-
-    with col3:
-        st.date_input("DATA DA ANÁLISE")
-
-    with col4:
-        st.time_input("HORA DA ANÁLISE")
-
-    st.markdown("---")
+        st.button("🧪 N-Amoniacal", on_click=go, args=("namo",))
+        st.button("🧪 NTK", on_click=go, args=("ntk",))
+        st.button("🧪 DQO", on_click=go, args=("dqo",))
 
 # ================= INÍCIO =================
-if menu == "🏠 Início":
-    st.title("Bem-vindo ao Sistema IFRJ")
-    st.info("Selecione um módulo no menu lateral.")
+elif st.session_state.page == "inicio":
+
+    st.title("🏠 Início do Sistema")
+    st.info("Bem-vindo ao LabResíduos IFRJ")
+
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
 # ================= SÓLIDOS TOTAIS =================
-elif menu == "🧪 Sólidos Totais":
-    st.title("Sólidos Totais")
+elif st.session_state.page == "st":
 
-    cabecalho_excel()
+    st.title("🧪 Sólidos Totais")
 
-    volume = st.number_input("Alíquota (mL)", value=50.0)
+    volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
-# ================= SÓLIDOS SUSPENSOS =================
-elif menu == "🧪 Sólidos Suspensos":
-    st.title("Sólidos Suspensos")
-    cabecalho_excel()
-    st.info("Mesmo modelo dos Sólidos Totais.")
+    st.markdown("### Réplica 1")
+    m1 = st.number_input("m1", value=0.0, format="%.4f")
+    m2 = st.number_input("m2", value=0.0, format="%.4f")
+    m3 = st.number_input("m3", value=0.0, format="%.4f")
 
-# ================= N-AMONIACAL (COM EXCEL TOP) =================
-elif menu == "🧪 N-Amoniacal":
+    st.markdown("### Réplica 2")
+    m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
+    m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
+    m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
 
-    st.title("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
+    if st.button("🧪 GERAR RESULTADO"):
 
-    # 🔥 NOVA BARRA TIPO PLANILHA (SEM MEXER NO RESTO)
-    cabecalho_excel()
+        if volume <= 0:
+            st.error("❌ Volume inválido. Verifique a alíquota.")
+        else:
 
-    st.markdown("### PADRONIZAÇÃO DO H₂SO₄ 0,02N")
+            fator = 1000 / (volume / 1000)
 
-    massa = st.number_input("Massa (g)", value=0.0)
-    volume_balao = st.number_input("Volume balão (mL)", value=100.0)
+            ST1 = (m2 - m1) * fator
+            ST2 = (m2_2 - m1_2) * fator
 
-    v1 = st.number_input("1ª titulação", value=0.0)
-    v2 = st.number_input("2ª titulação", value=0.0)
-    v3 = st.number_input("3ª titulação", value=0.0)
+            STF1 = (m3 - m1) * fator
+            STF2 = (m3_2 - m1_2) * fator
 
-    if st.button("CALCULAR"):
+            STV1 = ST1 - STF1
+            STV2 = ST2 - STF2
 
-        media = np.mean([v1, v2, v3])
-        dp = np.std([v1, v2, v3], ddof=1)
+            resultados = {
+                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
+                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
+                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
+            }
 
-        conc = (massa / 381.40) / (volume_balao / 1000)
-        real = conc * volume_balao / media if media != 0 else 0
+            st.session_state["resultado"] = resultados
+            st.success("✔ Cálculos concluídos!")
 
-        st.session_state["namo"] = {
-            "Concentração": conc,
-            "Real": real,
-            "Média": media,
-            "DP": dp
+    if "resultado" in st.session_state:
+
+        st.markdown("## 📄 Laudo Técnico Final")
+
+        nomes = {
+            "ST": "Sólidos Totais (ST)",
+            "STF": "Sólidos Fixos (STF)",
+            "STV": "Sólidos Voláteis (STV)"
         }
 
-    if "namo" in st.session_state:
-        for k, v in st.session_state["namo"].items():
-            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
+        for chave, (media, dp) in st.session_state["resultado"].items():
 
-# ================= NTK =================
-elif menu == "🧪 NTK":
-    st.title("NTK")
-    cabecalho_excel()
+            st.markdown(f"""
+            <div class="card">
+            <b>{nomes[chave]}</b><br>
+            {media:.2f} ± {dp:.2f} mg/L
+            </div>
+            """, unsafe_allow_html=True)
 
-    massa = st.number_input("Massa (g)", value=0.0)
-    volume_balao = st.number_input("Volume balão (mL)", value=100.0)
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
-    v1 = st.number_input("1ª titulação", value=0.0)
-    v2 = st.number_input("2ª titulação", value=0.0)
-    v3 = st.number_input("3ª titulação", value=0.0)
+# ================= OUTROS =================
+elif st.session_state.page == "ss":
+    st.title("🧪 Sólidos Suspensos")
+    st.info("Módulo em desenvolvimento.")
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
-    if st.button("CALCULAR NTK"):
+elif st.session_state.page == "namo":
+    st.title("🧪 N-Amoniacal")
+    st.info("Módulo em desenvolvimento.")
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
-        media = np.mean([v1, v2, v3])
-        dp = np.std([v1, v2, v3], ddof=1)
+elif st.session_state.page == "ntk":
+    st.title("🧪 NTK")
+    st.info("Módulo em desenvolvimento.")
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
-        conc = (massa / 381.40) / (volume_balao / 1000)
-        real = conc * volume_balao / media if media != 0 else 0
-
-        st.session_state["ntk"] = {
-            "Concentração": conc,
-            "Real": real,
-            "Média": media,
-            "DP": dp
-        }
-
-# ================= NHX =================
-elif menu == "🧪 NHX":
-    st.title("NHX")
-    cabecalho_excel()
-
-# ================= DQO =================
-elif menu == "🧪 DQO":
-    st.title("DQO")
-    cabecalho_excel()
+elif st.session_state.page == "dqo":
+    st.title("🧪 DQO")
+    st.info("Módulo em desenvolvimento.")
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
