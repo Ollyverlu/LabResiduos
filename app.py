@@ -148,7 +148,8 @@ elif st.session_state.page == "inicio":
     st.button("⬅ Voltar", on_click=go, args=("dashboard",))
 
 # ================= SÓLIDOS TOTAIS =================
-elif st.session_state.page == "st":
+
+    # =======elif st.session_state.page == "st":
 
     st.title("🧪 Sólidos Totais")
 
@@ -166,27 +167,64 @@ elif st.session_state.page == "st":
 
     if st.button("🧪 GERAR RESULTADO"):
 
-        fator = 1000 / (volume / 1000)
+        # ✔ validação
+        if volume <= 0:
+            st.error("❌ Volume inválido. Verifique a alíquota.")
+        else:
 
-        ST1 = (m2 - m1) * fator
-        ST2 = (m2_2 - m1_2) * fator
+            fator = 1000 / (volume / 1000)
 
-        STF1 = (m3 - m1) * fator
-        STF2 = (m3_2 - m1_2) * fator
+            ST1 = (m2 - m1) * fator
+            ST2 = (m2_2 - m1_2) * fator
 
-        STV1 = ST1 - STF1
-        STV2 = ST2 - STF2
+            STF1 = (m3 - m1) * fator
+            STF2 = (m3_2 - m1_2) * fator
 
-        resultados = {
-            "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
-            "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
-            "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
+            STV1 = ST1 - STF1
+            STV2 = ST2 - STF2
+
+            resultados = {
+                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
+                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
+                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
+            }
+
+            st.session_state["resultado"] = resultados
+            st.success("✔ Cálculos concluídos com sucesso!")
+
+    # ================= LAUDO MELHORADO =================
+    if "resultado" in st.session_state:
+
+        st.markdown("## 📄 Laudo Técnico Final")
+
+        st.markdown("""
+        <div style="
+            background-color:white;
+            padding:20px;
+            border-radius:12px;
+            border-left:6px solid #2e7d32;
+            box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+        ">
+        """, unsafe_allow_html=True)
+
+        nomes = {
+            "ST": "Sólidos Totais (ST)",
+            "STF": "Sólidos Fixos (STF)",
+            "STV": "Sólidos Voláteis (STV)"
         }
 
-        st.session_state["resultado"] = resultados
-        st.success("✔ Cálculos concluídos!")
+        for chave, (media, dp) in st.session_state["resultado"].items():
 
-    # ================= RESULTADO =================
+            st.markdown(f"""
+            <b>{nomes[chave]}</b><br>
+            Resultado: {media:.2f} mg/L<br>
+            Desvio padrão: {dp:.2f}<br>
+            <hr>
+            """, unsafe_allow_html=True)
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.button("⬅ Voltar", on_click=go, args=("dashboard",))========== RESULTADO =================
     if "resultado" in st.session_state:
 
         st.markdown("## 📄 Resultado Final")
