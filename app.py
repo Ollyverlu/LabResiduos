@@ -95,6 +95,7 @@ menu = st.sidebar.selectbox(
     [
         "🏠 Início",
         "📖 Aula Teórica",
+        "LABORATÓRIO",
         "🧪 Sólidos Totais",
         "🧪 Sólidos Suspensos",
         "🧪 N-Amoniacal",
@@ -154,7 +155,7 @@ elif menu == "🧪 Sólidos Totais":
     ---
     """)
 
-    st.header("🧪 Inserção de Dados")
+    st.header("🧪 Sólidos Totais")
 
     volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
