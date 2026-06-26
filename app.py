@@ -104,7 +104,7 @@ with col1:
 with col2:
     st.markdown("""
     <div class="header">
-        <h1>🧪 LABRESÍDUOS - IFRJ / CEMMA</h1>
+        <h1>🧪 LabResiduarios - IFRJ / CEMMA</h1>
         <h3>Sistema Virtual de Análises Físico-Químicas</h3>
     </div>
     """, unsafe_allow_html=True)
@@ -117,7 +117,7 @@ with col2:
     Renato Ribeiro  
 
     ### 🧑‍💻 Administrador do sistema  
-    Raphael Oliveira de Albuquerque  
+    Aluno: Raphael Oliveira de Albuquerque  
     """)
 
 st.markdown("---")
