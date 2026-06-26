@@ -12,7 +12,10 @@ st.markdown("""
 ### 👩‍🏫 Criado por  
 Luciana Oliveira de Albuquerque  
 
-### 🎓 Administrador  
+### 🎓 Professor responsável  
+Renato Ribeiro  
+
+### 🧑‍💻 Administrador do sistema  
 Raphael Oliveira de Albuquerque
 """)
 
