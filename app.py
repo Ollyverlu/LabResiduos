@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ================= ESTILO =================
+# ================= ESTILO PROFISSIONAL =================
 st.markdown("""
 <style>
 
@@ -17,87 +17,50 @@ st.markdown("""
 
 /* CABEÇALHO */
 .header {
-    background-color: #2e7d32;
+    background-color: #1b5e20;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 12px;
     color: white;
-    margin-bottom: 15px;
-    box-shadow: 0px 3px 10px rgba(0,0,0,0.15);
+    text-align: center;
 }
 
 .header h1 {
-    margin: 0;
-    font-size: 34px;
-    text-align: center;
+    font-size: 30px;
     color: white !important;
 }
 
 .header h3 {
-    margin: 0;
     font-size: 18px;
-    text-align: center;
-    color: #f1f8e9 !important;
+    color: #dcedc8 !important;
 }
 
-/* TEXTO */
-p, label, span {
-    color: #1a1a1a !important;
-    font-size: 16px;
-}
-
-/* INPUT */
-input, textarea {
-    background-color: white !important;
-    color: black !important;
-    font-size: 16px !important;
+/* CARD RESULTADOS */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 6px solid #2e7d32;
+    margin-top: 10px;
 }
 
 /* BOTÕES */
 .stButton>button {
     width: 100%;
-    height: 60px;
-    font-size: 16px;
-    font-weight: bold;
+    height: 55px;
     background-color: #2e7d32;
     color: white;
-    border-radius: 12px;
-}
-
-/* CARDS */
-.card {
-    background-color: white;
-    padding: 18px;
-    border-radius: 12px;
-    border-left: 6px solid #2e7d32;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
-    font-size: 18px;
-    color: black !important;
-}
-
-/* SIDEBAR */
-[data-testid="stSidebar"] {
-    background-color: #1b5e20;
-}
-
-[data-testid="stSidebar"] * {
-    color: white !important;
+    font-weight: bold;
+    border-radius: 10px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ================= NAVEGAÇÃO =================
-if "page" not in st.session_state:
-    st.session_state.page = "dashboard"
-
-def go(page):
-    st.session_state.page = page
-
 # ================= CABEÇALHO =================
-col1, col2 = st.columns([1, 4])
+col1, col2 = st.columns([1, 5])
 
 with col1:
-    st.image("logo.png", width=110)
+    st.image("logo.png", width=100)
 
 with col2:
     st.markdown("""
@@ -108,45 +71,35 @@ with col2:
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    ### 👩‍🏫 Criado por  
-    Luciana Oliveira de Albuquerque  
-
-    ### 🎓 Professor responsável  
-    Renato Ribeiro  
-
-    ### 🧑‍💻 Administrador do sistema  
-    Raphael Oliveira de Albuquerque  
+    ### 👩‍🏫 Criado por: Luciana Oliveira de Albuquerque  
+    ### 🎓 Professor: Renato Ribeiro  
+    ### 🧑‍💻 Administrador: Raphael Oliveira de Albuquerque  
     """)
 
 st.markdown("---")
 
-# ================= DASHBOARD =================
-if st.session_state.page == "dashboard":
-
-    st.title("📊 Dashboard do Laboratório")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.button("🏠 Início", on_click=go, args=("inicio",))
-        st.button("🧪 Sólidos Totais", on_click=go, args=("st",))
-        st.button("🧪 Sólidos Suspensos", on_click=go, args=("ss",))
-
-    with col2:
-        st.button("🧪 N-Amoniacal", on_click=go, args=("namo",))
-        st.button("🧪 NTK", on_click=go, args=("ntk",))
-        st.button("🧪 DQO", on_click=go, args=("dqo",))
+# ================= MENU PROFISSIONAL =================
+menu = st.sidebar.radio(
+    "📊 Menu do Laboratório",
+    [
+        "🏠 Início",
+        "🧪 Sólidos Totais",
+        "🧪 Sólidos Suspensos",
+        "🧪 N-Amoniacal",
+        "🧪 NTK",
+        "🧪 DQO"
+    ]
+)
 
 # ================= INÍCIO =================
-elif st.session_state.page == "inicio":
-    st.title("🏠 Início")
-    st.info("Sistema IFRJ - LabResíduos em funcionamento.")
-    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
+if menu == "🏠 Início":
+    st.title("Bem-vindo ao Sistema IFRJ")
+    st.info("Selecione um módulo no menu lateral.")
 
 # ================= SÓLIDOS TOTAIS =================
-elif st.session_state.page == "st":
+elif menu == "🧪 Sólidos Totais":
 
-    st.title("🧪 Sólidos Totais")
+    st.title("Sólidos Totais")
 
     volume = st.number_input("Alíquota (mL)", value=50.0)
 
@@ -158,7 +111,7 @@ elif st.session_state.page == "st":
     m2_2 = st.number_input("m2'", value=0.0)
     m3_2 = st.number_input("m3'", value=0.0)
 
-    if st.button("GERAR RESULTADO ST"):
+    if st.button("GERAR RESULTADO"):
 
         fator = 1000 / (volume / 1000)
 
@@ -171,118 +124,95 @@ elif st.session_state.page == "st":
         STV1 = ST1 - STF1
         STV2 = ST2 - STF2
 
-        st.session_state["resultado_st"] = {
+        st.session_state["st"] = {
             "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
             "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
             "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
         }
 
-        st.success("✔ ST calculado!")
-
-    if "resultado_st" in st.session_state:
-        st.markdown("## RESULTADO ST")
-
-        nomes = {
-            "ST": "Sólidos Totais",
-            "STF": "Sólidos Fixos",
-            "STV": "Sólidos Voláteis"
-        }
-
-        for k, (m, d) in st.session_state["resultado_st"].items():
-            st.markdown(f"<div class='card'><b>{nomes[k]}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
-
-    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
+    if "st" in st.session_state:
+        for k, (m, d) in st.session_state["st"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
 
 # ================= SÓLIDOS SUSPENSOS =================
-elif st.session_state.page == "ss":
+elif menu == "🧪 Sólidos Suspensos":
 
-    st.title("🧪 Sólidos Suspensos")
+    st.title("Sólidos Suspensos")
 
-    volume = st.number_input("Alíquota (mL)", value=50.0, key="ss_v")
+    st.info("Mesmo modelo dos Sólidos Totais (estrutura base pronta para expansão).")
 
-    m1 = st.number_input("m1", value=0.0, key="ss1")
-    m2 = st.number_input("m2", value=0.0, key="ss2")
-    m3 = st.number_input("m3", value=0.0, key="ss3")
+# ================= N-AMONIACAL (EXCEL COMPLETO) =================
+elif menu == "🧪 N-Amoniacal":
 
-    m1_2 = st.number_input("m1'", value=0.0, key="ss4")
-    m2_2 = st.number_input("m2'", value=0.0, key="ss5")
-    m3_2 = st.number_input("m3'", value=0.0, key="ss6")
+    st.title("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
 
-    if st.button("GERAR RESULTADO SS"):
+    st.markdown("### PADRONIZAÇÃO DO H₂SO₄ 0,02N")
 
-        fator = 1000 / (volume / 1000)
+    massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
+    massa_molar = 381.40
+    volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
 
-        ST1 = (m2 - m1) * fator
-        ST2 = (m2_2 - m1_2) * fator
+    v1 = st.number_input("1ª titulação (mL)", value=0.0)
+    v2 = st.number_input("2ª titulação (mL)", value=0.0)
+    v3 = st.number_input("3ª titulação (mL)", value=0.0)
 
-        STF1 = (m3 - m1) * fator
-        STF2 = (m3_2 - m1_2) * fator
-
-        STV1 = ST1 - STF1
-        STV2 = ST2 - STF2
-
-        st.session_state["resultado_ss"] = {
-            "SS": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
-            "SSF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
-            "SSV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
-        }
-
-        st.success("✔ SS calculado!")
-
-    if "resultado_ss" in st.session_state:
-        st.markdown("## RESULTADO SS")
-
-        nomes = {
-            "SS": "Sólidos Suspensos",
-            "SSF": "Fixos",
-            "SSV": "Voláteis"
-        }
-
-        for k, (m, d) in st.session_state["resultado_ss"].items():
-            st.markdown(f"<div class='card'><b>{nomes[k]}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
-
-    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
-
-# ================= N-AMONIACAL =================
-elif st.session_state.page == "namo":
-
-    st.title("🧪 Nitrogênio Amoniacal")
-
-    massa = st.number_input("Massa (g)", value=0.0)
-    vol = st.number_input("Volume (mL)", value=100.0)
-
-    v1 = st.number_input("Titulação 1", value=0.0)
-    v2 = st.number_input("Titulação 2", value=0.0)
-    v3 = st.number_input("Titulação 3", value=0.0)
-
-    if st.button("CALCULAR NA"):
+    if st.button("CALCULAR"):
 
         media = np.mean([v1, v2, v3])
+        dp = np.std([v1, v2, v3], ddof=1)
 
-        resultado = massa / (vol / 1000) if vol > 0 else 0
+        mol = massa / massa_molar
+        conc_padrao = mol / (volume_balao / 1000)
+
+        conc_real = (conc_padrao * volume_balao) / media if media != 0 else 0
 
         st.session_state["namo"] = {
-            "Concentração": resultado,
-            "Média Titulação": media
+            "Concentração Padrão": conc_padrao,
+            "Concentração Real": conc_real,
+            "Média": media,
+            "DP": dp
         }
 
-        st.success("✔ N-Amoniacal calculado!")
-
     if "namo" in st.session_state:
-        st.markdown("## RESULTADO N-AMONIACAL")
-
         for k, v in st.session_state["namo"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
 
-    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
+# ================= NTK =================
+elif menu == "🧪 NTK":
 
-# ================= OUTROS =================
-elif st.session_state.page == "ntk":
-    st.title("🧪 NTK")
-    st.info("Em desenvolvimento")
-    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
+    st.title("DETERMINAÇÃO DE NITROGÊNIO TOTAL KJELDAHL")
 
-elif st.session_state.page == "dqo":
-    st.title("🧪 DQO")
+    st.markdown("### PADRONIZAÇÃO DO H₂SO₄ 0,02N")
+
+    massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
+    volume_balao = st.number_input("Volume do balão (mL)", value=100.0)
+
+    v1 = st.number_input("1ª titulação (mL)", value=0.0)
+    v2 = st.number_input("2ª titulação (mL)", value=0.0)
+    v3 = st.number_input("3ª titulação (mL)", value=0.0)
+
+    if st.button("CALCULAR"):
+
+        media = np.mean([v1, v2, v3])
+        dp = np.std([v1, v2, v3], ddof=1)
+
+        mol = massa / 381.40
+        conc_padrao = mol / (volume_balao / 1000)
+
+        conc_real = (conc_padrao * volume_balao) / media if media != 0 else 0
+
+        st.session_state["ntk"] = {
+            "Concentração Padrão": conc_padrao,
+            "Concentração Real": conc_real,
+            "Média": media,
+            "DP": dp
+        }
+
+    if "ntk" in st.session_state:
+        for k, v in st.session_state["ntk"].items():
+            st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
+
+# ================= DQO =================
+elif menu == "🧪 DQO":
+    st.title("DQO")
     st.info("Em desenvolvimento")
-    st.button("⬅ Voltar", on_click=go, args=("dashboard",))
