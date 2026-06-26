@@ -2,11 +2,21 @@ import streamlit as st
 import numpy as np
 
 # ================= CONFIG =================
-st.set_page_config(
-    page_title="LabResíduos IFRJ - CEMMA",
-    layout="wide"
-)
+""", unsafe_allow_html=True)
 
+# ================= CABEÇALHO =================
+st.title("🧪 Laboratório Virtual CEMMA – IFRJ  - Com Professor Renato Ribeiro")
+st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
+
+st.markdown("""
+### 👩‍🏫 Criado por  
+Luciana Oliveira de Albuquerque  
+
+### 🎓 Administrador  
+Raphael Oliveira de Albuquerque
+""")
+
+st.success("Sistema ativo 🚀")
 # ================= ESTILO PROFISSIONAL =================
 st.markdown("""
 <style>
