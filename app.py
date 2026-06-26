@@ -15,7 +15,6 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
-/* CABEÇALHO */
 .header {
     background-color: #2e7d32;
     padding: 15px;
@@ -35,7 +34,6 @@ st.markdown("""
     color: #f1f8e9 !important;
 }
 
-/* CARDS */
 .card {
     background: white;
     padding: 15px;
@@ -44,7 +42,6 @@ st.markdown("""
     margin-top: 10px;
 }
 
-/* BOTÕES */
 .stButton>button {
     width: 100%;
     height: 60px;
@@ -64,7 +61,7 @@ if "page" not in st.session_state:
 def go(page):
     st.session_state.page = page
 
-# ================= CABEÇALHO (RESTAURADO COMPLETO) =================
+# ================= CABEÇALHO =================
 col1, col2 = st.columns([1, 4])
 
 with col1:
@@ -107,6 +104,8 @@ if st.session_state.page == "dashboard":
         st.button("NTK", on_click=go, args=("ntk",))
         st.button("DQO", on_click=go, args=("dqo",))
 
+    # BOTÃO VOLTAR NÃO APLICA NO DASHBOARD
+
 # ================= SÓLIDOS TOTAIS =================
 elif st.session_state.page == "st":
 
@@ -146,6 +145,8 @@ elif st.session_state.page == "st":
     if "st" in st.session_state:
         for k, (m, d) in st.session_state["st"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
+
+    st.button("⬅ VOLTAR", on_click=go, args=("dashboard",))
 
 # ================= SÓLIDOS SUSPENSOS =================
 elif st.session_state.page == "ss":
@@ -187,18 +188,27 @@ elif st.session_state.page == "ss":
         for k, (m, d) in st.session_state["ss"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{m:.2f} ± {d:.2f}</div>", unsafe_allow_html=True)
 
-# ================= N-AMONIACAL (EXCEL COMPLETO RESTAURADO) =================
+    st.button("⬅ VOLTAR", on_click=go, args=("dashboard",))
+
+# ================= N-AMONIACAL (COMPLETO EXCEL QUE VOCÊ MANDOU) =================
 elif st.session_state.page == "namo":
 
-    st.title("🧪 Nitrogênio Amoniacal")
+    st.title("🧪 DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
 
-    massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
+    st.markdown("## 📄 PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H2SO4) 0,02 N")
+
+    massa = st.number_input("MASSA PESADA (g)", value=0.0)
     massa_molar = 381.40
-    volume_balao = st.number_input("Volume do Balão (mL)", value=100.0)
+    volume_balao = st.number_input("VOLUME BALÃO (mL)", value=100.0)
 
-    v1 = st.number_input("1ª Titulação (mL)", value=0.0)
-    v2 = st.number_input("2ª Titulação (mL)", value=0.0)
-    v3 = st.number_input("3ª Titulação (mL)", value=0.0)
+    st.markdown("### 1ª TITULAÇÃO")
+    v1 = st.number_input("VOLUME H2SO4 1 (mL)", value=0.0)
+
+    st.markdown("### 2ª TITULAÇÃO")
+    v2 = st.number_input("VOLUME H2SO4 2 (mL)", value=0.0)
+
+    st.markdown("### 3ª TITULAÇÃO")
+    v3 = st.number_input("VOLUME H2SO4 3 (mL)", value=0.0)
 
     if st.button("CALCULAR N-AMONIACAL"):
 
@@ -211,9 +221,7 @@ elif st.session_state.page == "namo":
         conc_padrao = mol / (volume_balao / 1000)
 
         conc_real = (conc_padrao * volume_balao) / media if media != 0 else 0
-
         rsd = (dp / media) * 100 if media != 0 else 0
-
         fator = conc_real / 0.02 if 0.02 != 0 else 0
 
         st.session_state["namo"] = {
@@ -231,17 +239,27 @@ elif st.session_state.page == "namo":
         for k, v in st.session_state["namo"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
 
-# ================= NTK (EXCEL COMPLETO RESTAURADO) =================
+    st.button("⬅ VOLTAR", on_click=go, args=("dashboard",))
+
+# ================= NTK (COMPLETO EXCEL QUE VOCÊ MANDOU) =================
 elif st.session_state.page == "ntk":
 
-    st.title("🧪 Nitrogênio Total Kjeldahl (NTK)")
+    st.title("🧪 DETERMINAÇÃO DE NITROGÊNIO TOTAL KJELDAHL")
 
-    massa = st.number_input("Massa Na2B4O7·10H2O (g)", value=0.0)
-    volume_balao = st.number_input("Volume do Balão (mL)", value=100.0)
+    st.markdown("## 📄 PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H2SO4) 0,02 N")
 
-    v1 = st.number_input("1ª Titulação (mL)", value=0.0)
-    v2 = st.number_input("2ª Titulação (mL)", value=0.0)
-    v3 = st.number_input("3ª Titulação (mL)", value=0.0)
+    massa = st.number_input("MASSA PESADA (g)", value=0.0)
+    massa_molar = 381.40
+    volume_balao = st.number_input("VOLUME BALÃO (mL)", value=100.0)
+
+    st.markdown("### 1ª TITULAÇÃO")
+    v1 = st.number_input("VOLUME H2SO4 1 (mL)", value=0.0)
+
+    st.markdown("### 2ª TITULAÇÃO")
+    v2 = st.number_input("VOLUME H2SO4 2 (mL)", value=0.0)
+
+    st.markdown("### 3ª TITULAÇÃO")
+    v3 = st.number_input("VOLUME H2SO4 3 (mL)", value=0.0)
 
     if st.button("CALCULAR NTK"):
 
@@ -250,13 +268,11 @@ elif st.session_state.page == "ntk":
         media = np.mean(tit)
         dp = np.std(tit, ddof=1)
 
-        mol = massa / 381.40
+        mol = massa / massa_molar
         conc_padrao = mol / (volume_balao / 1000)
 
         conc_real = (conc_padrao * volume_balao) / media if media != 0 else 0
-
         rsd = (dp / media) * 100 if media != 0 else 0
-
         fator = conc_real / 0.02 if 0.02 != 0 else 0
 
         st.session_state["ntk"] = {
@@ -274,7 +290,10 @@ elif st.session_state.page == "ntk":
         for k, v in st.session_state["ntk"].items():
             st.markdown(f"<div class='card'><b>{k}</b><br>{v:.4f}</div>", unsafe_allow_html=True)
 
+    st.button("⬅ VOLTAR", on_click=go, args=("dashboard",))
+
 # ================= DQO =================
 elif st.session_state.page == "dqo":
     st.title("🧪 DQO")
     st.info("Em desenvolvimento")
+    st.button("⬅ VOLTAR", on_click=go, args=("dashboard",))
