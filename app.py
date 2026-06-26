@@ -155,7 +155,7 @@ elif menu == "🧪 Sólidos Totais":
     ---
     """)
 
-    st.header("🧪 Inserção de Dados")
+    st.header("🧪 Solídos Totais")
 
     volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
