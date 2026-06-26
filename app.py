@@ -83,56 +83,54 @@ def go(page):
 
 
 # ================= CABEÇALHO COM LOGO =================
-# ================= CABEÇALHO PROFISSIONAL =================
+# ================= CABEÇALHO PROFISSIONAL IFRJ =================
 
-cab1, cab2 = st.columns([1.2, 6])
+st.markdown("""
+<style>
+.header {
+    background-color: #145a24;
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 15px;
+}
+.header h1 {
+    margin: 0;
+    font-size: 34px;
+    text-align: center;
+}
+.header h3 {
+    margin: 0;
+    font-size: 18px;
+    text-align: center;
+    font-weight: normal;
+}
+</style>
+""", unsafe_allow_html=True)
 
-with cab1:
-    st.image("logo.png", width=140)
+col1, col2, col3 = st.columns([1,4,1])
 
-with cab2:
+with col1:
+    st.image("logo.png", width=110)
 
+with col2:
     st.markdown("""
-    <div style="padding-top:10px">
-
-    <h1 style="margin-bottom:0px;
-               color:#0d3d16;
-               text-align:center;
-               font-size:38px;">
-
-    🧪 LabResiduarios - IFRJ / CEMMA
-
-    </h1>
-
-    <h3 style="margin-top:0px;
-               text-align:center;
-               color:#1b5e20;">
-
-    Sistema Virtual de Análises Físico-Químicas
-
-    </h3>
-
+    <div class="header">
+        <h1>🧪 LABRESÍDUOS - IFRJ / CEMMA</h1>
+        <h3>Sistema Virtual de Análises Físico-Químicas</h3>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-<div style="font-size:18px; line-height:1.8">
+st.markdown("""
+### 👩‍🏫 Criado por  
+Luciana Oliveira de Albuquerque  
 
-<b>👩‍🏫 Criado por:</b>
-Luciana Oliveira de Albuquerque
+### 🎓 Professor responsável  
+Renato Ribeiro  
 
-<br>
-
-<b>🎓 Professor responsável:</b>
-Renato Ribeiro
-
-<br>
-
-<b>🧑‍💻 Administrador do sistema:</b>
-ALUNO: Raphael Oliveira de Albuquerque
-
-</div>
-""", unsafe_allow_html=True)
+### 🧑‍💻 Administrador do sistema  
+Raphael Oliveira de Albuquerque  
+""")
 
 st.markdown("---")
 # ================= DASHBOARD =================
