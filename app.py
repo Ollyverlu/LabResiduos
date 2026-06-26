@@ -3,11 +3,11 @@ import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="Laboratório Virtual CEMMA – IFRJ",
+    page_title="LabResíduos IFRJ - CEMMA",
     layout="wide"
 )
 
-# ================= ESTILO =================
+# ================= ESTILO PROFISSIONAL =================
 st.markdown("""
 <style>
 
@@ -16,36 +16,38 @@ st.markdown("""
     background-color: #e8f5e9;
 }
 
-/* Texto padrão */
-body, p, span, label, div {
-    color: #1b1b1b;
-}
-
 /* Títulos */
 h1 {
     color: #1b5e20 !important;
     font-weight: 800;
 }
 
-h2, h3 {
+h2 {
     color: #2e7d32 !important;
 }
 
-/* Área principal */
-.block-container {
-    padding-top: 2rem;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
+/* Cards dashboard */
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 14px;
+    border-left: 6px solid #2e7d32;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
 }
 
-/* Cards */
-.card {
-    background-color: #ffffff;
-    padding: 18px;
+/* Botões estilo sistema */
+.stButton>button {
+    width: 100%;
+    height: 70px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #2e7d32;
+    color: white;
     border-radius: 12px;
-    border-left: 6px solid #2e7d32;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
-    margin-bottom: 12px;
+}
+
+.stButton>button:hover {
+    background-color: #1b5e20;
 }
 
 /* Sidebar */
@@ -57,30 +59,14 @@ h2, h3 {
     color: white !important;
 }
 
-/* Botões */
-.stButton>button {
-    background-color: #2e7d32;
-    color: white !important;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
-.stButton>button:hover {
-    background-color: #1b5e20;
-}
-
-/* Inputs */
-input, textarea {
-    color: #000000 !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
-st.title("🧪 Laboratório Virtual CEMMA – IFRJ  - Com Professor Renato Ribeiro")
-st.subheader("Laudo Técnico de Ensaios Físico-Químicos")
+st.title("🧪 LABRESÍDUOS - IFRJ / CEMMA")
+st.subheader("Sistema de Laboratório Virtual Físico-Químico")
 
+# ================= DADOS INSTITUCIONAIS =================
 st.markdown("""
 ### 👩‍🏫 Criado por  
 Luciana Oliveira de Albuquerque  
@@ -88,159 +74,91 @@ Luciana Oliveira de Albuquerque
 ### 🎓 Professor responsável  
 Renato Ribeiro  
 
-### 🧑‍💻 Administrador do sistema  
-Raphael Oliveira de Albuquerque
+### 👨‍🎓 Aluno  
+(Informe o nome do aluno na execução do sistema abaixo)
 """)
 
-st.success("Sistema ativo 🚀")
+# ================= CAMPO ALUNO =================
+aluno = st.text_input("🧑‍🎓 Nome do Aluno")
 
-# ================= MENU =================
-menu = st.sidebar.selectbox(
-    "📚 Menu do Sistema",
-    [
-        "🏠 Início",
-        "📖 Aula Teórica",
-        "🧪 Sólidos Totais",
-        "🧪 Sólidos Suspensos",
-        "🧪 N-Amoniacal",
-        "🧪 NTK",
-        "🧪 DQO",
-        "📄 Laudo Final"
-    ]
-)
+if aluno:
+    st.success(f"Bem-vindo(a), {aluno}! 🚀 Sistema pronto para uso.")
 
-# ================= SIDEBAR =================
-st.sidebar.markdown("---")
-st.sidebar.markdown("## 🔬 Estrutura do Laboratório")
+st.markdown("---")
 
-st.sidebar.markdown("""
-- Sólidos Totais  
-- Sólidos Suspensos  
-- N-Amoniacal  
-- NTK  
-- DQO  
-""")
+# ================= DASHBOARD =================
+st.title("📊 Dashboard do Laboratório")
 
-# ================= INÍCIO =================
-if menu == "🏠 Início":
+col1, col2 = st.columns(2)
 
-    st.markdown(
-        "<h2 style='text-align:center;'>👩‍🔬 Bem-vindo ao Laboratório Virtual CEMMA</h2>",
-        unsafe_allow_html=True
-    )
+with col1:
+    st.button("🏠 Início")
+    st.button("🧪 Sólidos Totais")
+    st.button("🧪 Sólidos Suspensos")
 
-    col1, col2, col3 = st.columns([1, 4, 1])
+with col2:
+    st.button("🧪 N-Amoniacal")
+    st.button("🧪 NTK")
+    st.button("🧪 DQO")
 
-    with col2:
-        st.image("logo.png", use_container_width=True)
-
-# ================= AULA TEÓRICA =================
-elif menu == "📖 Aula Teórica":
-
-    st.header("📖 Aula Teórica")
-    st.info("Conteúdo teórico será inserido aqui futuramente.")
+st.markdown("---")
 
 # ================= SÓLIDOS TOTAIS =================
-elif menu == "🧪 Sólidos Totais":
+st.header("🧪 Sólidos Totais")
 
-    st.markdown("""
-    ## 🔬 LABORATÓRIO
+volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
 
-    Neste ambiente o aluno encontra:
+st.markdown("## Réplica 1")
+m1 = st.number_input("m1", value=0.0, format="%.4f")
+m2 = st.number_input("m2", value=0.0, format="%.4f")
+m3 = st.number_input("m3", value=0.0, format="%.4f")
 
-    🧪 Sólidos Totais (ST)  
-    🧪 Sólidos Suspensos (SST)  
-    🧪 N-Amoniacal  
-    🧪 NTK  
-    🧪 DQO  
+st.markdown("## Réplica 2")
+m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
+m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
+m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
 
-    ---
-    """)
+if st.button("🧪 GERAR RESULTADOS"):
 
-    st.header("🧪 Inserção de Dados")
+    if volume <= 0:
+        st.error("Volume inválido.")
+    else:
+        fator = 1000 / (volume / 1000)
 
-    volume = st.number_input("Alíquota (mL)", min_value=0.0, value=50.0)
+        ST1 = (m2 - m1) * fator
+        ST2 = (m2_2 - m1_2) * fator
 
-    st.markdown("## Réplica 1")
-    m1 = st.number_input("m1", value=0.0, format="%.4f")
-    m2 = st.number_input("m2", value=0.0, format="%.4f")
-    m3 = st.number_input("m3", value=0.0, format="%.4f")
+        STF1 = (m3 - m1) * fator
+        STF2 = (m3_2 - m1_2) * fator
 
-    st.markdown("## Réplica 2")
-    m1_2 = st.number_input("m1'", value=0.0, format="%.4f")
-    m2_2 = st.number_input("m2'", value=0.0, format="%.4f")
-    m3_2 = st.number_input("m3'", value=0.0, format="%.4f")
+        STV1 = ST1 - STF1
+        STV2 = ST2 - STF2
 
-    if st.button("🧪 GERAR RESULTADOS"):
-
-        if volume <= 0:
-            st.error("Volume inválido.")
-        else:
-            fator = 1000 / (volume / 1000)
-
-            ST1 = (m2 - m1) * fator
-            ST2 = (m2_2 - m1_2) * fator
-
-            STF1 = (m3 - m1) * fator
-            STF2 = (m3_2 - m1_2) * fator
-
-            STV1 = ST1 - STF1
-            STV2 = ST2 - STF2
-
-            resultados = {
-                "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
-                "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
-                "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
-            }
-
-            st.session_state["resultado"] = resultados
-            st.success("✔ Cálculos concluídos!")
-
-# ================= SÓLIDOS SUSPENSOS =================
-elif menu == "🧪 Sólidos Suspensos":
-
-    st.header("🧪 Sólidos Suspensos")
-    st.info("Módulo em desenvolvimento.")
-
-# ================= N-AMONIACAL =================
-elif menu == "🧪 N-Amoniacal":
-
-    st.header("🧪 N-Amoniacal")
-    st.info("Módulo em desenvolvimento.")
-
-# ================= NTK =================
-elif menu == "🧪 NTK":
-
-    st.header("🧪 NTK")
-    st.info("Módulo em desenvolvimento.")
-
-# ================= DQO =================
-elif menu == "🧪 DQO":
-
-    st.header("🧪 DQO")
-    st.info("Módulo em desenvolvimento.")
-
-# ================= LAUDO FINAL =================
-elif menu == "📄 Laudo Final":
-
-    st.header("📄 Laudo Técnico Final")
-
-    if "resultado" in st.session_state:
-
-        nomes = {
-            "ST": "Sólidos Totais (ST)",
-            "STF": "Sólidos Fixos (STF)",
-            "STV": "Sólidos Voláteis (STV)"
+        resultados = {
+            "ST": (np.mean([ST1, ST2]), np.std([ST1, ST2], ddof=1)),
+            "STF": (np.mean([STF1, STF2]), np.std([STF1, STF2], ddof=1)),
+            "STV": (np.mean([STV1, STV2]), np.std([STV1, STV2], ddof=1))
         }
 
-        for chave, (media, dp) in st.session_state["resultado"].items():
+        st.session_state["resultado"] = resultados
+        st.success("✔ Cálculos concluídos!")
 
-            st.markdown(f"""
-            <div class="card">
-            <b>{nomes[chave]}</b><br>
-            {media:.2f} ± {dp:.2f} mg/L
-            </div>
-            """, unsafe_allow_html=True)
+# ================= RESULTADOS =================
+if "resultado" in st.session_state:
 
-    else:
-        st.warning("⚠ Gere os resultados primeiro no laboratório.")
+    st.markdown("## 📄 Resultados do Laudo")
+
+    nomes = {
+        "ST": "Sólidos Totais (ST)",
+        "STF": "Sólidos Fixos (STF)",
+        "STV": "Sólidos Voláteis (STV)"
+    }
+
+    for chave, (media, dp) in st.session_state["resultado"].items():
+
+        st.markdown(f"""
+        <div class="card">
+        <b>{nomes[chave]}</b><br>
+        {media:.2f} ± {dp:.2f} mg/L
+        </div>
+        """, unsafe_allow_html=True)
