@@ -59,7 +59,7 @@ menu = st.sidebar.radio("📚 Sistema Laboratorial ", [
     "🧪 N-Amoniacal",
     "🧪 NTK",
     "🧪 NHX",
-    "🧪 DQO"
+    "🧪 DQO",
     "📊 Planilhas Interativas (Excel)"
 ])
 
