@@ -1,6 +1,8 @@
+
 import streamlit as st
 import numpy as np
 import pandas as pd
+from io import BytesIO
 
 # ================= CONFIG =================
 st.set_page_config(page_title=" - LabResiduos -Laboratorio Virtual ", layout="wide")
@@ -222,7 +224,7 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= PLANILHAS INTERATIVAS =================
+# ================= PLANILHAS INTERATIVAS (CORRIGIDO) =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     st.title("📊 Planilhas Interativas - Sistema Excel Interno")
@@ -236,15 +238,12 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     aba = st.radio("📑 Escolha a planilha", list(arquivos.keys()), horizontal=True)
     arquivo = arquivos[aba]
 
-    def carregar_excel(file):
-        try:
-            return pd.read_excel(file, engine="openpyxl")
-        except:
-            return pd.DataFrame()
+    try:
+        df = pd.read_excel(arquivo, engine="openpyxl")
+    except:
+        df = pd.DataFrame()
 
-    df = carregar_excel(arquivo)
-
-    st.markdown("### ✏️ Edição da Planilha (Estilo Excel)")
+    st.markdown("### ✏️ Edição da Planilha")
 
     df_edit = st.data_editor(
         df,
@@ -253,15 +252,23 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         key=f"editor_{aba}"
     )
 
-    def salvar_excel(dataframe, file):
-        dataframe.to_excel(file, index=False, engine="openpyxl")
+    def to_excel(df):
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False)
+        return output.getvalue()
 
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("💾 Salvar automaticamente"):
-            salvar_excel(df_edit, arquivo)
-            st.success(f"{aba} salva com sucesso!")
+        st.download_button(
+            "📥 Baixar Excel",
+            data=to_excel(df_edit),
+            file_name=f"{aba}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 
-    if not df_edit.equals(df):
-        salvar_excel(df_edit, arquivo)
+    with col2:
+        if st.button("💾 Salvar no sistema"):
+            df_edit.to_excel(arquivo, index=False, engine="openpyxl")
+            st.success("Planilha salva com sucesso!")
