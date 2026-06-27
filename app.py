@@ -166,215 +166,218 @@ elif menu == "🧪 N-Amoniacal":
         data = st.date_input("Data da análise")
         hora = st.time_input("Hora da análise")
 
-    responsavel = st.text_input("Responsável")
-    projeto = st.text_input("Projeto")
-    data = st.date_input("Data da análise")
-    hora = st.time_input("Hora da análise")
-    
-    st.markdown("══════════════════════════════════════")
 
-      # ================= ETAPA 2 - PADRONIZAÇÃO =================
+# ================= ETAPA 2 - PADRONIZAÇÃO =================
+st.subheader("📌 Padronização do H₂SO₄ (0,02 N)")
+
+massa_pesada = st.number_input("Massa pesada (g)")
+massa_molar = st.number_input("Massa molar (g/mol)", value=381.40)
+volume_balao = st.number_input("Volume do balão (mL)")
+
+st.markdown("### 🔬 1ª Titulação")
+t1_pad = st.number_input("Volume de H₂SO₄ gasto 1")
+
+st.markdown("### 🔬 2ª Titulação")
+t2_pad = st.number_input("Volume de H₂SO₄ gasto 2")
+
+st.markdown("### 🔬 3ª Titulação")
+t3_pad = st.number_input("Volume de H₂SO₄ gasto 3")
+
+# ✔ UM ÚNICO BOTÃO
+if st.button("Calcular Padronização H₂SO₄", key="btn_padronizacao"):
+
+    media_pad = np.mean([t1_pad, t2_pad, t3_pad])
+    desvio_pad = np.std([t1_pad, t2_pad, t3_pad], ddof=1)
+
+    st.success(f"Média: {media_pad:.4f}")
+    st.info(f"Desvio padrão: {desvio_pad:.4f}")
+      
+  # ================= ETAPA 3 - CÁLCULO N-AMONIACAL =================
+st.markdown("═══════════════════════════════════════")
+st.subheader("🧪 Cálculo do N-Amoniacal")
+
+m = st.number_input("Massa (g)")
+v = st.number_input("Volume (mL)")
+
+t1 = st.number_input("Titulação 1")
+t2 = st.number_input("Titulação 2")
+t3 = st.number_input("Titulação 3")
+
+if st.button("Calcular N-Amoniacal", key="btn_nh3"):
+
+    if v > 0:
+
+        media = np.mean([t1, t2, t3])
+        desvio = np.std([t1, t2, t3], ddof=1)
+
+        resultado = (m / 381.4) / (v / 1000) * media
+
+        st.success(f"Resultado N-Amoniacal: {resultado:.4f} mg/L")
+        st.info(f"Média das titulações: {media:.4f}")
+        st.info(f"Desvio padrão: {desvio:.4f}")
+        
+# ================= ETAPA 4 - RELATÓRIO FINAL =================
+st.markdown("═══════════════════════════════════════")
+st.subheader("📌 Relatório Final da Análise")
+
+if st.button("📄 Gerar Relatório Final", key="btn_relatorio"):
+
+    if v > 0:
+
+        media = np.mean([t1, t2, t3])
+        desvio = np.std([t1, t2, t3], ddof=1)
+        resultado = (m / 381.4) / (v / 1000) * media
+
+        st.markdown(f"""
+        <div class="card">
+
+        <b>🧪 NITROGÊNIO AMONIACAL - RELATÓRIO FINAL</b><br><br>
+
+        📌 Responsável: {responsavel}<br>
+        📌 Projeto: {projeto}<br>
+        📌 Data: {data}<br>
+        📌 Hora: {hora}<br><br>
+
+        ⚗ Massa: {m} g<br>
+        ⚗ Volume: {v} mL<br><br>
+
+        📊 Média das titulações: {media:.4f}<br>
+        📉 Desvio padrão: {desvio:.4f}<br>
+        🧪 Resultado final: {resultado:.4f} mg/L<br><br>
+
+        ✔ Análise concluída com sucesso
+        </div>
+        """, unsafe_allow_html=True)
+        
+# ================= NTK =================
+elif menu == "🧪 NTK":
+    header("NITROGÊNIO TOTAL KJELDAHL")
+
+    # ================= ETAPA 1 =================
+    with st.expander("📌 1. Identificação da Amostra"):
+        responsavel = st.text_input("Responsável", key="ntk_resp")
+        projeto = st.text_input("Projeto", key="ntk_proj")
+        data = st.date_input("Data da análise", key="ntk_data")
+        hora = st.time_input("Hora da análise", key="ntk_hora")
+
     st.markdown("═══════════════════════════════════════")
-    st.subheader("📌 Padronização do H₂SO₄ (0,02 N)")
 
-    massa_pesada = st.number_input("Massa pesada (g)")
-    massa_molar = st.number_input("Massa molar (g/mol)", value=381.40)
-    volume_balao = st.number_input("Volume do balão (mL)")
+    # ================= ETAPA 2 =================
+    st.subheader("🧪 Cálculo do NTK")
 
-    st.markdown("### 🔬 1ª Titulação")
-    t1_pad = st.number_input("Volume de H₂SO₄ gasto 1")
+    m = st.number_input("Massa (g)", key="ntk_m")
+    v = st.number_input("Volume (mL)", key="ntk_v")
 
-    st.markdown("### 🔬 2ª Titulação")
-    t2_pad = st.number_input("Volume de H₂SO₄ gasto 2")
+    t1 = st.number_input("Titulação 1", key="ntk_t1")
+    t2 = st.number_input("Titulação 2", key="ntk_t2")
+    t3 = st.number_input("Titulação 3", key="ntk_t3")
 
-    st.markdown("### 🔬 3ª Titulação")
-    t3_pad = st.number_input("Volume de H₂SO₄ gasto 3")
+    if st.button("Calcular NTK", key="btn_ntk_calc"):
 
-    if st.button("Calcular Padronização H₂SO₄"):
-        if t1_pad and t2_pad and t3_pad:
-            media_pad = np.mean([t1_pad, t2_pad, t3_pad])
-            desvio_pad = np.std([t1_pad, t2_pad, t3_pad], ddof=1)
-
-            st.success(f"Média: {media_pad:.4f}")
-            st.info(f"Desvio padrão: {desvio_pad:.4f}")
-    st.markdown("══════════════════════════════════════")
-
-       # ================= ETAPA 3 - CÁLCULO PRINCIPAL =================
-    st.markdown("═══════════════════════════════════════")
-    st.subheader("🧪 Cálculo do N-Amoniacal")
-
-    m = st.number_input("Massa (g)")
-    v = st.number_input("Volume (mL)")
-
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
-
-    if st.button("Calcular N-Amoniacal"):
         if v > 0:
+
             media = np.mean([t1, t2, t3])
             desvio = np.std([t1, t2, t3], ddof=1)
 
             resultado = (m / 381.4) / (v / 1000) * media
 
-            st.success(f"Resultado N-Amoniacal: {resultado:.4f} mg/L")
+            st.success(f"NTK: {resultado:.4f} mg/L")
             st.info(f"Média: {media:.4f}")
             st.info(f"Desvio padrão: {desvio:.4f}")
 
-    # ================= ETAPA 4 - RESUMO FINAL =================
     st.markdown("═══════════════════════════════════════")
-    st.subheader("📌 Resumo da Análise")
 
-    if st.button("📄 Gerar Resumo Final"):
+    # ================= ETAPA 3 =================
+    st.subheader("📌 Relatório Final")
 
-        media = np.mean([t1, t2, t3])
-        desvio = np.std([t1, t2, t3], ddof=1)
+    if st.button("📄 Gerar Relatório NTK", key="btn_ntk_rel"):
 
-        resultado = 0
         if v > 0:
+
+            media = np.mean([t1, t2, t3])
+            desvio = np.std([t1, t2, t3], ddof=1)
             resultado = (m / 381.4) / (v / 1000) * media
 
-        st.markdown("""
-        <div class="card">
-        <b>🔬 RELATÓRIO N-AMONIACAL</b><br><br>
-        Responsável: {}<br>
-        Projeto: {}<br>
-        Data: {}<br>
-        Hora: {}<br><br>
+            st.markdown(f"""
+            <div class="card">
 
-        Massa: {} g<br>
-        Volume: {} mL<br><br>
+            <b>🧪 RELATÓRIO NTK</b><br><br>
 
-        Média titulações: {:.4f}<br>
-        Desvio padrão: {:.4f}<br>
-        Resultado final: {:.4f} mg/L
-        </div>
-        """.format(responsavel, projeto, data, hora, m, v, media, desvio, resultado),
-        unsafe_allow_html=True)
+            Responsável: {responsavel}<br>
+            Projeto: {projeto}<br>
+            Data: {data}<br>
+            Hora: {hora}<br><br>
 
-    st.markdown("═══════════════════════════════════════")
-    st.success("✔ N-Amoniacal concluído com sucesso!")
-# ================= NTK =================
-elif menu == "🧪 NTK":
-    header("NITROGÊNIO TOTAL KJELDAHL")
+            Massa: {m} g<br>
+            Volume: {v} mL<br><br>
 
-    m = st.number_input("Massa")
-    v = st.number_input("Volume")
-
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
-
-    if st.button("Calcular NTK", key="btn_ntk"):
-        media = np.mean([t1, t2, t3])
-        if media != 0 and v > 0:
-            resultado = (m / 381.4) / (v / 1000) * media
-            st.success(f"Resultado: {resultado:.4f}")
-
-
-# ================= NHX =================
-elif menu == "🧪 NHX":
-    header("NITROGÊNIO NHX")
-
-    m = st.number_input("Massa")
-    v = st.number_input("Volume")
-
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
-
-    if st.button("Calcular NHX", key="btn_nhx"):
-        media = np.mean([t1, t2, t3])
-        if media != 0 and v > 0:
-            resultado = (m / 381.4) / (v / 1000) * media
-            st.success(f"Resultado: {resultado:.4f}")
-
+            Média: {media:.4f}<br>
+            Desvio padrão: {desvio:.4f}<br>
+            Resultado: {resultado:.4f} mg/L
+            </div>
+            """, unsafe_allow_html=True)
 
 # ================= DQO =================
 elif menu == "🧪 DQO":
     header("DEMANDA QUÍMICA DE OXIGÊNIO")
 
-    m = st.number_input("Massa padrão")
-    v = st.number_input("Volume amostra")
+    # ================= ETAPA 1 =================
+    with st.expander("📌 1. Identificação da Amostra"):
+        responsavel = st.text_input("Responsável", key="dqo_resp")
+        projeto = st.text_input("Projeto", key="dqo_proj")
+        data = st.date_input("Data da análise", key="dqo_data")
+        hora = st.time_input("Hora da análise", key="dqo_hora")
 
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
+    st.markdown("═══════════════════════════════════════")
 
-    if st.button("Calcular DQO", key="btn_dqo"):
-        media = np.mean([t1, t2, t3])
-        if media != 0:
+    # ================= ETAPA 2 =================
+    st.subheader("🧪 Cálculo da DQO")
+
+    m = st.number_input("Massa padrão", key="dqo_m")
+    v = st.number_input("Volume da amostra", key="dqo_v")
+
+    t1 = st.number_input("Titulação 1", key="dqo_t1")
+    t2 = st.number_input("Titulação 2", key="dqo_t2")
+    t3 = st.number_input("Titulação 3", key="dqo_t3")
+
+    if st.button("Calcular DQO", key="btn_dqo_calc"):
+
+        if v > 0:
+
+            media = np.mean([t1, t2, t3])
+            desvio = np.std([t1, t2, t3], ddof=1)
+
             resultado = (m * 0.25) / media
-            st.success(f"Resultado: {resultado:.4f}")
 
+            st.success(f"DQO: {resultado:.4f} mg/L")
+            st.info(f"Média: {media:.4f}")
+            st.info(f"Desvio padrão: {desvio:.4f}")
 
-# ================= PLANILHAS INTERATIVAS (SEM EXCEL) =================
-elif menu == "📊 Planilhas Interativas (Excel)":
+    st.markdown("═══════════════════════════════════════")
 
-    import pandas as pd
+    # ================= ETAPA 3 =================
+    st.subheader("📌 Relatório Final")
 
-    st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
-    st.markdown("══════════════════════════════════════")
+    if st.button("📄 Gerar Relatório DQO", key="btn_dqo_rel"):
 
-    # 🔥 dados em memória (não precisa arquivo)
-    if "na_data" not in st.session_state:
-        st.session_state.na_data = pd.DataFrame()
+        if media > 0:
 
-    if "ntk_data" not in st.session_state:
-        st.session_state.ntk_data = pd.DataFrame()
+            st.markdown(f"""
+            <div class="card">
 
-    if "dqo_data" not in st.session_state:
-        st.session_state.dqo_data = pd.DataFrame()
+            <b>🧪 RELATÓRIO DQO</b><br><br>
 
-    aba1, aba2, aba3 = st.tabs(["N-Amoniacal", "NTK", "DQO"])
+            Responsável: {responsavel}<br>
+            Projeto: {projeto}<br>
+            Data: {data}<br>
+            Hora: {hora}<br><br>
 
-    # ================= ABA 1 =================
-    with aba1:
-        st.subheader("N-Amoniacal")
+            Massa: {m}<br>
+            Volume: {v}<br><br>
 
-        df1 = st.data_editor(st.session_state.na_data, use_container_width=True, key="na")
-
-        if st.button("💾 Salvar N-Amoniacal", key="btn_na"):
-            st.session_state.na_data = df1
-            st.success("Salvo na memória!")
-
-        st.download_button(
-            "⬇️ Baixar CSV",
-            data=df1.to_csv(index=False).encode("utf-8"),
-            file_name="N-Amoniacal.csv",
-            mime="text/csv"
-        )
-
-    # ================= ABA 2 =================
-    with aba2:
-        st.subheader("NTK")
-
-        df2 = st.data_editor(st.session_state.ntk_data, use_container_width=True, key="ntk")
-
-        if st.button("💾 Salvar NTK", key="btn_ntk"):
-            st.session_state.ntk_data = df2
-            st.success("Salvo na memória!")
-
-        st.download_button(
-            "⬇️ Baixar CSV",
-            data=df2.to_csv(index=False).encode("utf-8"),
-            file_name="NTK.csv",
-            mime="text/csv"
-        )
-
-    # ================= ABA 3 =================
-    with aba3:
-        st.subheader("DQO")
-
-        df3 = st.data_editor(st.session_state.dqo_data, use_container_width=True, key="dqo")
-
-        if st.button("💾 Salvar DQO", key="btn_dqo"):
-            st.session_state.dqo_data = df3
-            st.success("Salvo na memória!")
-
-        st.download_button(
-            "⬇️ Baixar CSV",
-            data=df3.to_csv(index=False).encode("utf-8"),
-            file_name="DQO.csv",
-            mime="text/csv"
-        )
+            Média: {media:.4f}<br>
+            Desvio padrão: {desvio:.4f}<br>
+            Resultado: {resultado:.4f} mg/L
+            </div>
+            """, unsafe_allow_html=True)
+   
