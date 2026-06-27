@@ -247,61 +247,6 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
     st.info("Módulo independente. Não altera nenhum cálculo do sistema principal.")
 
-    opcao = st.selectbox("Escolha a planilha:", [
-        "🧪 Sólidos Totais (ST)",
-        "🔥 Sólidos Fixos (STF)",
-        "💨 Sólidos Voláteis (STV)"
-    ])
-
-    if opcao == "🧪 Sólidos Totais (ST)":
-
-        df = pd.DataFrame({
-            "Amostra": ["A1", "A2", "A3"],
-            "Massa (m2-m1)": [0, 0, 0],
-            "Volume (mL)": [50, 50, 50]
-        })
-
-        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
-
-        if st.button("📌 Calcular ST"):
-            df_edit["ST (mg/L)"] = df_edit["Massa (m2-m1)"] / (df_edit["Volume (mL)"] / 1000)
-
-            st.success("ST calculado com sucesso!")
-            st.dataframe(df_edit, use_container_width=True)
-
-    elif opcao == "🔥 Sólidos Fixos (STF)":
-
-        df = pd.DataFrame({
-            "Amostra": ["A1", "A2", "A3"],
-            "Massa Cinzas": [0, 0, 0],
-            "Volume (mL)": [50, 50, 50]
-        })
-
-        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
-
-        if st.button("📌 Calcular STF"):
-            df_edit["STF (mg/L)"] = df_edit["Massa Cinzas"] / (df_edit["Volume (mL)"] / 1000)
-
-            st.success("STF calculado com sucesso!")
-            st.dataframe(df_edit, use_container_width=True)
-
-    elif opcao == "💨 Sólidos Voláteis (STV)":
-
-        df = pd.DataFrame({
-            "Amostra": ["A1", "A2", "A3"],
-            "ST": [0, 0, 0],
-            "STF": [0, 0, 0]
-        })
-
-        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
-
-        if st.button("📌 Calcular STV"):
-            df_edit["STV"] = df_edit["ST"] - df_edit["STF"]
-
-            st.success("STV calculado com sucesso!")
-            st.dataframe(df_edit, use_container_width=True)
-            if opcao == "🧪 N-Amoniacal (Planilha)":
-
     st.subheader("🧪 Planilha N-Amoniacal (Excel Importado)")
 
     import pandas as pd
