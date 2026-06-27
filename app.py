@@ -224,34 +224,28 @@ elif menu == "🧪 DQO":
             st.success(f"Resultado: {resultado:.4f}")
 
 # ================= PLANILHAS INTERATIVAS =================
-
- elif menu == "📊 Planilhas Interativas (Excel)":
+elif menu == "📊 Planilhas Interativas (Excel)":
 
     st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
 
     st.markdown("══════════════════════════════════════")
 
-    aba1, aba2, aba3 = st.tabs([...])
-    
-    buffer = BytesIO()
-    pdf = canvas.Canvas(buffer, pagesize=letter)
+    aba1, aba2, aba3 = st.tabs(["🧪 N-Amoniacal", "🧪 NTK", "🧪 DQO"])
 
-    pdf.setFont("Helvetica-Bold", 14)
-    pdf.drawString(50, 750, titulo)
+    # ================= ABA 1 =================
+    with aba1:
+        st.subheader("N-Amoniacal")
 
-    pdf.setFont("Helvetica", 10)
+        st.write("Área de trabalho da planilha N-Amoniacal")
 
-    y = 700
+    # ================= ABA 2 =================
+    with aba2:
+        st.subheader("NTK")
 
-    for item in dados:
-        pdf.drawString(50, y, str(item))
-        y -= 20
+        st.write("Área de trabalho da planilha NTK")
 
-        if y < 50:
-            pdf.showPage()
-            pdf.setFont("Helvetica", 10)
-            y = 750
+    # ================= ABA 3 =================
+    with aba3:
+        st.subheader("DQO")
 
-    pdf.save()
-    buffer.seek(0)
-    return buffer
+        st.write("Área de trabalho da planilha DQO")
