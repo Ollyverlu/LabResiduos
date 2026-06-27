@@ -231,9 +231,11 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "Escolha a planilha",
         ["N-Amoniacal", "NTK", "DQO"]
     )
-
-    def carregar_excel(nome):
-        return pd.read_excel(nome)
+def carregar_excel(nome):
+    try:
+        return pd.read_excel(nome, engine="xlrd")  # para .xls
+    except:
+        return pd.read_excel(nome, engine="openpyxl")  # para .xlsx
 
     try:
         if opcao == "N-Amoniacal":
