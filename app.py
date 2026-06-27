@@ -222,30 +222,84 @@ elif menu == "🧪 DQO":
         if media != 0:
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
-
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
-    st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
+    import pandas as pd
 
+    st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
     st.markdown("══════════════════════════════════════")
 
-    aba1, aba2, aba3 = st.tabs(["🧪 N-Amoniacal", "🧪 NTK", "🧪 DQO"])
+    arquivos = {
+        "N-Amoniacal": "N-AMONIACAL.xlsx",
+        "NTK": "NTK.xlsx",
+        "DQO": "DQO.xlsx"
+    }
+
+    aba1, aba2, aba3 = st.tabs(list(arquivos.keys()))
 
     # ================= ABA 1 =================
     with aba1:
         st.subheader("N-Amoniacal")
 
-        st.write("Área de trabalho da planilha N-Amoniacal")
+        try:
+            df1 = pd.read_excel(arquivos["N-Amoniacal"], engine="openpyxl")
+        except:
+            df1 = pd.DataFrame()
+
+        df1_edit = st.data_editor(df1, use_container_width=True, key="na_edit")
+
+        if st.button("💾 Salvar N-Amoniacal"):
+            df1_edit.to_excel(arquivos["N-Amoniacal"], index=False)
+            st.success("Salvo com sucesso!")
+
+        st.download_button(
+            "⬇️ Baixar Excel",
+            data=df1_edit.to_csv(index=False).encode("utf-8"),
+            file_name="N-Amoniacal.csv",
+            mime="text/csv"
+        )
 
     # ================= ABA 2 =================
     with aba2:
         st.subheader("NTK")
 
-        st.write("Área de trabalho da planilha NTK")
+        try:
+            df2 = pd.read_excel(arquivos["NTK"], engine="openpyxl")
+        except:
+            df2 = pd.DataFrame()
+
+        df2_edit = st.data_editor(df2, use_container_width=True, key="ntk_edit")
+
+        if st.button("💾 Salvar NTK"):
+            df2_edit.to_excel(arquivos["NTK"], index=False)
+            st.success("Salvo com sucesso!")
+
+        st.download_button(
+            "⬇️ Baixar Excel",
+            data=df2_edit.to_csv(index=False).encode("utf-8"),
+            file_name="NTK.csv",
+            mime="text/csv"
+        )
 
     # ================= ABA 3 =================
     with aba3:
         st.subheader("DQO")
 
-        st.write("Área de trabalho da planilha DQO")
+        try:
+            df3 = pd.read_excel(arquivos["DQO"], engine="openpyxl")
+        except:
+            df3 = pd.DataFrame()
+
+        df3_edit = st.data_editor(df3, use_container_width=True, key="dqo_edit")
+
+        if st.button("💾 Salvar DQO"):
+            df3_edit.to_excel(arquivos["DQO"], index=False)
+            st.success("Salvo com sucesso!")
+
+        st.download_button(
+            "⬇️ Baixar Excel",
+            data=df3_edit.to_csv(index=False).encode("utf-8"),
+            file_name="DQO.csv",
+            mime="text/csv"
+        )
