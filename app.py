@@ -177,7 +177,7 @@ elif menu == "🧪 N-Amoniacal":
         t2 = st.number_input("Titulação 2")
         t3 = st.number_input("Titulação 3")
 
-        if st.button("Calcular N-Amoniacal"):
+        if st.button("Calcular N-Amoniacal", key="btn_na_calc"):
             media = np.mean([t1, t2, t3])
             if media != 0 and v > 0:
                 resultado = (m / 381.4) / (v / 1000) * media
@@ -195,9 +195,12 @@ elif menu == "🧪 N-Amoniacal":
         t2_pad = st.number_input("Titulação 2 (padronização)")
         t3_pad = st.number_input("Titulação 3 (padronização)")
 
-        if st.button("Calcular Padronização H₂SO₄"):
+        if st.button("Calcular Padronização H₂SO₄", key="btn_pad_na"):
             media_pad = np.mean([t1_pad, t2_pad, t3_pad])
             st.info(f"Média da padronização: {media_pad:.4f}")
+
+
+# ================= NTK =================
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
 
@@ -208,11 +211,12 @@ elif menu == "🧪 NTK":
     t2 = st.number_input("Titulação 2")
     t3 = st.number_input("Titulação 3")
 
-    if st.button("Calcular NTK"):
+    if st.button("Calcular NTK", key="btn_ntk"):
         media = np.mean([t1, t2, t3])
-        if media != 0:
+        if media != 0 and v > 0:
             resultado = (m / 381.4) / (v / 1000) * media
             st.success(f"Resultado: {resultado:.4f}")
+
 
 # ================= NHX =================
 elif menu == "🧪 NHX":
@@ -225,11 +229,12 @@ elif menu == "🧪 NHX":
     t2 = st.number_input("Titulação 2")
     t3 = st.number_input("Titulação 3")
 
-    if st.button("Calcular NHX"):
+    if st.button("Calcular NHX", key="btn_nhx"):
         media = np.mean([t1, t2, t3])
-        if media != 0:
+        if media != 0 and v > 0:
             resultado = (m / 381.4) / (v / 1000) * media
             st.success(f"Resultado: {resultado:.4f}")
+
 
 # ================= DQO =================
 elif menu == "🧪 DQO":
@@ -242,11 +247,13 @@ elif menu == "🧪 DQO":
     t2 = st.number_input("Titulação 2")
     t3 = st.number_input("Titulação 3")
 
-    if st.button("Calcular DQO"):
+    if st.button("Calcular DQO", key="btn_dqo"):
         media = np.mean([t1, t2, t3])
         if media != 0:
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
+
+
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
@@ -299,7 +306,7 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
         df2_edit = st.data_editor(df2, use_container_width=True, key="ntk_edit")
 
-        if st.button("💾 Salvar NTK", key="btn_ntk"):
+        if st.button("💾 Salvar NTK", key="btn_ntk_save"):
             df2_edit.to_excel(arquivos["NTK"], index=False, engine="openpyxl")
             st.success("Salvo com sucesso!")
 
@@ -323,7 +330,7 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
         df3_edit = st.data_editor(df3, use_container_width=True, key="dqo_edit")
 
-        if st.button("💾 Salvar DQO", key="btn_dqo"):
+        if st.button("💾 Salvar DQO", key="btn_dqo_save"):
             df3_edit.to_excel(arquivos["DQO"], index=False, engine="openpyxl")
             st.success("Salvo com sucesso!")
 
