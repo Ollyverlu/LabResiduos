@@ -224,7 +224,6 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
 
-
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
@@ -245,18 +244,12 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
         with tabs[i]:
 
-            arquivo = arquivos[nome]
-
             st.subheader(f"📄 {nome}")
 
-            # 🔥 LEITURA SIMPLES (SEM AUTO-SAVE, SEM COMPLEXIDADE)
-            try:
-                df = pd.read_excel(arquivo, engine="openpyxl")
-            except Exception as e:
-                st.warning(f"Não foi possível abrir {arquivo}. Mostrando planilha vazia.")
-                df = pd.DataFrame()
+            # 🔥 SEM LEITURA DE ARQUIVO (PLANILHA COMEÇA VAZIA)
+            df = pd.DataFrame()
 
-            # 🔥 TABELA EDITÁVEL
+            # 🔥 PLANILHA EDITÁVEL (INTERATIVA)
             df_edit = st.data_editor(
                 df,
                 use_container_width=True,
@@ -264,7 +257,7 @@ elif menu == "📊 Planilhas Interativas (Excel)":
                 key=f"edit_{nome}"
             )
 
-            # 🔥 DOWNLOAD SIMPLES (CSV)
+            # 🔥 BOTÃO DE DOWNLOAD
             st.download_button(
                 f"⬇️ Baixar {nome}",
                 data=df_edit.to_csv(index=False).encode("utf-8"),
@@ -272,3 +265,4 @@ elif menu == "📊 Planilhas Interativas (Excel)":
                 mime="text/csv",
                 key=f"download_{nome}"
             )
+
