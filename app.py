@@ -1,8 +1,8 @@
 import streamlit as st
 import numpy as np
-import pandas as pd
 from io import BytesIO
-
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 # ================= CONFIG =================
 st.set_page_config(page_title=" - LabResiduos -Laboratorio Virtual ", layout="wide")
 
@@ -224,24 +224,21 @@ elif menu == "🧪 DQO":
             st.success(f"Resultado: {resultado:.4f}")
 
 # ================= PLANILHAS INTERATIVAS =================
-elif menu == "📊 Planilhas Interativas (Excel)":
 
-    import streamlit as st
-    import numpy as np
+ elif menu == "📊 Planilhas Interativas (Excel)":
+
+    st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
+
+    st.markdown("══════════════════════════════════════")
+
+    aba1, aba2, aba3 = st.tabs([...])
     
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from io import BytesIO
-def gerar_pdf(titulo, dados):
-
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=letter)
 
-    # TÍTULO
     pdf.setFont("Helvetica-Bold", 14)
     pdf.drawString(50, 750, titulo)
 
-    # CONTEÚDO
     pdf.setFont("Helvetica", 10)
 
     y = 700
@@ -250,7 +247,6 @@ def gerar_pdf(titulo, dados):
         pdf.drawString(50, y, str(item))
         y -= 20
 
-        # evita sair da página
         if y < 50:
             pdf.showPage()
             pdf.setFont("Helvetica", 10)
@@ -258,106 +254,4 @@ def gerar_pdf(titulo, dados):
 
     pdf.save()
     buffer.seek(0)
-
     return buffer
-    st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
-
-    st.markdown("══════════════════════════════════════")
-
-    # ================= ABAS =================
-    aba1, aba2, aba3 = st.tabs(["🧪 N-Amoniacal", "🧪 NTK", "🧪 DQO"])
-
-    # =========================================================
-    # 🧪 N-AMONIACAL
-    # =========================================================
-    with aba1:
-
-        st.subheader("DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
-
-        responsavel = st.text_input("Responsável", key="na_resp")
-        projeto = st.text_input("Projeto", key="na_proj")
-        data = st.date_input("Data", key="na_data")
-        hora = st.time_input("Hora", key="na_hora")
-
-        massa_pesada = st.number_input("Massa pesada (g)", key="na_massa", min_value=0.0)
-        massa_molar = st.number_input("Massa molar", value=381.40, key="na_mm")
-        volume_balao = st.number_input("Volume do balão (mL)", key="na_vol", min_value=0.0)
-
-        t1 = st.number_input("1ª Titulação", key="na_t1")
-        t2 = st.number_input("2ª Titulação", key="na_t2")
-        t3 = st.number_input("3ª Titulação", key="na_t3")
-
-        if massa_pesada > 0 and volume_balao > 0:
-            conc = (massa_pesada / massa_molar) / (volume_balao / 1000)
-            st.success(f"Concentração: {conc:.6f}")
-        else:
-            conc = None
-
-        if t1 and t2 and t3:
-            media = np.mean([t1, t2, t3])
-            desvio = np.std([t1, t2, t3], ddof=1)
-            st.write(f"Média: {media:.2f}")
-            st.write(f"Desvio: {desvio:.2f}")
-
-            if conc:
-                resultado = (massa_pesada / 381.4) * media
-                st.success(f"Resultado N-Amoniacal: {resultado:.4f} mg/L")
-
-    # =========================================================
-    # 🧪 NTK
-    # =========================================================
-    with aba2:
-
-        st.subheader("NITROGÊNIO TOTAL KJELDAHL (NTK)")
-
-        responsavel2 = st.text_input("Responsável", key="ntk_resp")
-        projeto2 = st.text_input("Projeto", key="ntk_proj")
-
-        massa = st.number_input("Massa (g)", key="ntk_massa", min_value=0.0)
-        volume = st.number_input("Volume (L)", key="ntk_vol", min_value=0.0)
-
-        t1 = st.number_input("1ª Titulação", key="ntk_t1")
-        t2 = st.number_input("2ª Titulação", key="ntk_t2")
-        t3 = st.number_input("3ª Titulação", key="ntk_t3")
-
-        if t1 and t2 and t3:
-            media = np.mean([t1, t2, t3])
-            desvio = np.std([t1, t2, t3], ddof=1)
-
-            st.write(f"Média: {media:.2f}")
-            st.write(f"Desvio: {desvio:.2f}")
-
-            if massa > 0 and volume > 0:
-                ntk = (massa / 381.4) / volume * media
-                st.success(f"NTK: {ntk:.4f} mg/L")
-
-    # =========================================================
-    # 🧪 DQO
-    # =========================================================
-    with aba3:
-
-        st.subheader("DEMANDA QUÍMICA DE OXIGÊNIO (DQO)")
-
-        responsavel3 = st.text_input("Responsável", key="dqo_resp")
-        projeto3 = st.text_input("Projeto", key="dqo_proj")
-
-        massa = st.number_input("Massa padrão (mg)", key="dqo_massa", min_value=0.0)
-        volume = st.number_input("Volume (mL)", key="dqo_vol", min_value=0.0)
-
-        t1 = st.number_input("1ª Titulação", key="dqo_t1")
-        t2 = st.number_input("2ª Titulação", key="dqo_t2")
-        t3 = st.number_input("3ª Titulação", key="dqo_t3")
-
-        if t1 and t2 and t3:
-            media = np.mean([t1, t2, t3])
-            desvio = np.std([t1, t2, t3], ddof=1)
-
-            st.write(f"Média: {media:.2f}")
-            st.write(f"Desvio: {desvio:.2f}")
-
-            if media > 0:
-                dqo = (massa * 0.25) / media
-                st.success(f"DQO: {dqo:.4f} mg/L")
-
-    st.markdown("══════════════════════════════════════")
-    st.success("✔ Todas as planilhas estão funcionando em abas!")
