@@ -376,72 +376,84 @@ elif menu == "🧪 DQO":
             </div>
             """, unsafe_allow_html=True)
    # ================= PLANILHAS INTERATIVAS (SEM EXCEL - ESTÁVEL) =================
+# ================= PLANILHAS INTERATIVAS (EXCEL ESTÁVEL) =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
 
-    st.title("🧪 LABORATÓRIO VIRTUAL - REGISTRO DE DADOS")
+    st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS EXCEL")
     st.markdown("══════════════════════════════════════")
 
-    # ================= MEMÓRIA =================
-    if "na_data" not in st.session_state:
-        st.session_state.na_data = []
+    arquivos = {
+        "N-Amoniacal": "N-AMONIACAL.xlsx",
+        "NTK": "NTK.xlsx",
+        "DQO": "DQO.xlsx"
+    }
 
-    if "ntk_data" not in st.session_state:
-        st.session_state.ntk_data = []
-
-    if "dqo_data" not in st.session_state:
-        st.session_state.dqo_data = []
-
-    aba1, aba2, aba3 = st.tabs(["N-Amoniacal", "NTK", "DQO"])
+    aba1, aba2, aba3 = st.tabs(list(arquivos.keys()))
 
     # ================= ABA 1 =================
     with aba1:
         st.subheader("N-Amoniacal")
 
-        responsavel = st.text_input("Responsável", key="na_resp")
-        projeto = st.text_input("Projeto", key="na_proj")
-        resultado = st.number_input("Resultado (mg/L)", key="na_resultado")
+        try:
+            df1 = pd.read_excel(arquivos["N-Amoniacal"], engine="openpyxl")
+        except:
+            df1 = pd.DataFrame()
 
-        if st.button("➕ Adicionar N-Amoniacal"):
-            st.session_state.na_data.append({
-                "Responsável": responsavel,
-                "Projeto": projeto,
-                "Resultado": resultado
-            })
+        df1_edit = st.data_editor(df1, use_container_width=True, key="na_excel")
 
-        st.dataframe(pd.DataFrame(st.session_state.na_data))
+        if st.button("💾 Salvar N-Amoniacal", key="save_na"):
+            df1_edit.to_excel(arquivos["N-Amoniacal"], index=False, engine="openpyxl")
+            st.success("N-Amoniacal salvo com sucesso!")
+
+        st.download_button(
+            "⬇️ Baixar CSV",
+            data=df1_edit.to_csv(index=False).encode("utf-8"),
+            file_name="N-Amoniacal.csv",
+            mime="text/csv"
+        )
 
     # ================= ABA 2 =================
     with aba2:
         st.subheader("NTK")
 
-        responsavel_ntk = st.text_input("Responsável", key="ntk_resp")
-        projeto_ntk = st.text_input("Projeto", key="ntk_proj")
-        resultado_ntk = st.number_input("Resultado (mg/L)", key="ntk_res")
+        try:
+            df2 = pd.read_excel(arquivos["NTK"], engine="openpyxl")
+        except:
+            df2 = pd.DataFrame()
 
-        if st.button("➕ Adicionar NTK"):
-            st.session_state.ntk_data.append({
-                "Responsável": responsavel_ntk,
-                "Projeto": projeto_ntk,
-                "Resultado": resultado_ntk
-            })
+        df2_edit = st.data_editor(df2, use_container_width=True, key="ntk_excel")
 
-        st.dataframe(pd.DataFrame(st.session_state.ntk_data))
+        if st.button("💾 Salvar NTK", key="save_ntk"):
+            df2_edit.to_excel(arquivos["NTK"], index=False, engine="openpyxl")
+            st.success("NTK salvo com sucesso!")
+
+        st.download_button(
+            "⬇️ Baixar CSV",
+            data=df2_edit.to_csv(index=False).encode("utf-8"),
+            file_name="NTK.csv",
+            mime="text/csv"
+        )
 
     # ================= ABA 3 =================
     with aba3:
         st.subheader("DQO")
 
-        responsavel_dqo = st.text_input("Responsável", key="dqo_resp2")
-        projeto_dqo = st.text_input("Projeto", key="dqo_proj2")
-        resultado_dqo = st.number_input("Resultado (mg/L)", key="dqo_res")
+        try:
+            df3 = pd.read_excel(arquivos["DQO"], engine="openpyxl")
+        except:
+            df3 = pd.DataFrame()
 
-        if st.button("➕ Adicionar DQO"):
-            st.session_state.dqo_data.append({
-                "Responsável": responsavel_dqo,
-                "Projeto": projeto_dqo,
-                "Resultado": resultado_dqo
-            })
+        df3_edit = st.data_editor(df3, use_container_width=True, key="dqo_excel")
 
-        st.dataframe(pd.DataFrame(st.session_state.dqo_data))
+        if st.button("💾 Salvar DQO", key="save_dqo"):
+            df3_edit.to_excel(arquivos["DQO"], index=False, engine="openpyxl")
+            st.success("DQO salvo com sucesso!")
+
+        st.download_button(
+            "⬇️ Baixar CSV",
+            data=df3_edit.to_csv(index=False).encode("utf-8"),
+            file_name="DQO.csv",
+            mime="text/csv"
+        )
