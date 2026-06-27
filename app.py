@@ -274,7 +274,6 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     if not df_edit.equals(df):
         salvar_excel(df_edit, arquivo)
 
-Script execution error
 File "/mount/src/labresiduos/app.py", line 278
    # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
@@ -330,10 +329,6 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     if not df_edit.equals(df):
         salvar_excel(df_edit, arquivo)
 
-Script execution error
 File "/mount/src/labresiduos/app.py", line 278
 
-                          ^
-IndentationError: unindent does not match any outer indentation level
-                          ^
-IndentationError: unindent does not match any outer indentation level
+                        
