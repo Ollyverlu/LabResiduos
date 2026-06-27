@@ -219,3 +219,69 @@ elif menu == "🧪 DQO":
         if media != 0:
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
+      
+# ================= PLANILHAS INTERATIVAS =================
+elif menu == "📊 Planilhas Interativas (Excel)":
+
+    st.title("📊 Planilhas Interativas tipo Excel")
+
+    st.info("Edite os valores abaixo como se fosse uma planilha Excel. Tudo recalcula automaticamente.")
+
+    aba = st.selectbox("Escolha a planilha:", [
+        "🧪 Sólidos Totais (ST)",
+        "🔥 Sólidos Fixos (STF)",
+        "💨 Sólidos Voláteis (STV)"
+    ])
+
+    import pandas as pd
+
+    # ================= ST =================
+    if aba == "🧪 Sólidos Totais (ST)":
+
+        df = pd.DataFrame({
+            "Amostra": ["A1", "A2"],
+            "Massa (m2-m1)": [0, 0],
+            "Volume (mL)": [50, 50]
+        })
+
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+
+        if st.button("Calcular ST"):
+            df_edit["ST (mg/L)"] = (df_edit["Massa (m2-m1)"] / (df_edit["Volume (mL)"] / 1000))
+
+            st.success("ST calculado automaticamente!")
+            st.dataframe(df_edit, use_container_width=True)
+
+    # ================= STF =================
+    elif aba == "🔥 Sólidos Fixos (STF)":
+
+        df = pd.DataFrame({
+            "Amostra": ["A1", "A2"],
+            "Massa (cinzas)": [0, 0],
+            "Volume (mL)": [50, 50]
+        })
+
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+
+        if st.button("Calcular STF"):
+            df_edit["STF (mg/L)"] = (df_edit["Massa (cinzas)"] / (df_edit["Volume (mL)"] / 1000))
+
+            st.success("STF calculado automaticamente!")
+            st.dataframe(df_edit, use_container_width=True)
+
+    # ================= STV =================
+    elif aba == "💨 Sólidos Voláteis (STV)":
+
+        df = pd.DataFrame({
+            "Amostra": ["A1", "A2"],
+            "ST": [0, 0],
+            "STF": [0, 0]
+        })
+
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+
+        if st.button("Calcular STV"):
+            df_edit["STV"] = df_edit["ST"] - df_edit["STF"]
+
+            st.success("STV calculado automaticamente!")
+            st.dataframe(df_edit, use_container_width=True)
