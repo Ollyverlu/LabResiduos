@@ -224,35 +224,63 @@ elif menu == "🧪 DQO":
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
+    import os
+    from datetime import datetime
 
-    st.title("📊 Planilhas Interativas - Estilo Excel")
+    st.title("📊 Planilhas Interativas - Sistema Excel Interno")
 
-    opcao = st.selectbox(
-        "Escolha a planilha",
-        ["N-Amoniacal", "NTK", "DQO"]
+    # ================= ARQUIVOS =================
+    arquivos = {
+        "N-Amoniacal": "N-AMONIACAL.xlsx",
+        "NTK": "NTK.xlsx",
+        "DQO": "DQO.xlsx"
+    }
+
+    # ================= ABAS =================
+    aba = st.radio("📑 Escolha a planilha", list(arquivos.keys()), horizontal=True)
+
+    arquivo = arquivos[aba]
+
+    # ================= FUNÇÃO CARREGAR =================
+    def carregar_excel(file):
+        try:
+            return pd.read_excel(file, engine="openpyxl")
+        except:
+            return pd.DataFrame()
+
+    df = carregar_excel(arquivo)
+
+    st.markdown("### ✏️ Edição da Planilha (Estilo Excel)")
+
+    df_edit = st.data_editor(
+        df,
+        use_container_width=True,
+        num_rows="dynamic",
+        key=f"editor_{aba}"
     )
-def carregar_excel(nome):
-    try:
-        return pd.read_excel(nome, engine="xlrd")  # para .xls
-    except:
-        return pd.read_excel(nome, engine="openpyxl")  # para .xlsx
 
-    try:
-        if opcao == "N-Amoniacal":
-            df = carregar_excel("N-AMONIACAL.xlsx")
+    # ================= SALVAMENTO AUTOMÁTICO =================
+    def salvar_excel(dataframe, file):
+        dataframe.to_excel(file, index=False, engine="openpyxl")
 
-        elif opcao == "NTK":
-            df = carregar_excel("NTK.xlsx")
+    col1, col2 = st.columns(2)
 
-        elif opcao == "DQO":
-            df = carregar_excel("DQO.xlsx")
+    with col1:
+        if st.button("💾 Salvar automaticamente"):
+            salvar_excel(df_edit, arquivo)
+            st.success(f"{aba} salva com sucesso!")
 
-        df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
+    # ================= AUTO SAVE INTELIGENTE =================
+    if not df_edit.equals(df):
+        salvar_excel(df_edit, arquivo)
 
-        if st.button("📌 Salvar Visualização"):
-            st.success("Planilha carregada com sucesso!")
-            st.dataframe(df_edit)
+    # ================= EXPORTAR =================
+    with col2:
+        st.download_button(
+            label="📤 Exportar Excel",
+            data=df_edit.to_excel(index=False, engine="openpyxl"),
+            file_name=f"{aba}_exportado.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 
-    except Exception as e:
-        st.error("Erro ao abrir Excel. Verifique se os arquivos estão na pasta do app.")
-        st.code(str(e))
+    st.info("✔ Alterações são salvas automaticamente ao editar a tabela.")
