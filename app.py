@@ -220,14 +220,14 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}") 
             
-      # ================= PLANILHAS INTERATIVAS (NOVO MÓDULO) =================
+          # ================= PLANILHAS INTERATIVAS (NOVO MÓDULO) =================
 elif menu == "📊 Planilhas Interativas (Excel)":
+
+    import pandas as pd
 
     st.title("📊 Planilhas Interativas - Estilo Excel")
 
-    st.info("Área separada do sistema principal. Não altera nenhum cálculo existente.")
-
-    import pandas as pd
+    st.info("Módulo independente. Não altera nenhum cálculo do sistema principal.")
 
     opcao = st.selectbox("Escolha a planilha:", [
         "🧪 Sólidos Totais (ST)",
@@ -235,62 +235,59 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "💨 Sólidos Voláteis (STV)"
     ])
 
-    # ========================= ST =========================
+    # ================= ST =================
     if opcao == "🧪 Sólidos Totais (ST)":
 
         st.subheader("🧪 Planilha ST")
 
-        df_st = pd.DataFrame({
+        df = pd.DataFrame({
             "Amostra": ["A1", "A2", "A3"],
             "Massa (m2-m1)": [0, 0, 0],
             "Volume (mL)": [50, 50, 50]
         })
 
-        df_st_edit = st.data_editor(df_st, num_rows="dynamic", use_container_width=True)
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
 
         if st.button("📌 Calcular ST"):
-            df_st_edit["ST (mg/L)"] = df_st_edit["Massa (m2-m1)"] / (df_st_edit["Volume (mL)"] / 1000)
+            df_edit["ST (mg/L)"] = df_edit["Massa (m2-m1)"] / (df_edit["Volume (mL)"] / 1000)
 
             st.success("ST calculado com sucesso!")
-            st.dataframe(df_st_edit, use_container_width=True)
+            st.dataframe(df_edit, use_container_width=True)
 
-    # ========================= STF =========================
+    # ================= STF =================
     elif opcao == "🔥 Sólidos Fixos (STF)":
 
         st.subheader("🔥 Planilha STF")
 
-        df_stf = pd.DataFrame({
+        df = pd.DataFrame({
             "Amostra": ["A1", "A2", "A3"],
             "Massa Cinzas": [0, 0, 0],
             "Volume (mL)": [50, 50, 50]
         })
 
-        df_stf_edit = st.data_editor(df_stf, num_rows="dynamic", use_container_width=True)
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
 
         if st.button("📌 Calcular STF"):
-            df_stf_edit["STF (mg/L)"] = df_stf_edit["Massa Cinzas"] / (df_stf_edit["Volume (mL)"] / 1000)
+            df_edit["STF (mg/L)"] = df_edit["Massa Cinzas"] / (df_edit["Volume (mL)"] / 1000)
 
             st.success("STF calculado com sucesso!")
-            st.dataframe(df_stf_edit, use_container_width=True)
+            st.dataframe(df_edit, use_container_width=True)
 
-    # ========================= STV =========================
+    # ================= STV =================
     elif opcao == "💨 Sólidos Voláteis (STV)":
 
         st.subheader("💨 Planilha STV")
 
-        df_stv = pd.DataFrame({
+        df = pd.DataFrame({
             "Amostra": ["A1", "A2", "A3"],
             "ST": [0, 0, 0],
             "STF": [0, 0, 0]
         })
 
-        df_stv_edit = st.data_editor(df_stv, num_rows="dynamic", use_container_width=True)
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
 
         if st.button("📌 Calcular STV"):
-            df_stv_edit["STV"] = df_stv_edit["ST"] - df_stv_edit["STF"]
+            df_edit["STV"] = df_edit["ST"] - df_edit["STF"]
 
             st.success("STV calculado com sucesso!")
-            st.dataframe(df_stv_edit, use_container_width=True)
-            "📊 Planilhas Interativas (Excel)"
-
-          
+            st.dataframe(df_edit, use_container_width=True)
