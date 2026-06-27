@@ -60,6 +60,7 @@ menu = st.sidebar.radio("📚 Sistema Laboratorial ", [
     "🧪 NTK",
     "🧪 NHX",
     "🧪 DQO"
+    "📊 Planilhas Interativas (Excel)"
 ])
 
 # ================= HEADER CORRIGIDO (ANTI ERRO STREAMLIT) =================
