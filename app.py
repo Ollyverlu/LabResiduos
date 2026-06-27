@@ -155,7 +155,7 @@ elif menu == "🧪 Sólidos Suspensos":
         </div>
         """, unsafe_allow_html=True)
 
-# ================= N-AMONIACAL =================
+
 # ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
     header("NITROGÊNIO AMONIACAL")
@@ -375,4 +375,73 @@ elif menu == "🧪 DQO":
             Resultado: {resultado:.4f} mg/L
             </div>
             """, unsafe_allow_html=True)
-   
+   # ================= PLANILHAS INTERATIVAS (SEM EXCEL - ESTÁVEL) =================
+elif menu == "📊 Planilhas Interativas (Excel)":
+
+    import pandas as pd
+
+    st.title("🧪 LABORATÓRIO VIRTUAL - REGISTRO DE DADOS")
+    st.markdown("══════════════════════════════════════")
+
+    # ================= MEMÓRIA =================
+    if "na_data" not in st.session_state:
+        st.session_state.na_data = []
+
+    if "ntk_data" not in st.session_state:
+        st.session_state.ntk_data = []
+
+    if "dqo_data" not in st.session_state:
+        st.session_state.dqo_data = []
+
+    aba1, aba2, aba3 = st.tabs(["N-Amoniacal", "NTK", "DQO"])
+
+    # ================= ABA 1 =================
+    with aba1:
+        st.subheader("N-Amoniacal")
+
+        responsavel = st.text_input("Responsável", key="na_resp")
+        projeto = st.text_input("Projeto", key="na_proj")
+        resultado = st.number_input("Resultado (mg/L)", key="na_resultado")
+
+        if st.button("➕ Adicionar N-Amoniacal"):
+            st.session_state.na_data.append({
+                "Responsável": responsavel,
+                "Projeto": projeto,
+                "Resultado": resultado
+            })
+
+        st.dataframe(pd.DataFrame(st.session_state.na_data))
+
+    # ================= ABA 2 =================
+    with aba2:
+        st.subheader("NTK")
+
+        responsavel_ntk = st.text_input("Responsável", key="ntk_resp")
+        projeto_ntk = st.text_input("Projeto", key="ntk_proj")
+        resultado_ntk = st.number_input("Resultado (mg/L)", key="ntk_res")
+
+        if st.button("➕ Adicionar NTK"):
+            st.session_state.ntk_data.append({
+                "Responsável": responsavel_ntk,
+                "Projeto": projeto_ntk,
+                "Resultado": resultado_ntk
+            })
+
+        st.dataframe(pd.DataFrame(st.session_state.ntk_data))
+
+    # ================= ABA 3 =================
+    with aba3:
+        st.subheader("DQO")
+
+        responsavel_dqo = st.text_input("Responsável", key="dqo_resp2")
+        projeto_dqo = st.text_input("Projeto", key="dqo_proj2")
+        resultado_dqo = st.number_input("Resultado (mg/L)", key="dqo_res")
+
+        if st.button("➕ Adicionar DQO"):
+            st.session_state.dqo_data.append({
+                "Responsável": responsavel_dqo,
+                "Projeto": projeto_dqo,
+                "Resultado": resultado_dqo
+            })
+
+        st.dataframe(pd.DataFrame(st.session_state.dqo_data))
