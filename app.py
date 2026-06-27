@@ -227,13 +227,13 @@ elif menu == "🧪 DQO":
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import streamlit as st
+    import numpy as np
 
     st.title("🧪 DETERMINAÇÃO DE NITROGÊNIO AMONIACAL")
 
-    st.markdown("""
-══════════════════════════════════════════════
-""")
+    st.markdown("══════════════════════════════════════")
 
+    # ================= IDENTIFICAÇÃO =================
     st.subheader("📄 IDENTIFICAÇÃO")
 
     responsavel = st.text_input("Responsável")
@@ -241,8 +241,50 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     data = st.date_input("Data da Análise")
     hora = st.time_input("Hora da Análise")
 
-    st.markdown("""
-══════════════════════════════════════════════
-""")
+    st.markdown("══════════════════════════════════════")
 
-    st.info("✔ Agora vamos para a próxima etapa: PADRONIZAÇÃO DO H₂SO₄ (será adicionada no próximo bloco)")
+    # ================= PADRONIZAÇÃO =================
+    st.subheader("⚗️ PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H₂SO₄)")
+
+    st.write("PADRÃO PRIMÁRIO: TETRABORATO DE SÓDIO DECA HIDRATADO (Na₂B₄O₇·10H₂O)")
+
+    massa_pesada = st.number_input("Massa pesada (g)", min_value=0.0, step=0.1)
+    massa_molar = st.number_input("Massa molar (g/mol)", value=381.40)
+    volume_balao = st.number_input("Volume do balão (mL)", min_value=0.0, step=1.0)
+
+    st.markdown("### 🔬 Cálculo da concentração")
+    if massa_pesada > 0 and volume_balao > 0:
+        concentracao = (massa_pesada / massa_molar) / (volume_balao / 1000)
+        st.success(f"Concentração: {concentracao:.6f} eqg/L")
+    else:
+        concentracao = None
+        st.warning("Preencha massa e volume para calcular")
+
+    st.markdown("══════════════════════════════════════")
+
+    # ================= TITULAÇÕES =================
+    st.subheader("🧪 TITULAÇÕES")
+
+    vol_1 = st.number_input("1ª Titulação (mL)", min_value=0.0, step=0.1)
+    vol_2 = st.number_input("2ª Titulação (mL)", min_value=0.0, step=0.1)
+    vol_3 = st.number_input("3ª Titulação (mL)", min_value=0.0, step=0.1)
+
+    st.markdown("══════════════════════════════════════")
+
+    # ================= RESULTADOS =================
+    st.subheader("📊 RESULTADOS")
+
+    if vol_1 > 0 and vol_2 > 0 and vol_3 > 0:
+
+        media = np.mean([vol_1, vol_2, vol_3])
+        desvio = np.std([vol_1, vol_2, vol_3], ddof=1)
+
+        st.write(f"Média das titulações: {media:.2f} mL")
+        st.write(f"Desvio padrão: {desvio:.2f}")
+
+    else:
+        st.info("Preencha as três titulações para ver os resultados")
+
+    st.markdown("══════════════════════════════════════")
+
+    st.info("✔ Próximo bloco: Reagentes e Fator de Correção")
