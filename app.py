@@ -166,6 +166,11 @@ elif menu == "🧪 N-Amoniacal":
         data = st.date_input("Data da análise")
         hora = st.time_input("Hora da análise")
 
+    responsavel = st.text_input("Responsável")
+    projeto = st.text_input("Projeto")
+    data = st.date_input("Data da análise")
+    hora = st.time_input("Hora da análise")
+    
     st.markdown("══════════════════════════════════════")
 
     # ================= ETAPA 2 =================
