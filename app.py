@@ -223,10 +223,14 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= PLANILHAS INTERATIVAS (CORRIGIDO) =================
+# ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
-    st.title("📊 Planilhas Interativas - Sistema Excel Interno")
+    import pandas as pd
+    import streamlit as st
+    from io import BytesIO
+
+    st.title("📊 Planilhas Interativas - Excel com Abas")
 
     arquivos = {
         "N-Amoniacal": "N-AMONIACAL.xlsx",
@@ -234,42 +238,72 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "DQO": "DQO.xlsx"
     }
 
-    aba = st.radio("📑 Escolha a planilha", list(arquivos.keys()), horizontal=True)
-    arquivo = arquivos[aba]
+    # 🔥 TEMPLATE BASE (SEU MODELO COMPLETO)
+    def criar_template():
+        return pd.DataFrame({
+            "CAMPO": [
+                "TÍTULO: DETERMINAÇÃO DE NITROGÊNIO AMONIACAL",
+                "RESPONSÁVEL",
+                "PROJETO",
+                "DATA DA ANÁLISE",
+                "HORA DA ANÁLISE",
+                "",
+                "PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H2SO4) 0,02 N",
+                "",
+                "MASSA PESADA (g)",
+                "MASSA MOLAR (g/mol)",
+                "VOLUME DO BALÃO (mL)",
+                "CONCENTRAÇÃO (eqg/L)",
+                "",
+                "1ª TITULAÇÃO",
+                "VOLUME DE H2SO4 (mL)",
+                "CONCENTRAÇÃO REAL",
+                "",
+                "2ª TITULAÇÃO",
+                "VOLUME DE H2SO4 (mL)",
+                "CONCENTRAÇÃO REAL",
+                "",
+                "3ª TITULAÇÃO",
+                "VOLUME DE H2SO4 (mL)",
+                "CONCENTRAÇÃO REAL",
+                "",
+                "RESULTADOS FINAIS",
+                "CONCENTRAÇÃO REAL",
+                "DESVIO PADRÃO",
+                "FATOR DE CORREÇÃO"
+            ],
+            "VALOR": [""] * 29,
+            "UNIDADE": [""] * 29
+        })
 
-    try:
-        df = pd.read_excel(arquivo, engine="openpyxl")
-    except:
-        df = pd.DataFrame()
+    tabs = st.tabs(list(arquivos.keys()))
 
-    st.markdown("### ✏️ Edição da Planilha")
+    for i, nome in enumerate(arquivos.keys()):
 
-    df_edit = st.data_editor(
-        df,
-        use_container_width=True,
-        num_rows="dynamic",
-        key=f"editor_{aba}"
-    )
+        with tabs[i]:
 
-    def to_excel(df):
-        output = BytesIO()
-        with pd.ExcelWriter(output, engine="openpyxl") as writer:
-            df.to_excel(writer, index=False)
-        return output.getvalue()
+            st.subheader(f"📄 {nome}")
 
-    col1, col2 = st.columns(2)
+            df = criar_template()
 
-    with col1:
-        st.download_button(
-            "📥 Baixar Excel",
-            data=to_excel(df_edit),
-            file_name=f"{aba}.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+            df_edit = st.data_editor(
+                df,
+                use_container_width=True,
+                num_rows="fixed",
+                key=f"edit_{nome}"
+            )
 
-    with col2:
-        if st.button("💾 Salvar no sistema"):
-            df_edit.to_excel(arquivo, index=False, engine="openpyxl")
-            st.success("Planilha salva com sucesso!")
-            
+            # 🔥 FUNÇÃO PARA GERAR EXCEL COMPLETO
+            def to_excel(dataframe):
+                output = BytesIO()
+                with pd.ExcelWriter(output, engine="openpyxl") as writer:
+                    dataframe.to_excel(writer, index=False, sheet_name=nome)
+                return output.getvalue()
 
+            st.download_button(
+                f"⬇️ Baixar {nome} COMPLETO",
+                data=to_excel(df_edit),
+                file_name=f"{nome}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                key=f"download_{nome}"
+            )
