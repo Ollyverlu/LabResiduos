@@ -254,7 +254,7 @@ elif menu == "🧪 DQO":
             st.success(f"Resultado: {resultado:.4f}")
 
 
-# ================= PLANILHAS INTERATIVAS =================
+# ================= PLANILHAS INTERATIVAS (SEM EXCEL) =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
@@ -262,80 +262,65 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
     st.markdown("══════════════════════════════════════")
 
-    arquivos = {
-        "N-Amoniacal": "N-AMONIACAL.xlsx",
-        "NTK": "NTK.xlsx",
-        "DQO": "DQO.xlsx"
-    }
+    # 🔥 dados em memória (não precisa arquivo)
+    if "na_data" not in st.session_state:
+        st.session_state.na_data = pd.DataFrame()
 
-    aba1, aba2, aba3 = st.tabs(list(arquivos.keys()))
+    if "ntk_data" not in st.session_state:
+        st.session_state.ntk_data = pd.DataFrame()
 
-    # ================= FUNÇÃO SEGURA =================
-    def carregar_excel(nome):
-        try:
-            return pd.read_excel(nome, engine="openpyxl")
-        except:
-            return pd.DataFrame()
+    if "dqo_data" not in st.session_state:
+        st.session_state.dqo_data = pd.DataFrame()
 
-    def salvar_excel(df, nome):
-        df.to_excel(nome, index=False, engine="openpyxl")
+    aba1, aba2, aba3 = st.tabs(["N-Amoniacal", "NTK", "DQO"])
 
     # ================= ABA 1 =================
     with aba1:
         st.subheader("N-Amoniacal")
 
-        df1 = carregar_excel(arquivos["N-Amoniacal"])
-
-        df1_edit = st.data_editor(df1, use_container_width=True, key="na_edit")
+        df1 = st.data_editor(st.session_state.na_data, use_container_width=True, key="na")
 
         if st.button("💾 Salvar N-Amoniacal", key="btn_na"):
-            salvar_excel(df1_edit, arquivos["N-Amoniacal"])
-            st.success("Salvo com sucesso!")
+            st.session_state.na_data = df1
+            st.success("Salvo na memória!")
 
         st.download_button(
             "⬇️ Baixar CSV",
-            data=df1_edit.to_csv(index=False).encode("utf-8"),
+            data=df1.to_csv(index=False).encode("utf-8"),
             file_name="N-Amoniacal.csv",
-            mime="text/csv",
-            key="dl_na"
+            mime="text/csv"
         )
 
     # ================= ABA 2 =================
     with aba2:
         st.subheader("NTK")
 
-        df2 = carregar_excel(arquivos["NTK"])
-
-        df2_edit = st.data_editor(df2, use_container_width=True, key="ntk_edit")
+        df2 = st.data_editor(st.session_state.ntk_data, use_container_width=True, key="ntk")
 
         if st.button("💾 Salvar NTK", key="btn_ntk"):
-            salvar_excel(df2_edit, arquivos["NTK"])
-            st.success("Salvo com sucesso!")
+            st.session_state.ntk_data = df2
+            st.success("Salvo na memória!")
 
         st.download_button(
             "⬇️ Baixar CSV",
-            data=df2_edit.to_csv(index=False).encode("utf-8"),
+            data=df2.to_csv(index=False).encode("utf-8"),
             file_name="NTK.csv",
-            mime="text/csv",
-            key="dl_ntk"
+            mime="text/csv"
         )
 
     # ================= ABA 3 =================
     with aba3:
         st.subheader("DQO")
 
-        df3 = carregar_excel(arquivos["DQO"])
-
-        df3_edit = st.data_editor(df3, use_container_width=True, key="dqo_edit")
+        df3 = st.data_editor(st.session_state.dqo_data, use_container_width=True, key="dqo")
 
         if st.button("💾 Salvar DQO", key="btn_dqo"):
-            salvar_excel(df3_edit, arquivos["DQO"])
-            st.success("Salvo com sucesso!")
+            st.session_state.dqo_data = df3
+            st.success("Salvo na memória!")
 
         st.download_button(
             "⬇️ Baixar CSV",
-            data=df3_edit.to_csv(index=False).encode("utf-8"),
+            data=df3.to_csv(index=False).encode("utf-8"),
             file_name="DQO.csv",
-            mime="text/csv",
-            key="dl_dqo"
+            mime="text/csv"
         )
