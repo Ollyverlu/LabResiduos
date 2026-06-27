@@ -224,13 +224,12 @@ elif menu == "🧪 DQO":
             st.success(f"Resultado: {resultado:.4f}")
 
 # ================= PLANILHAS INTERATIVAS =================
-
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import streamlit as st
     import numpy as np
 
-    st.title("🧪 DETERMINAÇÃO DE NITROGÊNIO TOTAL KJELDAHL (NTK)")
+    st.title("🧪 DETERMINAÇÃO DE DEMANDA QUÍMICA DE OXIGÊNIO (DQO)")
 
     st.markdown("══════════════════════════════════════")
 
@@ -247,10 +246,8 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     # ================= PARÂMETROS =================
     st.subheader("⚗️ PARÂMETROS DA ANÁLISE")
 
-    massa = st.number_input("Massa da amostra (g)", min_value=0.0, step=0.1)
-    volume = st.number_input("Volume da amostra (L)", min_value=0.0, step=0.1)
-
-    massa_molar = st.number_input("Massa molar padrão (g/mol)", value=381.40)
+    massa = st.number_input("Massa padrão (mg)", min_value=0.0, step=0.1)
+    volume = st.number_input("Volume da amostra (mL)", min_value=0.0, step=0.1)
 
     st.markdown("══════════════════════════════════════")
 
@@ -267,6 +264,7 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     st.subheader("📊 RESULTADOS")
 
     media = None
+    desvio = None
 
     if t1 > 0 and t2 > 0 and t3 > 0:
 
@@ -278,19 +276,19 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
     st.markdown("══════════════════════════════════════")
 
-    # ================= CÁLCULO NTK =================
-    st.subheader("🧮 CÁLCULO DO NTK")
+    # ================= CÁLCULO DQO =================
+    st.subheader("🧮 CÁLCULO DA DQO")
 
     if media and massa > 0 and volume > 0:
 
-        ntk = (massa / massa_molar) / volume * media
+        dqo = (massa * 0.25) / media
 
-        st.success(f"NTK: {ntk:.4f} mg/L")
+        st.success(f"DQO: {dqo:.4f} mg/L")
 
     else:
-        st.info("Preencha todos os campos para calcular o NTK")
+        st.info("Preencha todos os campos para calcular a DQO")
 
     st.markdown("══════════════════════════════════════")
 
     # ================= FINAL =================
-    st.success("✔ NTK concluído com sucesso!")
+    st.success("✔ DQO concluído com sucesso!")
