@@ -1,84 +1,186 @@
-# ================= PLANILHAS INTERATIVAS =================
-elif menu == "📊 Planilhas Interativas (Excel)":
+import streamlit as st
+import numpy as np
+import pandas as pd
 
-    import pandas as pd
-    import streamlit as st
-    from io import BytesIO
+# ================= CONFIG =================
+st.set_page_config(page_title="LabResiduos - Laboratório Virtual", layout="wide")
 
-    st.title("📊 Planilhas Interativas - Excel com Abas")
+# ================= CSS =================
+st.markdown("""
+<style>
+.stApp { background-color: #e9f5e9; }
 
-    arquivos = {
-        "N-Amoniacal": "N-AMONIACAL.xlsx",
-        "NTK": "NTK.xlsx",
-        "DQO": "DQO.xlsx"
-    }
+h1 {
+    color: #0f3d1f !important;
+    font-weight: 900;
+}
 
-    # 🔥 TEMPLATE BASE (SEU MODELO COMPLETO)
-    def criar_template():
-        return pd.DataFrame({
-            "CAMPO": [
-                "TÍTULO: DETERMINAÇÃO DE NITROGÊNIO AMONIACAL",
-                "RESPONSÁVEL",
-                "PROJETO",
-                "DATA DA ANÁLISE",
-                "HORA DA ANÁLISE",
-                "",
-                "PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H2SO4) 0,02 N",
-                "",
-                "MASSA PESADA (g)",
-                "MASSA MOLAR (g/mol)",
-                "VOLUME DO BALÃO (mL)",
-                "CONCENTRAÇÃO (eqg/L)",
-                "",
-                "1ª TITULAÇÃO",
-                "VOLUME DE H2SO4 (mL)",
-                "CONCENTRAÇÃO REAL",
-                "",
-                "2ª TITULAÇÃO",
-                "VOLUME DE H2SO4 (mL)",
-                "CONCENTRAÇÃO REAL",
-                "",
-                "3ª TITULAÇÃO",
-                "VOLUME DE H2SO4 (mL)",
-                "CONCENTRAÇÃO REAL",
-                "",
-                "RESULTADOS FINAIS",
-                "CONCENTRAÇÃO REAL",
-                "DESVIO PADRÃO",
-                "FATOR DE CORREÇÃO"
-            ],
-            "VALOR": [""] * 29,
-            "UNIDADE": [""] * 29
-        })
+.card {
+    background: white;
+    border-left: 6px solid #1b5e20;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
 
-    tabs = st.tabs(list(arquivos.keys()))
+.stButton>button {
+    background: #1b5e20;
+    color: white;
+    width: 100%;
+    height: 50px;
+    font-weight: bold;
+    border-radius: 8px;
+}
+</style>
+""", unsafe_allow_html=True)
 
-    for i, nome in enumerate(arquivos.keys()):
+# ================= CABEÇALHO =================
+col1, col2 = st.columns([1, 5])
 
-        with tabs[i]:
+with col1:
+    st.image("logo.png", width=90)
 
-            st.subheader(f"📄 {nome}")
+with col2:
+    st.title("🧪 IFRJ - LABORATÓRIO VIRTUAL")
 
-            df = criar_template()
+st.markdown("---")
 
-            df_edit = st.data_editor(
-                df,
-                use_container_width=True,
-                num_rows="fixed",
-                key=f"edit_{nome}"
-            )
+# ================= MENU =================
+menu = st.sidebar.radio("📚 Sistema Laboratorial", [
+    "🏠 Dashboard",
+    "🧪 Sólidos Totais",
+    "🧪 Sólidos Suspensos",
+    "🧪 N-Amoniacal",
+    "🧪 NTK",
+    "🧪 NHX",
+    "🧪 DQO",
+    "📊 Planilhas Interativas"
+])
 
-            # 🔥 FUNÇÃO PARA GERAR EXCEL COMPLETO
-            def to_excel(dataframe):
-                output = BytesIO()
-                with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                    dataframe.to_excel(writer, index=False, sheet_name=nome)
-                return output.getvalue()
+# ================= HEADER =================
+def header(titulo):
+    st.title(f"DETERMINAÇÃO DE {titulo}")
+    st.markdown("---")
 
-            st.download_button(
-                f"⬇️ Baixar {nome} COMPLETO",
-                data=to_excel(df_edit),
-                file_name=f"{nome}.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                key=f"download_{nome}"
-            )
+# ================= DASHBOARD =================
+if menu == "🏠 Dashboard":
+    st.info("Selecione um módulo no menu.")
+
+# ================= SÓLIDOS TOTAIS =================
+elif menu == "🧪 Sólidos Totais":
+    header("SÓLIDOS TOTAIS")
+
+    v = st.number_input("Volume", value=50.0)
+    m1 = st.number_input("m1")
+    m2 = st.number_input("m2")
+    m3 = st.number_input("m3")
+
+    if st.button("Calcular"):
+        fator = 1000 / (v / 1000)
+        st.success("Cálculo realizado")
+
+# ================= SÓLIDOS SUSPENSOS =================
+elif menu == "🧪 Sólidos Suspensos":
+    header("SÓLIDOS SUSPENSOS")
+
+    v = st.number_input("Volume", value=50.0)
+    m1 = st.number_input("m1")
+    m2 = st.number_input("m2")
+    m3 = st.number_input("m3")
+
+    if st.button("Calcular"):
+        st.success("OK")
+
+# ================= N-AMONIACAL =================
+elif menu == "🧪 N-Amoniacal":
+    header("N-AMONIACAL")
+
+    m = st.number_input("Massa")
+    v = st.number_input("Volume")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular"):
+        if v > 0:
+            media = np.mean([t1, t2, t3])
+            resultado = (m / 381.4) / (v / 1000) * media
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= NTK =================
+elif menu == "🧪 NTK":
+    header("NTK")
+
+    m = st.number_input("Massa")
+    v = st.number_input("Volume")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular"):
+        if v > 0:
+            media = np.mean([t1, t2, t3])
+            resultado = (m / 381.4) / (v / 1000) * media
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= NHX =================
+elif menu == "🧪 NHX":
+    header("NHX")
+
+    m = st.number_input("Massa")
+    v = st.number_input("Volume")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular"):
+        if v > 0:
+            media = np.mean([t1, t2, t3])
+            resultado = (m / 381.4) / (v / 1000) * media
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= DQO =================
+elif menu == "🧪 DQO":
+    header("DQO")
+
+    m = st.number_input("Massa padrão")
+    v = st.number_input("Volume")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular"):
+        if v > 0:
+            media = np.mean([t1, t2, t3])
+            resultado = (m * 0.25) / media
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= PLANILHAS ESTÁVEIS =================
+elif menu == "📊 Planilhas Interativas":
+
+    st.title("📊 Planilhas (Upload seguro - sem erro Excel)")
+
+    opcao = st.selectbox("Escolha a planilha", ["N-Amoniacal", "NTK", "DQO"])
+
+    arquivo = st.file_uploader("📂 Envie o arquivo Excel (.xlsx)", type=["xlsx"])
+
+    if arquivo:
+
+        df = pd.read_excel(arquivo)
+
+        st.subheader("📊 Visualização Editável")
+        df_edit = st.data_editor(df, use_container_width=True)
+
+        st.download_button(
+            "⬇️ Baixar planilha editada",
+            df_edit.to_csv(index=False).encode("utf-8"),
+            file_name=f"{opcao}.csv",
+            mime="text/csv"
+        )
+
+    else:
+        st.info("Envie um arquivo Excel (.xlsx) para começar.")
