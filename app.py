@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 
 # ================= CONFIG =================
 st.set_page_config(page_title=" - LabResiduos -Laboratorio Virtual ", layout="wide")
@@ -63,7 +64,7 @@ menu = st.sidebar.radio("📚 Sistema Laboratorial ", [
     "📊 Planilhas Interativas (Excel)"
 ])
 
-# ================= HEADER CORRIGIDO (ANTI ERRO STREAMLIT) =================
+# ================= HEADER =================
 def header(titulo):
     st.title(f"DETERMINAÇÃO DE {titulo}")
 
@@ -203,6 +204,7 @@ elif menu == "🧪 NHX":
         if media != 0:
             resultado = (m / 381.4) / (v / 1000) * media
             st.success(f"Resultado: {resultado:.4f}")
+
 # ================= DQO =================
 elif menu == "🧪 DQO":
     header("DEMANDA QUÍMICA DE OXIGÊNIO")
@@ -223,25 +225,17 @@ elif menu == "🧪 DQO":
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
-    import pandas as pd
-    import os
-    from datetime import datetime
-
     st.title("📊 Planilhas Interativas - Sistema Excel Interno")
 
-    # ================= ARQUIVOS =================
     arquivos = {
         "N-Amoniacal": "N-AMONIACAL.xlsx",
         "NTK": "NTK.xlsx",
         "DQO": "DQO.xlsx"
     }
 
-    # ================= ABAS =================
     aba = st.radio("📑 Escolha a planilha", list(arquivos.keys()), horizontal=True)
-
     arquivo = arquivos[aba]
 
-    # ================= FUNÇÃO CARREGAR =================
     def carregar_excel(file):
         try:
             return pd.read_excel(file, engine="openpyxl")
@@ -259,7 +253,6 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         key=f"editor_{aba}"
     )
 
-    # ================= SALVAMENTO AUTOMÁTICO =================
     def salvar_excel(dataframe, file):
         dataframe.to_excel(file, index=False, engine="openpyxl")
 
@@ -270,63 +263,5 @@ elif menu == "📊 Planilhas Interativas (Excel)":
             salvar_excel(df_edit, arquivo)
             st.success(f"{aba} salva com sucesso!")
 
-    # ================= AUTO SAVE INTELIGENTE =================
     if not df_edit.equals(df):
         salvar_excel(df_edit, arquivo)
-
-File "/mount/src/labresiduos/app.py", line 278
-   # ================= PLANILHAS INTERATIVAS =================
-
-    import pandas as pd
-    import os
-    from datetime import datetime
-
-    st.title("📊 Planilhas Interativas - Sistema Excel Interno")
-
-    # ================= ARQUIVOS =================
-    arquivos = {
-        "N-Amoniacal": "N-AMONIACAL.xlsx",
-        "NTK": "NTK.xlsx",
-        "DQO": "DQO.xlsx"
-    }
-
-    # ================= ABAS =================
-    aba = st.radio("📑 Escolha a planilha", list(arquivos.keys()), horizontal=True)
-
-    arquivo = arquivos[aba]
-
-    # ================= FUNÇÃO CARREGAR =================
-    def carregar_excel(file):
-        try:
-            return pd.read_excel(file, engine="openpyxl")
-        except:
-            return pd.DataFrame()
-
-    df = carregar_excel(arquivo)
-
-    st.markdown("### ✏️ Edição da Planilha (Estilo Excel)")
-
-    df_edit = st.data_editor(
-        df,
-        use_container_width=True,
-        num_rows="dynamic",
-        key=f"editor_{aba}"
-    )
-
-    # ================= SALVAMENTO AUTOMÁTICO =================
-    def salvar_excel(dataframe, file):
-        dataframe.to_excel(file, index=False, engine="openpyxl")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("💾 Salvar automaticamente"):
-            salvar_excel(df_edit, arquivo)
-            st.success(f"{aba} salva com sucesso!")
-
-    # ================= AUTO SAVE INTELIGENTE =================
-    if not df_edit.equals(df):
-        salvar_excel(df_edit, arquivo)
-
-
-                        
