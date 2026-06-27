@@ -166,6 +166,8 @@ elif menu == "🧪 N-Amoniacal":
         data = st.date_input("Data da análise")
         hora = st.time_input("Hora da análise")
 
+    st.markdown("══════════════════════════════════════")
+
     # ================= ETAPA 2 =================
     with st.expander("🧪 2. Cálculo N-Amoniacal"):
         m = st.number_input("Massa")
@@ -179,10 +181,12 @@ elif menu == "🧪 N-Amoniacal":
             media = np.mean([t1, t2, t3])
             if media != 0 and v > 0:
                 resultado = (m / 381.4) / (v / 1000) * media
-                st.success(f"Resultado: {resultado:.4f}")
+                st.success(f"Resultado: {resultado:.4f} mg/L")
+
+    st.markdown("══════════════════════════════════════")
 
     # ================= ETAPA 3 =================
-    with st.expander("📌 3. Padronização do H₂SO₄"):
+    with st.expander("📌 3. Padronização do H₂SO₄ (0,02 N)"):
         massa_pesada = st.number_input("Massa pesada (g)")
         massa_molar = st.number_input("Massa molar (g/mol)", value=381.40)
         volume_balao = st.number_input("Volume do balão (mL)")
@@ -190,7 +194,10 @@ elif menu == "🧪 N-Amoniacal":
         t1_pad = st.number_input("Titulação 1 (padronização)")
         t2_pad = st.number_input("Titulação 2 (padronização)")
         t3_pad = st.number_input("Titulação 3 (padronização)")
-# ================= NTK =================
+
+        if st.button("Calcular Padronização H₂SO₄"):
+            media_pad = np.mean([t1_pad, t2_pad, t3_pad])
+            st.info(f"Média da padronização: {media_pad:.4f}")
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
 
