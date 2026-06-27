@@ -225,9 +225,12 @@ elif menu == "🧪 DQO":
             st.success(f"Resultado: {resultado:.4f}")
 
 # ================= PLANILHAS INTERATIVAS (CORRIGIDO) =================
+# ================= PLANILHAS INTERATIVAS (CORRIGIDO) =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
+    import streamlit as st
+
     st.title("📊 Planilhas Interativas - Excel com Abas")
 
     arquivos = {
@@ -244,10 +247,12 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
             arquivo = arquivos[nome]
 
+            # 🔥 LEITURA SEGURA (evita crash do "zip file")
             try:
                 df = pd.read_excel(arquivo, engine="openpyxl")
             except Exception as e:
-                st.error(f"Erro ao abrir {arquivo}: {e}")
+                st.error(f"⚠️ Erro ao abrir {arquivo}. Verifique se o arquivo é .xlsx válido.")
+                st.write("Detalhe técnico:", e)
                 df = pd.DataFrame()
 
             st.subheader(f"📄 {nome}")
@@ -259,15 +264,19 @@ elif menu == "📊 Planilhas Interativas (Excel)":
                 key=f"edit_{nome}"
             )
 
+            # 🔥 SALVAMENTO SEGURO
             def salvar():
-                df_edit.to_excel(arquivo, index=False, engine="openpyxl")
+                try:
+                    df_edit.to_excel(arquivo, index=False, engine="openpyxl")
+                    st.success(f"{nome} salvo com sucesso!")
+                except Exception as e:
+                    st.error(f"Erro ao salvar {nome}: {e}")
 
             col1, col2 = st.columns(2)
 
             with col1:
                 if st.button(f"💾 Salvar {nome}", key=f"save_{nome}"):
                     salvar()
-                    st.success("Salvo com sucesso!")
 
             with col2:
                 st.download_button(
