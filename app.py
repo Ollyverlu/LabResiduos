@@ -159,7 +159,7 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= PLANILHAS ESTÁVEIS =================
+
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
@@ -175,72 +175,68 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "DQO": "DQO.xlsx"
     }
 
-    # 🔥 TEMPLATE BASE (SEU MODELO COMPLETO)
-    def criar_template():
-        return pd.DataFrame({
-            "CAMPO": [
-                "TÍTULO: DETERMINAÇÃO DE NITROGÊNIO AMONIACAL",
-                "RESPONSÁVEL",
-                "PROJETO",
-                "DATA DA ANÁLISE",
-                "HORA DA ANÁLISE",
-                "",
-                "PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H2SO4) 0,02 N",
-                "",
-                "MASSA PESADA (g)",
-                "MASSA MOLAR (g/mol)",
-                "VOLUME DO BALÃO (mL)",
-                "CONCENTRAÇÃO (eqg/L)",
-                "",
-                "1ª TITULAÇÃO",
-                "VOLUME DE H2SO4 (mL)",
-                "CONCENTRAÇÃO REAL",
-                "",
-                "2ª TITULAÇÃO",
-                "VOLUME DE H2SO4 (mL)",
-                "CONCENTRAÇÃO REAL",
-                "",
-                "3ª TITULAÇÃO",
-                "VOLUME DE H2SO4 (mL)",
-                "CONCENTRAÇÃO REAL",
-                "",
-                "RESULTADOS FINAIS",
-                "CONCENTRAÇÃO REAL",
-                "DESVIO PADRÃO",
-                "FATOR DE CORREÇÃO"
-            ],
-            "VALOR": [""] * 29,
-            "UNIDADE": [""] * 29
-        })
+    abas = st.tabs(list(arquivos.keys()) + ["📄 Exportar PDF"])
 
-    tabs = st.tabs(list(arquivos.keys()))
-
+    # ================= PLANILHAS =================
     for i, nome in enumerate(arquivos.keys()):
 
-        with tabs[i]:
+        with abas[i]:
 
             st.subheader(f"📄 {nome}")
 
-            df = criar_template()
+            try:
+                df = pd.read_excel(arquivos[nome], engine="openpyxl")
+            except:
+                df = pd.DataFrame()
 
             df_edit = st.data_editor(
                 df,
                 use_container_width=True,
-                num_rows="fixed",
+                num_rows="dynamic",
                 key=f"edit_{nome}"
             )
 
-            # 🔥 FUNÇÃO PARA GERAR EXCEL COMPLETO
-            def to_excel(dataframe):
-                output = BytesIO()
-                with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                    dataframe.to_excel(writer, index=False, sheet_name=nome)
-                return output.getvalue()
-
             st.download_button(
-                f"⬇️ Baixar {nome} COMPLETO",
-                data=to_excel(df_edit),
-                file_name=f"{nome}.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                key=f"download_{nome}"
+                f"⬇️ Baixar {nome} (CSV)",
+                data=df_edit.to_csv(index=False).encode("utf-8"),
+                file_name=f"{nome}.csv",
+                mime="text/csv"
             )
+
+    # ================= ABA PDF =================
+    with abas[-1]:
+
+        st.subheader("📄 Exportar Relatório em PDF")
+
+        opcao = st.selectbox(
+            "Escolha a planilha para gerar PDF",
+            list(arquivos.keys())
+        )
+
+        try:
+            df_pdf = pd.read_excel(arquivos[opcao], engine="openpyxl")
+        except:
+            df_pdf = pd.DataFrame()
+
+        st.write("Pré-visualização:")
+        st.dataframe(df_pdf)
+
+        def gerar_pdf(df):
+            buffer = BytesIO()
+            from reportlab.platypus import SimpleDocTemplate, Table
+            from reportlab.lib.pagesizes import A4
+
+            pdf = SimpleDocTemplate(buffer, pagesize=A4)
+            data = [df.columns.tolist()] + df.values.tolist()
+            tabela = Table(data)
+
+            pdf.build([tabela])
+            buffer.seek(0)
+            return buffer
+
+        st.download_button(
+            "⬇️ Baixar PDF",
+            data=gerar_pdf(df_pdf),
+            file_name=f"{opcao}.pdf",
+            mime="application/pdf"
+        )
