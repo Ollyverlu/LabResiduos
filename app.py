@@ -224,8 +224,8 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= PLANILHAS INTERATIVAS (CORRIGIDO) =================
-# ================= PLANILHAS INTERATIVAS (CORRIGIDO) =================
+
+# ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
@@ -247,16 +247,16 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
             arquivo = arquivos[nome]
 
-            # 🔥 LEITURA SEGURA (evita crash do "zip file")
+            st.subheader(f"📄 {nome}")
+
+            # 🔥 LEITURA SIMPLES (SEM AUTO-SAVE, SEM COMPLEXIDADE)
             try:
                 df = pd.read_excel(arquivo, engine="openpyxl")
             except Exception as e:
-                st.error(f"⚠️ Erro ao abrir {arquivo}. Verifique se o arquivo é .xlsx válido.")
-                st.write("Detalhe técnico:", e)
+                st.warning(f"Não foi possível abrir {arquivo}. Mostrando planilha vazia.")
                 df = pd.DataFrame()
 
-            st.subheader(f"📄 {nome}")
-
+            # 🔥 TABELA EDITÁVEL
             df_edit = st.data_editor(
                 df,
                 use_container_width=True,
@@ -264,24 +264,11 @@ elif menu == "📊 Planilhas Interativas (Excel)":
                 key=f"edit_{nome}"
             )
 
-            # 🔥 SALVAMENTO SEGURO
-            def salvar():
-                try:
-                    df_edit.to_excel(arquivo, index=False, engine="openpyxl")
-                    st.success(f"{nome} salvo com sucesso!")
-                except Exception as e:
-                    st.error(f"Erro ao salvar {nome}: {e}")
-
-            col1, col2 = st.columns(2)
-
-            with col1:
-                if st.button(f"💾 Salvar {nome}", key=f"save_{nome}"):
-                    salvar()
-
-            with col2:
-                st.download_button(
-                    f"⬇️ Baixar {nome}",
-                    data=df_edit.to_csv(index=False).encode("utf-8"),
-                    file_name=f"{nome}.csv",
-                    mime="text/csv"
-                )
+            # 🔥 DOWNLOAD SIMPLES (CSV)
+            st.download_button(
+                f"⬇️ Baixar {nome}",
+                data=df_edit.to_csv(index=False).encode("utf-8"),
+                file_name=f"{nome}.csv",
+                mime="text/csv",
+                key=f"download_{nome}"
+            )
