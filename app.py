@@ -203,24 +203,6 @@ elif menu == "🧪 NHX":
         if media != 0:
             resultado = (m / 381.4) / (v / 1000) * media
             st.success(f"Resultado: {resultado:.4f}")
-
-# ================= DQO =================
-elif menu == "🧪 DQO":
-    header("DEMANDA QUÍMICA DE OXIGÊNIO")
-
-    m = st.number_input("Massa padrão")
-    v = st.number_input("Volume amostra")
-
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
-
-    if st.button("Calcular DQO"):
-        media = np.mean([t1, t2, t3])
-        if media != 0:
-            resultado = (m * 0.25) / media
-            st.success(f"Resultado: {resultado:.4f}") 
-    
 # ================= DQO =================
 elif menu == "🧪 DQO":
     header("DEMANDA QUÍMICA DE OXIGÊNIO")
@@ -245,26 +227,30 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
     st.title("📊 Planilhas Interativas - Estilo Excel")
 
-    st.info("Módulo independente. Não altera nenhum cálculo do sistema principal.")
+    opcao = st.selectbox(
+        "Escolha a planilha",
+        ["N-Amoniacal", "NTK", "DQO"]
+    )
 
-    st.subheader("🧪 Planilha N-Amoniacal (Excel Importado)")
-
-    import pandas as pd
+    def carregar_excel(nome):
+        return pd.read_excel(nome)
 
     try:
-        df = pd.read_excel(
-            "/mnt/data/Planilha N-AMONIACAL.xls",
-            engine="xlrd"
-        )
+        if opcao == "N-Amoniacal":
+            df = carregar_excel("N-AMONIACAL.xlsx")
+
+        elif opcao == "NTK":
+            df = carregar_excel("NTK.xlsx")
+
+        elif opcao == "DQO":
+            df = carregar_excel("DQO.xlsx")
 
         df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
 
-        if st.button("📌 Salvar Cálculo"):
-            st.success("Planilha carregada e editável com sucesso!")
-
+        if st.button("📌 Salvar Visualização"):
+            st.success("Planilha carregada com sucesso!")
             st.dataframe(df_edit)
 
     except Exception as e:
-        st.error("Erro ao abrir Excel (.xls). Converta para .xlsx ou instale xlrd.")
+        st.error("Erro ao abrir Excel. Verifique se os arquivos estão na pasta do app.")
         st.code(str(e))
-            
