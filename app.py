@@ -221,7 +221,86 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}") 
     
-if opcao == "🧪 N-Amoniacal (Planilha)":
+# ================= DQO =================
+elif menu == "🧪 DQO":
+    header("DEMANDA QUÍMICA DE OXIGÊNIO")
+
+    m = st.number_input("Massa padrão")
+    v = st.number_input("Volume amostra")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular DQO"):
+        media = np.mean([t1, t2, t3])
+        if media != 0:
+            resultado = (m * 0.25) / media
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= PLANILHAS INTERATIVAS =================
+elif menu == "📊 Planilhas Interativas (Excel)":
+
+    import pandas as pd
+
+    st.title("📊 Planilhas Interativas - Estilo Excel")
+
+    st.info("Módulo independente. Não altera nenhum cálculo do sistema principal.")
+
+    opcao = st.selectbox("Escolha a planilha:", [
+        "🧪 Sólidos Totais (ST)",
+        "🔥 Sólidos Fixos (STF)",
+        "💨 Sólidos Voláteis (STV)"
+    ])
+
+    if opcao == "🧪 Sólidos Totais (ST)":
+
+        df = pd.DataFrame({
+            "Amostra": ["A1", "A2", "A3"],
+            "Massa (m2-m1)": [0, 0, 0],
+            "Volume (mL)": [50, 50, 50]
+        })
+
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+
+        if st.button("📌 Calcular ST"):
+            df_edit["ST (mg/L)"] = df_edit["Massa (m2-m1)"] / (df_edit["Volume (mL)"] / 1000)
+
+            st.success("ST calculado com sucesso!")
+            st.dataframe(df_edit, use_container_width=True)
+
+    elif opcao == "🔥 Sólidos Fixos (STF)":
+
+        df = pd.DataFrame({
+            "Amostra": ["A1", "A2", "A3"],
+            "Massa Cinzas": [0, 0, 0],
+            "Volume (mL)": [50, 50, 50]
+        })
+
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+
+        if st.button("📌 Calcular STF"):
+            df_edit["STF (mg/L)"] = df_edit["Massa Cinzas"] / (df_edit["Volume (mL)"] / 1000)
+
+            st.success("STF calculado com sucesso!")
+            st.dataframe(df_edit, use_container_width=True)
+
+    elif opcao == "💨 Sólidos Voláteis (STV)":
+
+        df = pd.DataFrame({
+            "Amostra": ["A1", "A2", "A3"],
+            "ST": [0, 0, 0],
+            "STF": [0, 0, 0]
+        })
+
+        df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+
+        if st.button("📌 Calcular STV"):
+            df_edit["STV"] = df_edit["ST"] - df_edit["STF"]
+
+            st.success("STV calculado com sucesso!")
+            st.dataframe(df_edit, use_container_width=True)
+            if opcao == "🧪 N-Amoniacal (Planilha)":
 
     st.subheader("🧪 Planilha N-Amoniacal (Excel Importado)")
 
@@ -243,3 +322,4 @@ if opcao == "🧪 N-Amoniacal (Planilha)":
     except Exception as e:
         st.error("Erro ao abrir Excel (.xls). Converta para .xlsx ou instale xlrd.")
         st.code(str(e))
+            
