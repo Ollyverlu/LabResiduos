@@ -219,8 +219,24 @@ elif menu == "🧪 DQO":
         if media != 0:
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}") 
-            
-          # ================= PLANILHAS INTERATIVAS (NOVO MÓDULO) =================
+          # ================= DQO =================
+elif menu == "🧪 DQO":
+    header("DEMANDA QUÍMICA DE OXIGÊNIO")
+
+    m = st.number_input("Massa padrão")
+    v = st.number_input("Volume amostra")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular DQO"):
+        media = np.mean([t1, t2, t3])
+        if media != 0:
+            resultado = (m * 0.25) / media
+            st.success(f"Resultado: {resultado:.4f}")
+
+# ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
@@ -235,10 +251,7 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "💨 Sólidos Voláteis (STV)"
     ])
 
-    # ================= ST =================
     if opcao == "🧪 Sólidos Totais (ST)":
-
-        st.subheader("🧪 Planilha ST")
 
         df = pd.DataFrame({
             "Amostra": ["A1", "A2", "A3"],
@@ -254,10 +267,7 @@ elif menu == "📊 Planilhas Interativas (Excel)":
             st.success("ST calculado com sucesso!")
             st.dataframe(df_edit, use_container_width=True)
 
-    # ================= STF =================
     elif opcao == "🔥 Sólidos Fixos (STF)":
-
-        st.subheader("🔥 Planilha STF")
 
         df = pd.DataFrame({
             "Amostra": ["A1", "A2", "A3"],
@@ -273,10 +283,7 @@ elif menu == "📊 Planilhas Interativas (Excel)":
             st.success("STF calculado com sucesso!")
             st.dataframe(df_edit, use_container_width=True)
 
-    # ================= STV =================
     elif opcao == "💨 Sólidos Voláteis (STV)":
-
-        st.subheader("💨 Planilha STV")
 
         df = pd.DataFrame({
             "Amostra": ["A1", "A2", "A3"],
@@ -290,4 +297,5 @@ elif menu == "📊 Planilhas Interativas (Excel)":
             df_edit["STV"] = df_edit["ST"] - df_edit["STF"]
 
             st.success("STV calculado com sucesso!")
-            st.dataframe(df_edit, use_container_width=True)
+            st.dataframe(df_edit, use_container_width=True)  
+     
