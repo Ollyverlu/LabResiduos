@@ -173,21 +173,30 @@ elif menu == "🧪 N-Amoniacal":
     
     st.markdown("══════════════════════════════════════")
 
-    # ================= ETAPA 2 =================
-    with st.expander("🧪 2. Cálculo N-Amoniacal"):
-        m = st.number_input("Massa")
-        v = st.number_input("Volume")
+      # ================= ETAPA 2 - PADRONIZAÇÃO =================
+    st.markdown("═══════════════════════════════════════")
+    st.subheader("📌 Padronização do H₂SO₄ (0,02 N)")
 
-        t1 = st.number_input("Titulação 1")
-        t2 = st.number_input("Titulação 2")
-        t3 = st.number_input("Titulação 3")
+    massa_pesada = st.number_input("Massa pesada (g)")
+    massa_molar = st.number_input("Massa molar (g/mol)", value=381.40)
+    volume_balao = st.number_input("Volume do balão (mL)")
 
-        if st.button("Calcular N-Amoniacal", key="btn_na_calc"):
-            media = np.mean([t1, t2, t3])
-            if media != 0 and v > 0:
-                resultado = (m / 381.4) / (v / 1000) * media
-                st.success(f"Resultado: {resultado:.4f} mg/L")
+    st.markdown("### 🔬 1ª Titulação")
+    t1_pad = st.number_input("Volume de H₂SO₄ gasto 1")
 
+    st.markdown("### 🔬 2ª Titulação")
+    t2_pad = st.number_input("Volume de H₂SO₄ gasto 2")
+
+    st.markdown("### 🔬 3ª Titulação")
+    t3_pad = st.number_input("Volume de H₂SO₄ gasto 3")
+
+    if st.button("Calcular Padronização H₂SO₄"):
+        if t1_pad and t2_pad and t3_pad:
+            media_pad = np.mean([t1_pad, t2_pad, t3_pad])
+            desvio_pad = np.std([t1_pad, t2_pad, t3_pad], ddof=1)
+
+            st.success(f"Média: {media_pad:.4f}")
+            st.info(f"Desvio padrão: {desvio_pad:.4f}")
     st.markdown("══════════════════════════════════════")
 
     # ================= ETAPA 3 =================
