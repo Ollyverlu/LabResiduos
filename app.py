@@ -275,12 +275,16 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         salvar_excel(df_edit, arquivo)
 
     # ================= EXPORTAR =================
-    with col2:
-        st.download_button(
-            label="📤 Exportar Excel",
-            data=df_edit.to_excel(index=False, engine="openpyxl"),
-            file_name=f"{aba}_exportado.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+  from io import BytesIO
 
-    st.info("✔ Alterações são salvas automaticamente ao editar a tabela.")
+with col2:
+    output = BytesIO()
+    df_edit.to_excel(output, index=False, engine="openpyxl")
+    output.seek(0)
+
+    st.download_button(
+        label="📤 Exportar Excel",
+        data=output,
+        file_name=f"{aba}_exportado.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
