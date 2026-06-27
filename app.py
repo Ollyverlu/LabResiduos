@@ -246,19 +246,16 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     # ================= PADRONIZAÇÃO =================
     st.subheader("⚗️ PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H₂SO₄)")
 
-    st.write("PADRÃO PRIMÁRIO: TETRABORATO DE SÓDIO DECA HIDRATADO (Na₂B₄O₇·10H₂O)")
-
     massa_pesada = st.number_input("Massa pesada (g)", min_value=0.0, step=0.1)
     massa_molar = st.number_input("Massa molar (g/mol)", value=381.40)
     volume_balao = st.number_input("Volume do balão (mL)", min_value=0.0, step=1.0)
 
-    st.markdown("### 🔬 Cálculo da concentração")
     if massa_pesada > 0 and volume_balao > 0:
         concentracao = (massa_pesada / massa_molar) / (volume_balao / 1000)
         st.success(f"Concentração: {concentracao:.6f} eqg/L")
     else:
         concentracao = None
-        st.warning("Preencha massa e volume para calcular")
+        st.warning("Preencha os dados da padronização")
 
     st.markdown("══════════════════════════════════════")
 
@@ -274,17 +271,62 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     # ================= RESULTADOS =================
     st.subheader("📊 RESULTADOS")
 
-    if vol_1 > 0 and vol_2 > 0 and vol_3 > 0:
+    media = None
+    desvio = None
 
+    if vol_1 > 0 and vol_2 > 0 and vol_3 > 0:
         media = np.mean([vol_1, vol_2, vol_3])
         desvio = np.std([vol_1, vol_2, vol_3], ddof=1)
 
         st.write(f"Média das titulações: {media:.2f} mL")
-        st.write(f"Desvio padrão: {desvio:.2f}")
-
-    else:
-        st.info("Preencha as três titulações para ver os resultados")
+        st.write(f"Desvio padrão: {desvio:.2f} mL")
 
     st.markdown("══════════════════════════════════════")
 
-    st.info("✔ Próximo bloco: Reagentes e Fator de Correção")
+    # ================= REAGENTES =================
+    st.subheader("🧫 REAGENTES UTILIZADOS")
+
+    st.write("""
+    - Ácido sulfúrico 0,1 eqg/L  
+    - Ácido sulfúrico 0,02 eqg/L  
+    - Tetraborato de sódio deca hidratado  
+    - Alaranjado de metila  
+    - Tampão fosfato 0,5 mol/L  
+    - Solução de azul de metileno 0,2%  
+    - Solução de vermelho de metila 0,2%  
+    - Solução indicadora de ácido bórico  
+    """)
+
+    st.markdown("══════════════════════════════════════")
+
+    # ================= FATOR DE CORREÇÃO =================
+    st.subheader("📐 FATOR DE CORREÇÃO")
+
+    if media and media > 0:
+        fator_correcao = (concentracao * media) if concentracao else None
+
+        if fator_correcao:
+            st.success(f"Fator de correção: {fator_correcao:.6f}")
+        else:
+            st.warning("Complete a padronização para calcular o fator")
+
+    st.markdown("══════════════════════════════════════")
+
+    # ================= RESULTADO FINAL =================
+    st.subheader("🏁 RESULTADO FINAL")
+
+    massa = st.number_input("Massa da amostra (m)", min_value=0.0, step=0.1)
+    volume = st.number_input("Volume da amostra (L)", min_value=0.0, step=0.1)
+
+    if media and massa > 0 and volume > 0 and concentracao:
+
+        resultado = (massa / 381.4) / volume * media
+
+        st.success(f"Resultado de N-Amoniacal: {resultado:.4f} mg/L")
+
+    else:
+        st.info("Preencha todos os dados para obter o resultado final")
+
+    st.markdown("══════════════════════════════════════")
+
+    st.success("✔ N-Amoniacal concluída com sucesso!")
