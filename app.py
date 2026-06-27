@@ -242,12 +242,14 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
         with tabs[i]:
 
-            arquivo = arquivos[nome] 
-try:
-    df = pd.read_excel(arquivo, engine="openpyxl")
-except Exception as e:
-    st.error(f"Erro ao abrir {arquivo}: {e}")
-    df = pd.DataFrame()
+            arquivo = arquivos[nome]
+
+            try:
+                df = pd.read_excel(arquivo, engine="openpyxl")
+            except Exception as e:
+                st.error(f"Erro ao abrir {arquivo}: {e}")
+                df = pd.DataFrame()
+
             st.subheader(f"📄 {nome}")
 
             df_edit = st.data_editor(
