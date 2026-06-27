@@ -244,20 +244,22 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
         try:
             df1 = pd.read_excel(arquivos["N-Amoniacal"], engine="openpyxl")
-        except:
+        except Exception as e:
+            st.error(f"Erro N-Amoniacal: {e}")
             df1 = pd.DataFrame()
 
         df1_edit = st.data_editor(df1, use_container_width=True, key="na_edit")
 
-        if st.button("💾 Salvar N-Amoniacal"):
-            df1_edit.to_excel(arquivos["N-Amoniacal"], index=False)
+        if st.button("💾 Salvar N-Amoniacal", key="btn_na"):
+            df1_edit.to_excel(arquivos["N-Amoniacal"], index=False, engine="openpyxl")
             st.success("Salvo com sucesso!")
 
         st.download_button(
             "⬇️ Baixar Excel",
             data=df1_edit.to_csv(index=False).encode("utf-8"),
             file_name="N-Amoniacal.csv",
-            mime="text/csv"
+            mime="text/csv",
+            key="dl_na"
         )
 
     # ================= ABA 2 =================
@@ -266,20 +268,22 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
         try:
             df2 = pd.read_excel(arquivos["NTK"], engine="openpyxl")
-        except:
+        except Exception as e:
+            st.error(f"Erro NTK: {e}")
             df2 = pd.DataFrame()
 
         df2_edit = st.data_editor(df2, use_container_width=True, key="ntk_edit")
 
-        if st.button("💾 Salvar NTK"):
-            df2_edit.to_excel(arquivos["NTK"], index=False)
+        if st.button("💾 Salvar NTK", key="btn_ntk"):
+            df2_edit.to_excel(arquivos["NTK"], index=False, engine="openpyxl")
             st.success("Salvo com sucesso!")
 
         st.download_button(
             "⬇️ Baixar Excel",
             data=df2_edit.to_csv(index=False).encode("utf-8"),
             file_name="NTK.csv",
-            mime="text/csv"
+            mime="text/csv",
+            key="dl_ntk"
         )
 
     # ================= ABA 3 =================
@@ -288,18 +292,20 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
         try:
             df3 = pd.read_excel(arquivos["DQO"], engine="openpyxl")
-        except:
+        except Exception as e:
+            st.error(f"Erro DQO: {e}")
             df3 = pd.DataFrame()
 
         df3_edit = st.data_editor(df3, use_container_width=True, key="dqo_edit")
 
-        if st.button("💾 Salvar DQO"):
-            df3_edit.to_excel(arquivos["DQO"], index=False)
+        if st.button("💾 Salvar DQO", key="btn_dqo"):
+            df3_edit.to_excel(arquivos["DQO"], index=False, engine="openpyxl")
             st.success("Salvo com sucesso!")
 
         st.download_button(
             "⬇️ Baixar Excel",
             data=df3_edit.to_csv(index=False).encode("utf-8"),
             file_name="DQO.csv",
-            mime="text/csv"
+            mime="text/csv",
+            key="dl_dqo"
         )
