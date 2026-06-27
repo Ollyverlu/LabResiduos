@@ -221,7 +221,39 @@ elif menu == "🧪 N-Amoniacal":
             st.info(f"Média: {media:.4f}")
             st.info(f"Desvio padrão: {desvio:.4f}")
 
+    # ================= ETAPA 4 - RESUMO FINAL =================
+    st.markdown("═══════════════════════════════════════")
+    st.subheader("📌 Resumo da Análise")
 
+    if st.button("📄 Gerar Resumo Final"):
+
+        media = np.mean([t1, t2, t3])
+        desvio = np.std([t1, t2, t3], ddof=1)
+
+        resultado = 0
+        if v > 0:
+            resultado = (m / 381.4) / (v / 1000) * media
+
+        st.markdown("""
+        <div class="card">
+        <b>🔬 RELATÓRIO N-AMONIACAL</b><br><br>
+        Responsável: {}<br>
+        Projeto: {}<br>
+        Data: {}<br>
+        Hora: {}<br><br>
+
+        Massa: {} g<br>
+        Volume: {} mL<br><br>
+
+        Média titulações: {:.4f}<br>
+        Desvio padrão: {:.4f}<br>
+        Resultado final: {:.4f} mg/L
+        </div>
+        """.format(responsavel, projeto, data, hora, m, v, media, desvio, resultado),
+        unsafe_allow_html=True)
+
+    st.markdown("═══════════════════════════════════════")
+    st.success("✔ N-Amoniacal concluído com sucesso!")
 # ================= NTK =================
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
