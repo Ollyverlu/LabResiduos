@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -224,13 +223,10 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
 
-# ================= PLANILHAS INTERATIVAS =================
+# ================= PLANILHAS INTERATIVAS (CORRIGIDO) =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
-    import pandas as pd
-    import streamlit as st
-
-    st.title("📊 Planilhas Interativas - Excel com Abas")
+    st.title("📊 Planilhas Interativas - Sistema Excel Interno")
 
     arquivos = {
         "N-Amoniacal": "N-AMONIACAL.xlsx",
@@ -238,31 +234,42 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "DQO": "DQO.xlsx"
     }
 
-    tabs = st.tabs(list(arquivos.keys()))
+    aba = st.radio("📑 Escolha a planilha", list(arquivos.keys()), horizontal=True)
+    arquivo = arquivos[aba]
 
-    for i, nome in enumerate(arquivos.keys()):
+    try:
+        df = pd.read_excel(arquivo, engine="openpyxl")
+    except:
+        df = pd.DataFrame()
 
-        with tabs[i]:
+    st.markdown("### ✏️ Edição da Planilha")
 
-            st.subheader(f"📄 {nome}")
+    df_edit = st.data_editor(
+        df,
+        use_container_width=True,
+        num_rows="dynamic",
+        key=f"editor_{aba}"
+    )
 
-            # 🔥 SEM LEITURA DE ARQUIVO (PLANILHA COMEÇA VAZIA)
-            df = pd.DataFrame()
+    def to_excel(df):
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False)
+        return output.getvalue()
 
-            # 🔥 PLANILHA EDITÁVEL (INTERATIVA)
-            df_edit = st.data_editor(
-                df,
-                use_container_width=True,
-                num_rows="dynamic",
-                key=f"edit_{nome}"
-            )
+    col1, col2 = st.columns(2)
 
-            # 🔥 BOTÃO DE DOWNLOAD
-            st.download_button(
-                f"⬇️ Baixar {nome}",
-                data=df_edit.to_csv(index=False).encode("utf-8"),
-                file_name=f"{nome}.csv",
-                mime="text/csv",
-                key=f"download_{nome}"
-            )
+    with col1:
+        st.download_button(
+            "📥 Baixar Excel",
+            data=to_excel(df_edit),
+            file_name=f"{aba}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+    with col2:
+        if st.button("💾 Salvar no sistema"):
+            df_edit.to_excel(arquivo, index=False, engine="openpyxl")
+            st.success("Planilha salva com sucesso!")
+            
 
