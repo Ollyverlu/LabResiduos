@@ -228,8 +228,6 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     import pandas as pd
     import streamlit as st
     from io import BytesIO
-    from reportlab.platypus import SimpleDocTemplate, Table
-    from reportlab.lib.pagesizes import A4
 
     st.title("📊 Planilhas Interativas - Excel com Abas")
 
@@ -239,49 +237,67 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "DQO": "DQO.xlsx"
     }
 
+    def criar_template(nome):
+        return pd.DataFrame({
+            "CAMPO": [
+                f"TÍTULO: DETERMINAÇÃO DE {nome}",
+                "RESPONSÁVEL",
+                "PROJETO",
+                "DATA DA ANÁLISE",
+                "HORA DA ANÁLISE",
+                "",
+                "PADRONIZAÇÃO DO ÁCIDO SULFÚRICO (H2SO4)",
+                "",
+                "MASSA PESADA (g)",
+                "MASSA MOLAR",
+                "VOLUME DO BALÃO (mL)",
+                "CONCENTRAÇÃO",
+                "",
+                "1ª TITULAÇÃO",
+                "2ª TITULAÇÃO",
+                "3ª TITULAÇÃO",
+                "",
+                "RESULTADOS FINAIS"
+            ],
+            "VALOR": [""] * 18,
+            "UNIDADE": [""] * 18
+        })
+
     tabs = st.tabs(list(arquivos.keys()))
-
-    def gerar_pdf(df):
-        buffer = BytesIO()
-        pdf = SimpleDocTemplate(buffer, pagesize=A4)
-
-        data = [df.columns.tolist()] + df.values.tolist()
-        table = Table(data)
-
-        pdf.build([table])
-        buffer.seek(0)
-        return buffer
 
     for i, nome in enumerate(arquivos.keys()):
 
         with tabs[i]:
 
-            st.subheader(f"📄 {nome}")
+            # 🔥 TÍTULO CENTRALIZADO (SEM MEXER NO RESTO)
+            st.markdown(
+                f"""
+                <h2 style="text-align:center; color:#0f3d1f;">
+                📄 {nome}
+                </h2>
+                """,
+                unsafe_allow_html=True
+            )
 
-            try:
-                df = pd.read_excel(arquivos[nome], engine="openpyxl")
-            except:
-                df = pd.DataFrame()
+            df = criar_template(nome)
 
             df_edit = st.data_editor(
                 df,
                 use_container_width=True,
-                num_rows="dynamic",
+                num_rows="fixed",
                 key=f"edit_{nome}"
             )
 
-            # 🔥 DOWNLOAD CSV (como já tinha)
-            st.download_button(
-                f"⬇️ Baixar {nome} (Excel/CSV)",
-                data=df_edit.to_csv(index=False).encode("utf-8"),
-                file_name=f"{nome}.csv",
-                mime="text/csv"
-            )
+            def to_excel(dataframe):
+                output = BytesIO()
+                with pd.ExcelWriter(output, engine="openpyxl") as writer:
+                    dataframe.to_excel(writer, index=False, sheet_name=nome)
+                return output.getvalue()
 
-            # 🔥 NOVO: PDF
             st.download_button(
-                f"📄 Baixar {nome} em PDF",
-                data=gerar_pdf(df_edit),
-                file_name=f"{nome}.pdf",
-                mime="application/pdf"
+                f"⬇️ Baixar {nome}",
+                data=to_excel(df_edit),
+                file_name=f"{nome}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                key=f"download_{nome}"
             )
