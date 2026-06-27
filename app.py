@@ -219,23 +219,7 @@ elif menu == "🧪 DQO":
         if media != 0:
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}") 
-          # ================= DQO =================
-elif menu == "🧪 DQO":
-    header("DEMANDA QUÍMICA DE OXIGÊNIO")
-
-    m = st.number_input("Massa padrão")
-    v = st.number_input("Volume amostra")
-
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
-
-    if st.button("Calcular DQO"):
-        media = np.mean([t1, t2, t3])
-        if media != 0:
-            resultado = (m * 0.25) / media
-            st.success(f"Resultado: {resultado:.4f}")
-
+    
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
