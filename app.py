@@ -159,19 +159,37 @@ elif menu == "🧪 Sólidos Suspensos":
 elif menu == "🧪 N-Amoniacal":
     header("NITROGÊNIO AMONIACAL")
 
-    m = st.number_input("Massa")
-    v = st.number_input("Volume")
+    # ================= ETAPA 1 =================
+    with st.expander("📌 1. Identificação da Amostra"):
+        responsavel = st.text_input("Responsável")
+        projeto = st.text_input("Projeto")
+        data = st.date_input("Data da análise")
+        hora = st.time_input("Hora da análise")
 
-    t1 = st.number_input("Titulação 1")
-    t2 = st.number_input("Titulação 2")
-    t3 = st.number_input("Titulação 3")
+    # ================= ETAPA 2 =================
+    with st.expander("🧪 2. Cálculo N-Amoniacal"):
+        m = st.number_input("Massa")
+        v = st.number_input("Volume")
 
-    if st.button("Calcular N-Amoniacal"):
-        media = np.mean([t1, t2, t3])
-        if media != 0:
-            resultado = (m / 381.4) / (v / 1000) * media
-            st.success(f"Resultado: {resultado:.4f}")
+        t1 = st.number_input("Titulação 1")
+        t2 = st.number_input("Titulação 2")
+        t3 = st.number_input("Titulação 3")
 
+        if st.button("Calcular N-Amoniacal"):
+            media = np.mean([t1, t2, t3])
+            if media != 0 and v > 0:
+                resultado = (m / 381.4) / (v / 1000) * media
+                st.success(f"Resultado: {resultado:.4f}")
+
+    # ================= ETAPA 3 =================
+    with st.expander("📌 3. Padronização do H₂SO₄"):
+        massa_pesada = st.number_input("Massa pesada (g)")
+        massa_molar = st.number_input("Massa molar (g/mol)", value=381.40)
+        volume_balao = st.number_input("Volume do balão (mL)")
+
+        t1_pad = st.number_input("Titulação 1 (padronização)")
+        t2_pad = st.number_input("Titulação 2 (padronização)")
+        t3_pad = st.number_input("Titulação 3 (padronização)")
 # ================= NTK =================
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
