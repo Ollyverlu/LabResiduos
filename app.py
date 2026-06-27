@@ -276,7 +276,6 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
 File "/mount/src/labresiduos/app.py", line 278
    # ================= PLANILHAS INTERATIVAS =================
-elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
     import os
@@ -329,6 +328,5 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     if not df_edit.equals(df):
         salvar_excel(df_edit, arquivo)
 
-File "/mount/src/labresiduos/app.py", line 278
 
                         
