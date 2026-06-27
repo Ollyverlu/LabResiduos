@@ -228,7 +228,38 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
     import streamlit as st
     import numpy as np
+    
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
+def gerar_pdf(titulo, dados):
 
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+
+    # TÍTULO
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(50, 750, titulo)
+
+    # CONTEÚDO
+    pdf.setFont("Helvetica", 10)
+
+    y = 700
+
+    for item in dados:
+        pdf.drawString(50, y, str(item))
+        y -= 20
+
+        # evita sair da página
+        if y < 50:
+            pdf.showPage()
+            pdf.setFont("Helvetica", 10)
+            y = 750
+
+    pdf.save()
+    buffer.seek(0)
+
+    return buffer
     st.title("🧪 LABORATÓRIO VIRTUAL - PLANILHAS INTERATIVAS")
 
     st.markdown("══════════════════════════════════════")
