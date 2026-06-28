@@ -1,9 +1,9 @@
-import streamlit as st
+ import streamlit as st
 import numpy as np
 
 # ================= CONFIG =================
 st.set_page_config(
-    page_title="- LabResiduos - Laboratório Virtual",
+    page_title="LabResiduos - Laboratório Virtual",
     layout="wide"
 )
 
@@ -39,19 +39,18 @@ h1{
 """, unsafe_allow_html=True)
 
 # ================= CABEÇALHO =================
-col1, col2 = st.columns([1,5])
+col1, col2 = st.columns([1, 5])
 
 with col1:
     st.image("logo.png", width=90)
 
 with col2:
     st.title("🧪 IFRJ - LABORATÓRIO VIRTUAL")
+
     st.markdown("""
-**Criado por:** Luciana Oliveira de Albuquerque
-
-**Professor responsável:** Renato Ribeiro
-
-**Administrador do sistema:** Aluno Raphael Oliveira de Albuquerque
+**Criado por:** Luciana Oliveira de Albuquerque  
+**Professor responsável:** Renato Ribeiro  
+**Administrador do sistema:** Raphael Oliveira de Albuquerque  
 """)
 
 st.markdown("---")
@@ -79,14 +78,16 @@ def header(titulo):
 
     with col1:
         st.text_input("Responsável", key=f"resp_{titulo}")
-
     with col2:
         st.text_input("Projeto", key=f"proj_{titulo}")
-
     with col3:
         st.date_input("Data da Análise", key=f"data_{titulo}")
-
     with col4:
         st.time_input("Hora da Análise", key=f"hora_{titulo}")
 
     st.markdown("---")
+
+# ================= DASHBOARD =================
+if menu == "🏠 Dashboard":
+    st.title("Sistema Laboratorial")
+    st.info("Selecione um módulo no menu lateral.")
