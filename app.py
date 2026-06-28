@@ -237,6 +237,8 @@ elif menu == "🧪 DQO":
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
+    import pandas as pd
+
     st.title("📊 Planilhas Interativas - Laboratório")
 
     opcao = st.selectbox(
@@ -244,28 +246,33 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         ["N-Amoniacal", "NTK", "DQO"]
     )
 
-    if opcao == "N-Amoniacal":
-        df = pd.read_excel("N-AMONIACAL.xls")
+    try:
+        if opcao == "N-Amoniacal":
+            df = pd.read_excel("N-AMONIACAL.xls")
 
-    elif opcao == "NTK":
-        df = pd.read_excel("NTK.xls")
+        elif opcao == "NTK":
+            df = pd.read_excel("NTK.xls")
 
-    elif opcao == "DQO":
-        df = pd.read_excel("DQO.xls")
+        elif opcao == "DQO":
+            df = pd.read_excel("DQO.xls")
 
-    df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
+        df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
 
-    if st.button("📌 Atualizar Planilha"):
-        st.success("Planilha carregada com sucesso!")
-        st.dataframe(df_edit)
+        if st.button("📌 Atualizar Planilha"):
+            st.success("Planilha carregada com sucesso!")
+            st.dataframe(df_edit)
 
-    buffer = BytesIO()
-    df_edit.to_excel(buffer, index=False)
-    buffer.seek(0)
+        buffer = BytesIO()
+        df_edit.to_excel(buffer, index=False)
+        buffer.seek(0)
 
-    st.download_button(
-        label="⬇️ Baixar Planilha Atualizada",
-        data=buffer,
-        file_name="planilha_atualizada.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+        st.download_button(
+            label="⬇️ Baixar Planilha Atualizada",
+            data=buffer,
+            file_name="planilha_atualizada.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+    except Exception as e:
+        st.error("❌ Erro ao carregar planilha. Verifique os arquivos no GitHub.")
+        st.code(str(e))
