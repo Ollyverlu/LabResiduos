@@ -1,6 +1,5 @@
- import streamlit as st
+import streamlit as st
 import numpy as np
-
 # ================= CONFIG =================
 st.set_page_config(
     page_title="LabResiduos - Laboratório Virtual",
