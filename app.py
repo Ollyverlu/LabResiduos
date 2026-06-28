@@ -157,3 +157,23 @@ elif menu == "🧪 Sólidos Suspensos":
         SSV: {np.mean([ssv1, ssv2]):.2f} ± {np.std([ssv1, ssv2], ddof=1):.2f}
         </div>
         """, unsafe_allow_html=True)
+        
+# ================= N-AMONIACAL =================
+elif menu == "🧪 N-Amoniacal":
+    header("NITROGÊNIO AMONIACAL")
+
+    m = st.number_input("Massa")
+    v = st.number_input("Volume")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular N-Amoniacal"):
+        media = np.mean([t1, t2, t3])
+
+        if v > 0:
+            resultado = (m / 381.4) / (v / 1000) * media
+
+            st.success(f"Resultado N-Amoniacal: {resultado:.4f}")
+            st.info(f"Média: {media:.4f}")
