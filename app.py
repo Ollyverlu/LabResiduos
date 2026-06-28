@@ -196,3 +196,22 @@ elif menu == "🧪 NTK":
 
             st.success(f"NTK: {resultado:.4f}")
             st.info(f"Média: {media:.4f}")
+# ================= NHX =================
+elif menu == "🧪 NHX":
+    header("NITROGÊNIO NHX")
+
+    m = st.number_input("Massa")
+    v = st.number_input("Volume")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular NHX"):
+        media = np.mean([t1, t2, t3])
+
+        if v > 0:
+            resultado = (m / 381.4) / (v / 1000) * media
+
+            st.success(f"NHX: {resultado:.4f}")
+            st.info(f"Média: {media:.4f}")
