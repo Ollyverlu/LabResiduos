@@ -177,3 +177,22 @@ elif menu == "🧪 N-Amoniacal":
 
             st.success(f"Resultado N-Amoniacal: {resultado:.4f}")
             st.info(f"Média: {media:.4f}")
+# ================= NTK =================
+elif menu == "🧪 NTK":
+    header("NITROGÊNIO TOTAL KJELDAHL")
+
+    m = st.number_input("Massa")
+    v = st.number_input("Volume")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular NTK"):
+        media = np.mean([t1, t2, t3])
+
+        if v > 0:
+            resultado = (m / 381.4) / (v / 1000) * media
+
+            st.success(f"NTK: {resultado:.4f}")
+            st.info(f"Média: {media:.4f}")
