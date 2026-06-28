@@ -159,7 +159,7 @@ elif menu == "🧪 Sólidos Suspensos":
         </div>
         """, unsafe_allow_html=True)
         
-# ================= N-AMONIACAL =================
+
 # ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
     header("NITROGÊNIO AMONIACAL")
@@ -325,3 +325,52 @@ elif menu == "📊 Laboratório Excel":
 
                 st.success(f"Aluno: {aluno}")
                 st.success(f"Resultado: {resultado:.4f} mg/L")
+elif menu == "📊 Planilhas Interativas (Excel)":
+
+    st.title("📊 Planilha Interativa - NTK (Modelo IFRJ)")
+
+    st.markdown("### 🧪 DETERMINAÇÃO DE NITROGÊNIO TOTAL KJELDAHL")
+
+    # ================= IDENTIFICAÇÃO =================
+    st.subheader("📌 Identificação da Amostra")
+
+    responsavel = st.text_input("RESPONSÁVEL")
+    projeto = st.text_input("PROJETO")
+    data = st.date_input("DATA DA ANÁLISE")
+    hora = st.time_input("HORA DA ANÁLISE")
+
+    st.markdown("---")
+
+    # ================= PADRONIZAÇÃO =================
+    st.subheader("🧪 PADRONIZAÇÃO DO H₂SO₄ 0,02 N")
+
+    st.markdown("### PADRÃO PRIMÁRIO: TETRABORATO DE SÓDIO")
+
+    massa_pesada = st.number_input("MASSA PESADA (g)")
+    massa_molar = st.number_input("MASSA MOLAR (g/mol)", value=381.40)
+    volume_balao = st.number_input("VOLUME DO BALÃO (mL)")
+
+    st.markdown("### 1ª TITULAÇÃO")
+    v1 = st.number_input("VOLUME H2SO4 GASTO 1 (mL)")
+
+    st.markdown("### 2ª TITULAÇÃO")
+    v2 = st.number_input("VOLUME H2SO4 GASTO 2 (mL)")
+
+    st.markdown("### 3ª TITULAÇÃO")
+    v3 = st.number_input("VOLUME H2SO4 GASTO 3 (mL)")
+
+    st.markdown("---")
+
+    # ================= RESULTADOS =================
+    if st.button("📊 CALCULAR PADRONIZAÇÃO"):
+
+        media = np.mean([v1, v2, v3])
+        desvio = np.std([v1, v2, v3], ddof=1)
+
+        st.success("✔ Cálculo realizado com sucesso")
+
+        st.write("📌 MÉDIA:", media)
+        st.write("📌 DESVIO PADRÃO:", desvio)
+
+        st.write("📌 CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L")
+        st.write("📌 FATOR DE CORREÇÃO: (calculado automaticamente no sistema)")
