@@ -160,10 +160,14 @@ elif menu == "🧪 DQO":
             st.success(f"Resultado: {resultado:.4f}")
 
 # ================= PLANILHAS INTERATIVAS =================
+# ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
     import streamlit as st
+    from io import BytesIO
+    from reportlab.platypus import SimpleDocTemplate, Table
+    from reportlab.lib.pagesizes import A4
 
     st.title("📊 Planilhas Interativas - Excel com Abas")
 
@@ -174,6 +178,17 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     }
 
     tabs = st.tabs(list(arquivos.keys()))
+
+    def gerar_pdf(df):
+        buffer = BytesIO()
+        pdf = SimpleDocTemplate(buffer, pagesize=A4)
+
+        data = [df.columns.tolist()] + df.values.tolist()
+        table = Table(data)
+
+        pdf.build([table])
+        buffer.seek(0)
+        return buffer
 
     for i, nome in enumerate(arquivos.keys()):
 
@@ -193,13 +208,18 @@ elif menu == "📊 Planilhas Interativas (Excel)":
                 key=f"edit_{nome}"
             )
 
-            # 🔥 DOWNLOAD EXCEL (para o aluno depois salvar em PDF no Excel)
+            # 🔥 DOWNLOAD CSV (como já tinha)
             st.download_button(
                 f"⬇️ Baixar {nome} (Excel/CSV)",
                 data=df_edit.to_csv(index=False).encode("utf-8"),
                 file_name=f"{nome}.csv",
-                mime="text/csv",
-                key=f"download_{nome}"
+                mime="text/csv"
             )
 
-            st.info("💡 Dica: Abra no Excel e use 'Salvar como PDF'")
+            # 🔥 NOVO: PDF
+            st.download_button(
+                f"📄 Baixar {nome} em PDF",
+                data=gerar_pdf(df_edit),
+                file_name=f"{nome}.pdf",
+                mime="application/pdf"
+            )
