@@ -249,13 +249,11 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
     def carregar_excel(nome):
         try:
-            # suporta .xls e .xlsx
             return pd.read_excel(nome)
-        except Exception as e:
+        except Exception:
             st.error(f"Erro ao carregar {nome}. Verifique o arquivo na pasta do app.")
             st.stop()
 
-    # carrega arquivos (IMPORTANTE: nomes exatos no GitHub)
     if opcao == "N-Amoniacal":
         df = carregar_excel("N-AMONIACAL.xls")
 
@@ -265,15 +263,12 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     elif opcao == "DQO":
         df = carregar_excel("DQO.xls")
 
-    # editor tipo Excel (seguro)
     df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
 
-    # botão de visualização/salvar temporário
     if st.button("📌 Atualizar Planilha"):
         st.success("Planilha carregada com sucesso!")
         st.dataframe(df_edit)
 
-    # exportar versão editada (sem quebrar nada)
     buffer = BytesIO()
     df_edit.to_excel(buffer, index=False)
     buffer.seek(0)
