@@ -8,6 +8,7 @@ st.set_page_config(
     page_title="LabResiduos - Laboratório Virtual",
     layout="wide"
 )
+
 # ================= CSS =================
 st.markdown("""
 <style>
@@ -70,6 +71,12 @@ menu = st.sidebar.radio(
         "📊 Laboratório Excel"
     ]
 )
+
+# ================= FUNÇÃO SEGURA =================
+def calcular_seguro(m, v, media):
+    if v is None or v <= 0:
+        return None
+    return (m / 381.4) / (v / 1000) * media
 
 # ================= HEADER =================
 def header(titulo):
@@ -174,10 +181,11 @@ elif menu == "🧪 N-Amoniacal":
 
     if st.button("Calcular N-Amoniacal"):
         media = np.mean([t1, t2, t3])
+        resultado = calcular_seguro(m, v, media)
 
-        if v > 0:
-            resultado = (m / 381.4) / (v / 1000) * media
-
+        if resultado is None:
+            st.warning("⚠️ Volume inválido (não pode ser zero)")
+        else:
             st.success(f"✔ Resultado: {resultado:.4f} mg/L")
             st.info(f"📊 Média: {media:.4f}")
 
@@ -194,10 +202,11 @@ elif menu == "🧪 NTK":
 
     if st.button("Calcular NTK"):
         media = np.mean([t1, t2, t3])
+        resultado = calcular_seguro(m, v, media)
 
-        if v > 0:
-            resultado = (m / 381.4) / (v / 1000) * media
-
+        if resultado is None:
+            st.warning("⚠️ Volume inválido")
+        else:
             st.success(f"✔ NTK: {resultado:.4f}")
             st.info(f"📊 Média: {media:.4f}")
 
@@ -214,10 +223,11 @@ elif menu == "🧪 NHX":
 
     if st.button("Calcular NHX"):
         media = np.mean([t1, t2, t3])
+        resultado = calcular_seguro(m, v, media)
 
-        if v > 0:
-            resultado = (m / 381.4) / (v / 1000) * media
-
+        if resultado is None:
+            st.warning("⚠️ Volume inválido")
+        else:
             st.success(f"✔ NHX: {resultado:.4f}")
             st.info(f"📊 Média: {media:.4f}")
 
@@ -237,7 +247,6 @@ elif menu == "🧪 DQO":
 
         if media > 0:
             resultado = (m * 0.25) / media
-
             st.success(f"✔ DQO: {resultado:.4f}")
             st.info(f"📊 Média: {media:.4f}")
 
@@ -246,11 +255,8 @@ elif menu == "📊 Laboratório Excel":
 
     st.title("📊 Laboratório Excel - Modo Estudo")
 
-    st.info("Sistema pronto para treino de prova")
-
     aba = st.selectbox("Escolha o módulo", ["N-Amoniacal", "NTK", "DQO"])
 
-    st.subheader("👨‍🎓 Aluno")
     aluno = st.text_input("Nome do aluno")
 
     if aba == "N-Amoniacal":
@@ -262,8 +268,10 @@ elif menu == "📊 Laboratório Excel":
 
         if st.button("Calcular"):
             media = np.mean([t1, t2, t3])
-            resultado = (m / 381.4) / (v / 1000) * media
-            st.success(f"{aluno} - {resultado:.4f}")
+            resultado = calcular_seguro(m, v, media)
+
+            if resultado:
+                st.success(f"{aluno} - {resultado:.4f}")
 
     elif aba == "NTK":
         m = st.number_input("Massa", key="ntk")
@@ -274,8 +282,10 @@ elif menu == "📊 Laboratório Excel":
 
         if st.button("Calcular"):
             media = np.mean([t1, t2, t3])
-            resultado = (m / 381.4) / (v / 1000) * media
-            st.success(f"{aluno} - {resultado:.4f}")
+            resultado = calcular_seguro(m, v, media)
+
+            if resultado:
+                st.success(f"{aluno} - {resultado:.4f}")
 
     elif aba == "DQO":
         m = st.number_input("Massa")
