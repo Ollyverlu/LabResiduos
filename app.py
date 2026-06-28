@@ -65,7 +65,8 @@ menu = st.sidebar.radio(
         "🧪 NTK",
         "🧪 NHX",
         "🧪 DQO",
-        "📊 Planilhas Interativas (Excel)"
+        "📊 Planilhas Interativas (Excel)",
+        "📊 Laboratório Excel"
     ]
 )
 
@@ -235,81 +236,86 @@ elif menu == "🧪 DQO":
             st.success(f"DQO: {resultado:.4f}")
             st.info(f"Média: {media:.4f}")
 
-# ================= PLANILHAS INTERATIVAS (SEM EXCEL) =================
-elif menu == "📊 Planilhas Interativas (Excel)":
+# ================= LABORATÓRIO EXCEL (TREINO INTERATIVO) =================
+elif menu == "📊 Laboratório Excel":
 
-    st.title("📊 Planilhas Interativas - Sistema Interno (SEM EXCEL)")
+    st.title("📊 Laboratório Excel - Modo Estudo")
 
-    opcao = st.selectbox(
-        "Escolha o módulo",
+    st.info("Sistema de treino para prova - todos os campos são clicáveis e interativos")
+
+    aba = st.selectbox(
+        "Escolha a área de estudo",
         ["N-Amoniacal", "NTK", "DQO"]
     )
 
+    # ================= CABEÇALHO DO ALUNO =================
+    st.subheader("👨‍🎓 Identificação do Aluno")
+
+    aluno = st.text_input("Nome do aluno")
+    responsavel = st.text_input("Responsável / Professor")
+    data = st.date_input("Data da prática")
+
+    st.markdown("---")
+
     # ================= N-AMONIACAL =================
-    if opcao == "N-Amoniacal":
+    if aba == "N-Amoniacal":
 
-        st.subheader("🧪 N-Amoniacal - Registro de Dados")
+        st.subheader("🧪 Treino - N-Amoniacal")
 
-        responsavel = st.text_input("Responsável")
-        projeto = st.text_input("Projeto")
+        m = st.number_input("Massa (g)")
+        v = st.number_input("Volume (mL)")
+        t1 = st.number_input("Titulação 1")
+        t2 = st.number_input("Titulação 2")
+        t3 = st.number_input("Titulação 3")
 
-        m = st.number_input("Massa (g)", key="namo_m")
-        v = st.number_input("Volume (mL)", key="namo_v")
-
-        t1 = st.number_input("Titulação 1", key="namo_t1")
-        t2 = st.number_input("Titulação 2", key="namo_t2")
-        t3 = st.number_input("Titulação 3", key="namo_t3")
-
-        if st.button("Calcular N-Amoniacal"):
+        if st.button("Calcular Treino N-Amoniacal"):
 
             media = np.mean([t1, t2, t3])
 
             if v > 0:
                 resultado = (m / 381.4) / (v / 1000) * media
+
+                st.success(f"Aluno: {aluno}")
                 st.success(f"Resultado: {resultado:.4f} mg/L")
 
     # ================= NTK =================
-    elif opcao == "NTK":
+    elif aba == "NTK":
 
-        st.subheader("🧪 NTK - Registro de Dados")
+        st.subheader("🧪 Treino - NTK")
 
-        responsavel = st.text_input("Responsável")
-        projeto = st.text_input("Projeto")
+        m = st.number_input("Massa (g)", key="t_ntk_m")
+        v = st.number_input("Volume (mL)", key="t_ntk_v")
+        t1 = st.number_input("Titulação 1", key="t_ntk_1")
+        t2 = st.number_input("Titulação 2", key="t_ntk_2")
+        t3 = st.number_input("Titulação 3", key="t_ntk_3")
 
-        m = st.number_input("Massa (g)", key="ntk_m")
-        v = st.number_input("Volume (mL)", key="ntk_v")
-
-        t1 = st.number_input("Titulação 1", key="ntk_t1")
-        t2 = st.number_input("Titulação 2", key="ntk_t2")
-        t3 = st.number_input("Titulação 3", key="ntk_t3")
-
-        if st.button("Calcular NTK"):
+        if st.button("Calcular Treino NTK"):
 
             media = np.mean([t1, t2, t3])
 
             if v > 0:
                 resultado = (m / 381.4) / (v / 1000) * media
+
+                st.success(f"Aluno: {aluno}")
                 st.success(f"Resultado: {resultado:.4f} mg/L")
 
     # ================= DQO =================
-    elif opcao == "DQO":
+    elif aba == "DQO":
 
-        st.subheader("🧪 DQO - Registro de Dados")
+        st.subheader("🧪 Treino - DQO")
 
-        responsavel = st.text_input("Responsável")
-        projeto = st.text_input("Projeto")
+        m = st.number_input("Massa padrão", key="t_dqo_m")
+        v = st.number_input("Volume amostra", key="t_dqo_v")
+        t1 = st.number_input("Titulação 1", key="t_dqo_1")
+        t2 = st.number_input("Titulação 2", key="t_dqo_2")
+        t3 = st.number_input("Titulação 3", key="t_dqo_3")
 
-        m = st.number_input("Massa padrão", key="dqo_m")
-        v = st.number_input("Volume amostra", key="dqo_v")
-
-        t1 = st.number_input("Titulação 1", key="dqo_t1")
-        t2 = st.number_input("Titulação 2", key="dqo_t2")
-        t3 = st.number_input("Titulação 3", key="dqo_t3")
-
-        if st.button("Calcular DQO"):
+        if st.button("Calcular Treino DQO"):
 
             media = np.mean([t1, t2, t3])
 
             if media > 0:
                 resultado = (m * 0.25) / media
+
+                st.success(f"Aluno: {aluno}")
                 st.success(f"Resultado: {resultado:.4f} mg/L")
