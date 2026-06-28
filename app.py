@@ -92,6 +92,7 @@ if menu == "🏠 Dashboard":
     st.info("Selecione um módulo no menu lateral.")
 # ================= SÓLIDOS TOTAIS =================
 elif menu == "🧪 Sólidos Totais":
+    
     header("SÓLIDOS TOTAIS")
 
     v = st.number_input("Volume (mL)", value=50.0)
@@ -121,5 +122,38 @@ elif menu == "🧪 Sólidos Totais":
         ST: {np.mean([st1, st2]):.2f} ± {np.std([st1, st2], ddof=1):.2f}<br>
         STF: {np.mean([stf1, stf2]):.2f} ± {np.std([stf1, stf2], ddof=1):.2f}<br>
         STV: {np.mean([stv1, stv2]):.2f} ± {np.std([stv1, stv2], ddof=1):.2f}
+        </div>
+        """, unsafe_allow_html=True)
+# ================= SÓLIDOS SUSPENSOS =================
+elif menu == "🧪 Sólidos Suspensos":
+    header("SÓLIDOS SUSPENSOS")
+
+    v = st.number_input("Volume (mL)", value=50.0)
+
+    m1 = st.number_input("m1")
+    m2 = st.number_input("m2")
+    m3 = st.number_input("m3")
+
+    m1_2 = st.number_input("m1 (rep 2)")
+    m2_2 = st.number_input("m2 (rep 2)")
+    m3_2 = st.number_input("m3 (rep 2)")
+
+    if st.button("Calcular"):
+        fator = 1000 / (v / 1000)
+
+        ss1 = (m2 - m1) * fator
+        ss2 = (m2_2 - m1_2) * fator
+
+        ssf1 = (m3 - m1) * fator
+        ssf2 = (m3_2 - m1_2) * fator
+
+        ssv1 = ss1 - ssf1
+        ssv2 = ss2 - ssf2
+
+        st.markdown(f"""
+        <div class="card">
+        SS: {np.mean([ss1, ss2]):.2f} ± {np.std([ss1, ss2], ddof=1):.2f}<br>
+        SSF: {np.mean([ssf1, ssf2]):.2f} ± {np.std([ssf1, ssf2], ddof=1):.2f}<br>
+        SSV: {np.mean([ssv1, ssv2]):.2f} ± {np.std([ssv1, ssv2], ddof=1):.2f}
         </div>
         """, unsafe_allow_html=True)
