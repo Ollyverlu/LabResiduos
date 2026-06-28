@@ -235,9 +235,11 @@ elif menu == "🧪 DQO":
             st.success(f"DQO: {resultado:.4f}")
             st.info(f"Média: {media:.4f}")
 # ================= PLANILHAS INTERATIVAS =================
+# ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
+    from io import BytesIO
 
     st.title("📊 Planilhas Interativas - Laboratório")
 
@@ -248,13 +250,13 @@ elif menu == "📊 Planilhas Interativas (Excel)":
 
     try:
         if opcao == "N-Amoniacal":
-            df = pd.read_excel("N-AMONIACAL.xls")
+            df = pd.read_excel("N_AMONIACAL.xlsx")
 
         elif opcao == "NTK":
-            df = pd.read_excel("NTK.xls")
+            df = pd.read_excel("NTK.xlsx")
 
         elif opcao == "DQO":
-            df = pd.read_excel("DQO.xls")
+            df = pd.read_excel("DQO.xlsx")
 
         df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
 
@@ -269,10 +271,10 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         st.download_button(
             label="⬇️ Baixar Planilha Atualizada",
             data=buffer,
-            file_name="planilha_atualizada.xlsx",
+            file_name=f"{opcao}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
     except Exception as e:
-        st.error("❌ Erro ao carregar planilha. Verifique os arquivos no GitHub.")
+        st.error("❌ Erro ao abrir planilha. Verifique os arquivos no GitHub.")
         st.code(str(e))
