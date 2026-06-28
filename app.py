@@ -360,7 +360,99 @@ elif menu == "📊 Planilhas Interativas (Excel)":
     v3 = st.number_input("VOLUME H2SO4 GASTO 3 (mL)")
 
     st.markdown("---")
+elif menu == "📊 Planilhas Interativas (Excel)":
 
+    st.title("📊 PLANILHA INTERATIVA - MODELO LABORATÓRIO IFRJ")
+
+    opcao = st.selectbox(
+        "📌 Escolha o método",
+        ["N-Amoniacal", "NTK", "DQO"]
+    )
+
+    st.markdown("---")
+
+    # ================= N-AMONIACAL =================
+    if opcao == "N-Amoniacal":
+
+        st.subheader("🧪 DETERMINAÇÃO DE N-AMONIACAL")
+
+        responsavel = st.text_input("RESPONSÁVEL")
+        projeto = st.text_input("PROJETO")
+        data = st.date_input("DATA DA ANÁLISE")
+        hora = st.time_input("HORA DA ANÁLISE")
+
+        st.markdown("### 🧪 CÁLCULO")
+
+        m = st.number_input("MASSA (g)")
+        v = st.number_input("VOLUME (mL)")
+
+        t1 = st.number_input("TITULAÇÃO 1")
+        t2 = st.number_input("TITULAÇÃO 2")
+        t3 = st.number_input("TITULAÇÃO 3")
+
+        if st.button("📊 CALCULAR N-AMONIACAL"):
+
+            media = np.mean([t1, t2, t3])
+
+            if v > 0:
+                resultado = (m / 381.4) / (v / 1000) * media
+
+                st.success(f"✔ RESULTADO: {resultado:.4f} mg/L")
+                st.info(f"📊 MÉDIA: {media:.4f}")
+
+    # ================= NTK =================
+    elif opcao == "NTK":
+
+        st.subheader("🧪 DETERMINAÇÃO DE NTK")
+
+        responsavel = st.text_input("RESPONSÁVEL")
+        projeto = st.text_input("PROJETO")
+        data = st.date_input("DATA DA ANÁLISE")
+        hora = st.time_input("HORA DA ANÁLISE")
+
+        m = st.number_input("MASSA (g)")
+        v = st.number_input("VOLUME (mL)")
+
+        t1 = st.number_input("TITULAÇÃO 1")
+        t2 = st.number_input("TITULAÇÃO 2")
+        t3 = st.number_input("TITULAÇÃO 3")
+
+        if st.button("📊 CALCULAR NTK"):
+
+            media = np.mean([t1, t2, t3])
+
+            if v > 0:
+                resultado = (m / 381.4) / (v / 1000) * media
+
+                st.success(f"✔ RESULTADO: {resultado:.4f} mg/L")
+                st.info(f"📊 MÉDIA: {media:.4f}")
+
+    # ================= DQO =================
+    elif opcao == "DQO":
+
+        st.subheader("🧪 DETERMINAÇÃO DE DQO")
+
+        responsavel = st.text_input("RESPONSÁVEL")
+        projeto = st.text_input("PROJETO")
+        data = st.date_input("DATA DA ANÁLISE")
+        hora = st.time_input("HORA DA ANÁLISE")
+
+        m = st.number_input("MASSA PADRÃO")
+        v = st.number_input("VOLUME DA AMOSTRA")
+
+        t1 = st.number_input("TITULAÇÃO 1")
+        t2 = st.number_input("TITULAÇÃO 2")
+        t3 = st.number_input("TITULAÇÃO 3")
+
+        if st.button("📊 CALCULAR DQO"):
+
+            media = np.mean([t1, t2, t3])
+
+            if media > 0:
+                resultado = (m * 0.25) / media
+
+                st.success(f"✔ RESULTADO: {resultado:.4f} mg/L")
+                st.info(f"📊 MÉDIA: {media:.4f}")
     # ================= RESULTADOS =================
     if st.button("📊 CALCULAR PADRONIZAÇÃO"):
 
