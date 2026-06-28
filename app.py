@@ -160,24 +160,30 @@ elif menu == "🧪 Sólidos Suspensos":
         """, unsafe_allow_html=True)
         
 # ================= N-AMONIACAL =================
+# ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
     header("NITROGÊNIO AMONIACAL")
 
-    m = st.number_input("Massa")
-    v = st.number_input("Volume")
+    st.subheader("🧪 Cálculo do N-Amoniacal")
+
+    # ================= ENTRADAS =================
+    m = st.number_input("Massa (g)")
+    v = st.number_input("Volume (mL)")
 
     t1 = st.number_input("Titulação 1")
     t2 = st.number_input("Titulação 2")
     t3 = st.number_input("Titulação 3")
 
+    # ================= BOTÃO DE CÁLCULO =================
     if st.button("Calcular N-Amoniacal"):
+
         media = np.mean([t1, t2, t3])
 
         if v > 0:
             resultado = (m / 381.4) / (v / 1000) * media
 
-            st.success(f"Resultado N-Amoniacal: {resultado:.4f}")
-            st.info(f"Média: {media:.4f}")
+            st.success(f"✔ Resultado N-Amoniacal: {resultado:.4f} mg/L")
+            st.info(f"📊 Média das titulações: {media:.4f}")
 # ================= NTK =================
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
