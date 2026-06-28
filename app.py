@@ -234,47 +234,82 @@ elif menu == "🧪 DQO":
 
             st.success(f"DQO: {resultado:.4f}")
             st.info(f"Média: {media:.4f}")
-# ================= PLANILHAS INTERATIVAS =================
-# ================= PLANILHAS INTERATIVAS =================
+
+# ================= PLANILHAS INTERATIVAS (SEM EXCEL) =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
-    import pandas as pd
-    from io import BytesIO
-
-    st.title("📊 Planilhas Interativas - Laboratório")
+    st.title("📊 Planilhas Interativas - Sistema Interno (SEM EXCEL)")
 
     opcao = st.selectbox(
-        "Escolha a planilha",
+        "Escolha o módulo",
         ["N-Amoniacal", "NTK", "DQO"]
     )
 
-    try:
-        if opcao == "N-Amoniacal":
-            df = pd.read_excel("N_AMONIACAL.xlsx")
+    # ================= N-AMONIACAL =================
+    if opcao == "N-Amoniacal":
 
-        elif opcao == "NTK":
-            df = pd.read_excel("NTK.xlsx")
+        st.subheader("🧪 N-Amoniacal - Registro de Dados")
 
-        elif opcao == "DQO":
-            df = pd.read_excel("DQO.xlsx")
+        responsavel = st.text_input("Responsável")
+        projeto = st.text_input("Projeto")
 
-        df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
+        m = st.number_input("Massa (g)", key="namo_m")
+        v = st.number_input("Volume (mL)", key="namo_v")
 
-        if st.button("📌 Atualizar Planilha"):
-            st.success("Planilha carregada com sucesso!")
-            st.dataframe(df_edit)
+        t1 = st.number_input("Titulação 1", key="namo_t1")
+        t2 = st.number_input("Titulação 2", key="namo_t2")
+        t3 = st.number_input("Titulação 3", key="namo_t3")
 
-        buffer = BytesIO()
-        df_edit.to_excel(buffer, index=False)
-        buffer.seek(0)
+        if st.button("Calcular N-Amoniacal"):
 
-        st.download_button(
-            label="⬇️ Baixar Planilha Atualizada",
-            data=buffer,
-            file_name=f"{opcao}.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+            media = np.mean([t1, t2, t3])
 
-    except Exception as e:
-        st.error("❌ Erro ao abrir planilha. Verifique os arquivos no GitHub.")
-        st.code(str(e))
+            if v > 0:
+                resultado = (m / 381.4) / (v / 1000) * media
+                st.success(f"Resultado: {resultado:.4f} mg/L")
+
+    # ================= NTK =================
+    elif opcao == "NTK":
+
+        st.subheader("🧪 NTK - Registro de Dados")
+
+        responsavel = st.text_input("Responsável")
+        projeto = st.text_input("Projeto")
+
+        m = st.number_input("Massa (g)", key="ntk_m")
+        v = st.number_input("Volume (mL)", key="ntk_v")
+
+        t1 = st.number_input("Titulação 1", key="ntk_t1")
+        t2 = st.number_input("Titulação 2", key="ntk_t2")
+        t3 = st.number_input("Titulação 3", key="ntk_t3")
+
+        if st.button("Calcular NTK"):
+
+            media = np.mean([t1, t2, t3])
+
+            if v > 0:
+                resultado = (m / 381.4) / (v / 1000) * media
+                st.success(f"Resultado: {resultado:.4f} mg/L")
+
+    # ================= DQO =================
+    elif opcao == "DQO":
+
+        st.subheader("🧪 DQO - Registro de Dados")
+
+        responsavel = st.text_input("Responsável")
+        projeto = st.text_input("Projeto")
+
+        m = st.number_input("Massa padrão", key="dqo_m")
+        v = st.number_input("Volume amostra", key="dqo_v")
+
+        t1 = st.number_input("Titulação 1", key="dqo_t1")
+        t2 = st.number_input("Titulação 2", key="dqo_t2")
+        t3 = st.number_input("Titulação 3", key="dqo_t3")
+
+        if st.button("Calcular DQO"):
+
+            media = np.mean([t1, t2, t3])
+
+            if media > 0:
+                resultado = (m * 0.25) / media
+                st.success(f"Resultado: {resultado:.4f} mg/L")
