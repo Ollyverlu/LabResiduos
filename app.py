@@ -237,9 +237,6 @@ elif menu == "🧪 DQO":
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
-    import pandas as pd
-    from io import BytesIO
-
     st.title("📊 Planilhas Interativas - Laboratório")
 
     opcao = st.selectbox(
@@ -247,21 +244,14 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         ["N-Amoniacal", "NTK", "DQO"]
     )
 
-    def carregar_excel(nome):
-        try:
-            return pd.read_excel(nome)
-        except Exception:
-            st.error(f"Erro ao carregar {nome}. Verifique o arquivo na pasta do app.")
-            st.stop()
-
     if opcao == "N-Amoniacal":
-        df = carregar_excel("N-AMONIACAL.xls")
+        df = pd.read_excel("N-AMONIACAL.xls")
 
     elif opcao == "NTK":
-        df = carregar_excel("NTK.xls")
+        df = pd.read_excel("NTK.xls")
 
     elif opcao == "DQO":
-        df = carregar_excel("DQO.xls")
+        df = pd.read_excel("DQO.xls")
 
     df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
 
