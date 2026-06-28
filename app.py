@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+
 # ================= CONFIG =================
 st.set_page_config(
     page_title="LabResiduos - Laboratório Virtual",
@@ -65,7 +66,6 @@ menu = st.sidebar.radio(
         "🧪 NTK",
         "🧪 NHX",
         "🧪 DQO",
-        "📊 Planilhas Interativas (Excel)",
         "📊 Laboratório Excel"
     ]
 )
@@ -91,9 +91,9 @@ def header(titulo):
 if menu == "🏠 Dashboard":
     st.title("Sistema Laboratorial")
     st.info("Selecione um módulo no menu lateral.")
+
 # ================= SÓLIDOS TOTAIS =================
 elif menu == "🧪 Sólidos Totais":
-    
     header("SÓLIDOS TOTAIS")
 
     v = st.number_input("Volume (mL)", value=50.0)
@@ -125,6 +125,7 @@ elif menu == "🧪 Sólidos Totais":
         STV: {np.mean([stv1, stv2]):.2f} ± {np.std([stv1, stv2], ddof=1):.2f}
         </div>
         """, unsafe_allow_html=True)
+
 # ================= SÓLIDOS SUSPENSOS =================
 elif menu == "🧪 Sólidos Suspensos":
     header("SÓLIDOS SUSPENSOS")
@@ -158,15 +159,11 @@ elif menu == "🧪 Sólidos Suspensos":
         SSV: {np.mean([ssv1, ssv2]):.2f} ± {np.std([ssv1, ssv2], ddof=1):.2f}
         </div>
         """, unsafe_allow_html=True)
-        
 
 # ================= N-AMONIACAL =================
 elif menu == "🧪 N-Amoniacal":
     header("NITROGÊNIO AMONIACAL")
 
-    st.subheader("🧪 Cálculo do N-Amoniacal")
-
-    # ================= ENTRADAS =================
     m = st.number_input("Massa (g)")
     v = st.number_input("Volume (mL)")
 
@@ -174,22 +171,21 @@ elif menu == "🧪 N-Amoniacal":
     t2 = st.number_input("Titulação 2")
     t3 = st.number_input("Titulação 3")
 
-    # ================= BOTÃO DE CÁLCULO =================
     if st.button("Calcular N-Amoniacal"):
-
         media = np.mean([t1, t2, t3])
 
         if v > 0:
             resultado = (m / 381.4) / (v / 1000) * media
 
-            st.success(f"✔ Resultado N-Amoniacal: {resultado:.4f} mg/L")
-            st.info(f"📊 Média das titulações: {media:.4f}")
+            st.success(f"✔ Resultado: {resultado:.4f} mg/L")
+            st.info(f"📊 Média: {media:.4f}")
+
 # ================= NTK =================
 elif menu == "🧪 NTK":
     header("NITROGÊNIO TOTAL KJELDAHL")
 
-    m = st.number_input("Massa")
-    v = st.number_input("Volume")
+    m = st.number_input("Massa (g)")
+    v = st.number_input("Volume (mL)")
 
     t1 = st.number_input("Titulação 1")
     t2 = st.number_input("Titulação 2")
@@ -201,14 +197,15 @@ elif menu == "🧪 NTK":
         if v > 0:
             resultado = (m / 381.4) / (v / 1000) * media
 
-            st.success(f"NTK: {resultado:.4f}")
-            st.info(f"Média: {media:.4f}")
+            st.success(f"✔ NTK: {resultado:.4f}")
+            st.info(f"📊 Média: {media:.4f}")
+
 # ================= NHX =================
 elif menu == "🧪 NHX":
     header("NITROGÊNIO NHX")
 
-    m = st.number_input("Massa")
-    v = st.number_input("Volume")
+    m = st.number_input("Massa (g)")
+    v = st.number_input("Volume (mL)")
 
     t1 = st.number_input("Titulação 1")
     t2 = st.number_input("Titulação 2")
@@ -220,8 +217,9 @@ elif menu == "🧪 NHX":
         if v > 0:
             resultado = (m / 381.4) / (v / 1000) * media
 
-            st.success(f"NHX: {resultado:.4f}")
-            st.info(f"Média: {media:.4f}")
+            st.success(f"✔ NHX: {resultado:.4f}")
+            st.info(f"📊 Média: {media:.4f}")
+
 # ================= DQO =================
 elif menu == "🧪 DQO":
     header("DEMANDA QUÍMICA DE OXIGÊNIO")
@@ -236,233 +234,56 @@ elif menu == "🧪 DQO":
     if st.button("Calcular DQO"):
         media = np.mean([t1, t2, t3])
 
-        if media != 0:
+        if media > 0:
             resultado = (m * 0.25) / media
 
-            st.success(f"DQO: {resultado:.4f}")
-            st.info(f"Média: {media:.4f}")
+            st.success(f"✔ DQO: {resultado:.4f}")
+            st.info(f"📊 Média: {media:.4f}")
 
-# ================= LABORATÓRIO EXCEL (TREINO INTERATIVO) =================
+# ================= LABORATÓRIO EXCEL =================
 elif menu == "📊 Laboratório Excel":
 
     st.title("📊 Laboratório Excel - Modo Estudo")
 
-    st.info("Sistema de treino para prova - todos os campos são clicáveis e interativos")
+    st.info("Sistema pronto para treino de prova")
 
-    aba = st.selectbox(
-        "Escolha a área de estudo",
-        ["N-Amoniacal", "NTK", "DQO"]
-    )
+    aba = st.selectbox("Escolha o módulo", ["N-Amoniacal", "NTK", "DQO"])
 
-    # ================= CABEÇALHO DO ALUNO =================
-    st.subheader("👨‍🎓 Identificação do Aluno")
-
+    st.subheader("👨‍🎓 Aluno")
     aluno = st.text_input("Nome do aluno")
-    responsavel = st.text_input("Responsável / Professor")
-    data = st.date_input("Data da prática")
 
-    st.markdown("---")
-
-    # ================= N-AMONIACAL =================
     if aba == "N-Amoniacal":
+        m = st.number_input("Massa")
+        v = st.number_input("Volume")
+        t1 = st.number_input("T1")
+        t2 = st.number_input("T2")
+        t3 = st.number_input("T3")
 
-        st.subheader("🧪 Treino - N-Amoniacal")
-
-        m = st.number_input("Massa (g)")
-        v = st.number_input("Volume (mL)")
-        t1 = st.number_input("Titulação 1")
-        t2 = st.number_input("Titulação 2")
-        t3 = st.number_input("Titulação 3")
-
-        if st.button("Calcular Treino N-Amoniacal"):
-
+        if st.button("Calcular"):
             media = np.mean([t1, t2, t3])
+            resultado = (m / 381.4) / (v / 1000) * media
+            st.success(f"{aluno} - {resultado:.4f}")
 
-            if v > 0:
-                resultado = (m / 381.4) / (v / 1000) * media
-
-                st.success(f"Aluno: {aluno}")
-                st.success(f"Resultado: {resultado:.4f} mg/L")
-
-    # ================= NTK =================
     elif aba == "NTK":
+        m = st.number_input("Massa", key="ntk")
+        v = st.number_input("Volume", key="ntk2")
+        t1 = st.number_input("T1", key="ntk3")
+        t2 = st.number_input("T2", key="ntk4")
+        t3 = st.number_input("T3", key="ntk5")
 
-        st.subheader("🧪 Treino - NTK")
-
-        m = st.number_input("Massa (g)", key="t_ntk_m")
-        v = st.number_input("Volume (mL)", key="t_ntk_v")
-        t1 = st.number_input("Titulação 1", key="t_ntk_1")
-        t2 = st.number_input("Titulação 2", key="t_ntk_2")
-        t3 = st.number_input("Titulação 3", key="t_ntk_3")
-
-        if st.button("Calcular Treino NTK"):
-
+        if st.button("Calcular"):
             media = np.mean([t1, t2, t3])
+            resultado = (m / 381.4) / (v / 1000) * media
+            st.success(f"{aluno} - {resultado:.4f}")
 
-            if v > 0:
-                resultado = (m / 381.4) / (v / 1000) * media
-
-                st.success(f"Aluno: {aluno}")
-                st.success(f"Resultado: {resultado:.4f} mg/L")
-
-    # ================= DQO =================
     elif aba == "DQO":
+        m = st.number_input("Massa")
+        v = st.number_input("Volume")
+        t1 = st.number_input("T1")
+        t2 = st.number_input("T2")
+        t3 = st.number_input("T3")
 
-        st.subheader("🧪 Treino - DQO")
-
-        m = st.number_input("Massa padrão", key="t_dqo_m")
-        v = st.number_input("Volume amostra", key="t_dqo_v")
-        t1 = st.number_input("Titulação 1", key="t_dqo_1")
-        t2 = st.number_input("Titulação 2", key="t_dqo_2")
-        t3 = st.number_input("Titulação 3", key="t_dqo_3")
-
-        if st.button("Calcular Treino DQO"):
-
+        if st.button("Calcular"):
             media = np.mean([t1, t2, t3])
-
-            if media > 0:
-                resultado = (m * 0.25) / media
-
-                st.success(f"Aluno: {aluno}")
-                st.success(f"Resultado: {resultado:.4f} mg/L")
-elif menu == "📊 Planilhas Interativas (Excel)":
-
-    st.title("📊 Planilha Interativa - NTK (Modelo IFRJ)")
-
-    st.markdown("### 🧪 DETERMINAÇÃO DE NITROGÊNIO TOTAL KJELDAHL")
-
-    # ================= IDENTIFICAÇÃO =================
-    st.subheader("📌 Identificação da Amostra")
-
-    responsavel = st.text_input("RESPONSÁVEL")
-    projeto = st.text_input("PROJETO")
-    data = st.date_input("DATA DA ANÁLISE")
-    hora = st.time_input("HORA DA ANÁLISE")
-
-    st.markdown("---")
-
-    # ================= PADRONIZAÇÃO =================
-    st.subheader("🧪 PADRONIZAÇÃO DO H₂SO₄ 0,02 N")
-
-    st.markdown("### PADRÃO PRIMÁRIO: TETRABORATO DE SÓDIO")
-
-    massa_pesada = st.number_input("MASSA PESADA (g)")
-    massa_molar = st.number_input("MASSA MOLAR (g/mol)", value=381.40)
-    volume_balao = st.number_input("VOLUME DO BALÃO (mL)")
-
-    st.markdown("### 1ª TITULAÇÃO")
-    v1 = st.number_input("VOLUME H2SO4 GASTO 1 (mL)")
-
-    st.markdown("### 2ª TITULAÇÃO")
-    v2 = st.number_input("VOLUME H2SO4 GASTO 2 (mL)")
-
-    st.markdown("### 3ª TITULAÇÃO")
-    v3 = st.number_input("VOLUME H2SO4 GASTO 3 (mL)")
-
-    st.markdown("---")
-elif menu == "📊 Planilhas Interativas (Excel)":
-
-    st.title("📊 PLANILHA INTERATIVA - MODELO LABORATÓRIO IFRJ")
-
-    opcao = st.selectbox(
-        "📌 Escolha o método",
-        ["N-Amoniacal", "NTK", "DQO"]
-    )
-
-    st.markdown("---")
-
-    # ================= N-AMONIACAL =================
-    if opcao == "N-Amoniacal":
-
-        st.subheader("🧪 DETERMINAÇÃO DE N-AMONIACAL")
-
-        responsavel = st.text_input("RESPONSÁVEL")
-        projeto = st.text_input("PROJETO")
-        data = st.date_input("DATA DA ANÁLISE")
-        hora = st.time_input("HORA DA ANÁLISE")
-
-        st.markdown("### 🧪 CÁLCULO")
-
-        m = st.number_input("MASSA (g)")
-        v = st.number_input("VOLUME (mL)")
-
-        t1 = st.number_input("TITULAÇÃO 1")
-        t2 = st.number_input("TITULAÇÃO 2")
-        t3 = st.number_input("TITULAÇÃO 3")
-
-        if st.button("📊 CALCULAR N-AMONIACAL"):
-
-            media = np.mean([t1, t2, t3])
-
-            if v > 0:
-                resultado = (m / 381.4) / (v / 1000) * media
-
-                st.success(f"✔ RESULTADO: {resultado:.4f} mg/L")
-                st.info(f"📊 MÉDIA: {media:.4f}")
-
-    # ================= NTK =================
-    elif opcao == "NTK":
-
-        st.subheader("🧪 DETERMINAÇÃO DE NTK")
-
-        responsavel = st.text_input("RESPONSÁVEL")
-        projeto = st.text_input("PROJETO")
-        data = st.date_input("DATA DA ANÁLISE")
-        hora = st.time_input("HORA DA ANÁLISE")
-
-        m = st.number_input("MASSA (g)")
-        v = st.number_input("VOLUME (mL)")
-
-        t1 = st.number_input("TITULAÇÃO 1")
-        t2 = st.number_input("TITULAÇÃO 2")
-        t3 = st.number_input("TITULAÇÃO 3")
-
-        if st.button("📊 CALCULAR NTK"):
-
-            media = np.mean([t1, t2, t3])
-
-            if v > 0:
-                resultado = (m / 381.4) / (v / 1000) * media
-
-                st.success(f"✔ RESULTADO: {resultado:.4f} mg/L")
-                st.info(f"📊 MÉDIA: {media:.4f}")
-
-    # ================= DQO =================
-    elif opcao == "DQO":
-
-        st.subheader("🧪 DETERMINAÇÃO DE DQO")
-
-        responsavel = st.text_input("RESPONSÁVEL")
-        projeto = st.text_input("PROJETO")
-        data = st.date_input("DATA DA ANÁLISE")
-        hora = st.time_input("HORA DA ANÁLISE")
-
-        m = st.number_input("MASSA PADRÃO")
-        v = st.number_input("VOLUME DA AMOSTRA")
-
-        t1 = st.number_input("TITULAÇÃO 1")
-        t2 = st.number_input("TITULAÇÃO 2")
-        t3 = st.number_input("TITULAÇÃO 3")
-
-        if st.button("📊 CALCULAR DQO"):
-
-            media = np.mean([t1, t2, t3])
-
-            if media > 0:
-                resultado = (m * 0.25) / media
-
-                st.success(f"✔ RESULTADO: {resultado:.4f} mg/L")
-                st.info(f"📊 MÉDIA: {media:.4f}")
-    # ================= RESULTADOS =================
-    if st.button("📊 CALCULAR PADRONIZAÇÃO"):
-
-        media = np.mean([v1, v2, v3])
-        desvio = np.std([v1, v2, v3], ddof=1)
-
-        st.success("✔ Cálculo realizado com sucesso")
-
-        st.write("📌 MÉDIA:", media)
-        st.write("📌 DESVIO PADRÃO:", desvio)
-
-        st.write("📌 CONCENTRAÇÃO TEÓRICA: 0,02 eqg/L")
-        st.write("📌 FATOR DE CORREÇÃO: (calculado automaticamente no sistema)")
+            resultado = (m * 0.25) / media
+            st.success(f"{aluno} - {resultado:.4f}")
