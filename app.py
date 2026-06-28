@@ -234,3 +234,53 @@ elif menu == "🧪 DQO":
 
             st.success(f"DQO: {resultado:.4f}")
             st.info(f"Média: {media:.4f}")
+# ================= PLANILHAS INTERATIVAS =================
+elif menu == "📊 Planilhas Interativas (Excel)":
+
+    import pandas as pd
+    from io import BytesIO
+
+    st.title("📊 Planilhas Interativas - Laboratório")
+
+    opcao = st.selectbox(
+        "Escolha a planilha",
+        ["N-Amoniacal", "NTK", "DQO"]
+    )
+
+    def carregar_excel(nome):
+        try:
+            # suporta .xls e .xlsx
+            return pd.read_excel(nome)
+        except Exception as e:
+            st.error(f"Erro ao carregar {nome}. Verifique o arquivo na pasta do app.")
+            st.stop()
+
+    # carrega arquivos (IMPORTANTE: nomes exatos no GitHub)
+    if opcao == "N-Amoniacal":
+        df = carregar_excel("N-AMONIACAL.xls")
+
+    elif opcao == "NTK":
+        df = carregar_excel("NTK.xls")
+
+    elif opcao == "DQO":
+        df = carregar_excel("DQO.xls")
+
+    # editor tipo Excel (seguro)
+    df_edit = st.data_editor(df, use_container_width=True, num_rows="dynamic")
+
+    # botão de visualização/salvar temporário
+    if st.button("📌 Atualizar Planilha"):
+        st.success("Planilha carregada com sucesso!")
+        st.dataframe(df_edit)
+
+    # exportar versão editada (sem quebrar nada)
+    buffer = BytesIO()
+    df_edit.to_excel(buffer, index=False)
+    buffer.seek(0)
+
+    st.download_button(
+        label="⬇️ Baixar Planilha Atualizada",
+        data=buffer,
+        file_name="planilha_atualizada.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
