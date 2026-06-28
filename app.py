@@ -215,3 +215,22 @@ elif menu == "🧪 NHX":
 
             st.success(f"NHX: {resultado:.4f}")
             st.info(f"Média: {media:.4f}")
+# ================= DQO =================
+elif menu == "🧪 DQO":
+    header("DEMANDA QUÍMICA DE OXIGÊNIO")
+
+    m = st.number_input("Massa padrão")
+    v = st.number_input("Volume amostra")
+
+    t1 = st.number_input("Titulação 1")
+    t2 = st.number_input("Titulação 2")
+    t3 = st.number_input("Titulação 3")
+
+    if st.button("Calcular DQO"):
+        media = np.mean([t1, t2, t3])
+
+        if media != 0:
+            resultado = (m * 0.25) / media
+
+            st.success(f"DQO: {resultado:.4f}")
+            st.info(f"Média: {media:.4f}")
