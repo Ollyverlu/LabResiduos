@@ -90,3 +90,36 @@ def header(titulo):
 if menu == "🏠 Dashboard":
     st.title("Sistema Laboratorial")
     st.info("Selecione um módulo no menu lateral.")
+# ================= SÓLIDOS TOTAIS =================
+elif menu == "🧪 Sólidos Totais":
+    header("SÓLIDOS TOTAIS")
+
+    v = st.number_input("Volume (mL)", value=50.0)
+
+    m1 = st.number_input("m1")
+    m2 = st.number_input("m2")
+    m3 = st.number_input("m3")
+
+    m1_2 = st.number_input("m1 (rep 2)")
+    m2_2 = st.number_input("m2 (rep 2)")
+    m3_2 = st.number_input("m3 (rep 2)")
+
+    if st.button("Calcular"):
+        fator = 1000 / (v / 1000)
+
+        st1 = (m2 - m1) * fator
+        st2 = (m2_2 - m1_2) * fator
+
+        stf1 = (m3 - m1) * fator
+        stf2 = (m3_2 - m1_2) * fator
+
+        stv1 = st1 - stf1
+        stv2 = st2 - stf2
+
+        st.markdown(f"""
+        <div class="card">
+        ST: {np.mean([st1, st2]):.2f} ± {np.std([st1, st2], ddof=1):.2f}<br>
+        STF: {np.mean([stf1, stf2]):.2f} ± {np.std([stf1, stf2], ddof=1):.2f}<br>
+        STV: {np.mean([stv1, stv2]):.2f} ± {np.std([stv1, stv2], ddof=1):.2f}
+        </div>
+        """, unsafe_allow_html=True)
