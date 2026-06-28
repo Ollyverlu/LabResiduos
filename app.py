@@ -159,13 +159,11 @@ elif menu == "🧪 DQO":
             resultado = (m * 0.25) / media
             st.success(f"Resultado: {resultado:.4f}")
 
-
 # ================= PLANILHAS INTERATIVAS =================
 elif menu == "📊 Planilhas Interativas (Excel)":
 
     import pandas as pd
     import streamlit as st
-    from io import BytesIO
 
     st.title("📊 Planilhas Interativas - Excel com Abas")
 
@@ -175,12 +173,11 @@ elif menu == "📊 Planilhas Interativas (Excel)":
         "DQO": "DQO.xlsx"
     }
 
-    abas = st.tabs(list(arquivos.keys()) + ["📄 Exportar PDF"])
+    tabs = st.tabs(list(arquivos.keys()))
 
-    # ================= PLANILHAS =================
     for i, nome in enumerate(arquivos.keys()):
 
-        with abas[i]:
+        with tabs[i]:
 
             st.subheader(f"📄 {nome}")
 
@@ -196,47 +193,13 @@ elif menu == "📊 Planilhas Interativas (Excel)":
                 key=f"edit_{nome}"
             )
 
+            # 🔥 DOWNLOAD EXCEL (para o aluno depois salvar em PDF no Excel)
             st.download_button(
-                f"⬇️ Baixar {nome} (CSV)",
+                f"⬇️ Baixar {nome} (Excel/CSV)",
                 data=df_edit.to_csv(index=False).encode("utf-8"),
                 file_name=f"{nome}.csv",
-                mime="text/csv"
+                mime="text/csv",
+                key=f"download_{nome}"
             )
 
-    # ================= ABA PDF =================
-    with abas[-1]:
-
-        st.subheader("📄 Exportar Relatório em PDF")
-
-        opcao = st.selectbox(
-            "Escolha a planilha para gerar PDF",
-            list(arquivos.keys())
-        )
-
-        try:
-            df_pdf = pd.read_excel(arquivos[opcao], engine="openpyxl")
-        except:
-            df_pdf = pd.DataFrame()
-
-        st.write("Pré-visualização:")
-        st.dataframe(df_pdf)
-
-        def gerar_pdf(df):
-            buffer = BytesIO()
-            from reportlab.platypus import SimpleDocTemplate, Table
-            from reportlab.lib.pagesizes import A4
-
-            pdf = SimpleDocTemplate(buffer, pagesize=A4)
-            data = [df.columns.tolist()] + df.values.tolist()
-            tabela = Table(data)
-
-            pdf.build([tabela])
-            buffer.seek(0)
-            return buffer
-
-        st.download_button(
-            "⬇️ Baixar PDF",
-            data=gerar_pdf(df_pdf),
-            file_name=f"{opcao}.pdf",
-            mime="application/pdf"
-        )
+            st.info("💡 Dica: Abra no Excel e use 'Salvar como PDF'")
